@@ -1,0 +1,16 @@
+pluginManagement {
+    repositories {
+        google()
+        mavenCentral()
+        gradlePluginPortal()
+    }
+}
+
+rootProject.name = 'algorithm'
+
+include 'algorithm-core'
+include 'algorithm-console'
+include 'algorithm-android'
+include 'algorithm-web'
+include 'algorithm-web'
+

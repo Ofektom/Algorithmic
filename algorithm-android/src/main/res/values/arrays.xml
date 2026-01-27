@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="ai_providers">
+        <item>Groq (Recommended - Free)</item>
+        <item>Hugging Face (Limited Free)</item>
+        <item>Together AI (Free Tier)</item>
+        <item>OpenAI (Paid)</item>
+    </string-array>
+</resources>
+

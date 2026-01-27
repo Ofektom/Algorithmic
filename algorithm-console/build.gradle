@@ -1,0 +1,25 @@
+plugins {
+    id 'java'
+    id 'application'
+}
+
+group = 'com.algorithm'
+version = '1.0.0'
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
+}
+
+application {
+    mainClass = 'Main'
+}
+
+dependencies {
+    implementation project(':algorithm-core')
+}
+
+tasks.named('run') {
+    standardInput = System.in
+}
+

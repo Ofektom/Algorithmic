@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="description" content="Algorithm Testing System - Test and learn LeetCode-style algorithms with voice navigation">
+    <title>Algorithmic</title>
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" th:href="@{/favicon.ico}">
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#6366f1">
+    <link rel="apple-touch-icon" href="/icon-192.png">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🧮 Algorithmic</h1>
+            <p>Test, learn, and solve algorithms interactively — now with voice commands!</p>
+        </header>
+        
+        <div class="search-bar">
+            <input type="text" id="searchInput" placeholder="Search algorithms or say 'solve two sum'...">
+            <button onclick="search()">Search</button>
+        </div>
+        
+        <div class="categories-grid">
+            <div th:each="category : ${categories}" class="category-card">
+                <a th:href="@{/category/{cat}(cat=${category})}">
+                    <h3 th:text="${category}"></h3>
+                </a>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Floating Voice Button – fixed position, high z-index, circular for modern feel -->
+    <button id="voiceButton" class="voice-button" 
+            title="Click or tap to start voice navigation (say 'solve two sum', 'show merge intervals', etc.)" 
+            aria-label="Start voice navigation"
+            style="position: fixed !important; bottom: 24px !important; right: 24px !important; 
+                   width: 64px !important; height: 64px !important; border-radius: 50% !important; 
+                   background: linear-gradient(135deg, #667eea, #764ba2) !important; 
+                   color: white !important; border: none !important; font-size: 1.5rem !important; 
+                   cursor: pointer !important; box-shadow: 0 6px 16px rgba(0,0,0,0.35) !important; 
+                   z-index: 10000 !important; display: flex !important; align-items: center !important; 
+                   justify-content: center !important; padding: 0 !important; margin: 0 !important; 
+                   transition: all 0.2s ease !important;">
+        🎤
+    </button>
+
+    <!-- Expose problem data for voice.js to match spoken problem names -->
+    <script th:inline="javascript">
+      /*<![CDATA[*/
+      // Expected format: array of objects like 
+      // [{ title: "Two Sum", slug: "two-sum", name: "Two Sum", difficulty: "Easy", ... }]
+      window.PROBLEMS = /*[[${problemsJson}]]*/ [];
+      
+      // Optional: categories if you want voice.js to use them too
+      window.CATEGORIES = /*[[${categoriesJson}]]*/ [];
+      
+      // Optional debug helper (remove in production)
+      // console.log('Loaded ' + window.PROBLEMS.length + ' problems for voice navigation');
+      /*]]>*/
+    </script>
+
+    <!-- Quick voice support check + placeholder gesture for iOS/Safari -->
+    <script>
+      (function(){
+        const btn = document.getElementById('voiceButton');
+        if (!btn) return;
+
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        if (!SpeechRecognition) {
+          btn.title = 'Voice navigation not supported in this browser (try Chrome/Edge)';
+          btn.style.opacity = '0.5';
+          btn.disabled = true;
+          btn.innerHTML = '🎤 ×';
+        } else {
+          // Add one-time gesture listener (helps unlock audio context on iOS)
+          btn.addEventListener('click', function gestureUnlock() {
+            // No-op — just needs user gesture
+            btn.removeEventListener('click', gestureUnlock);
+          }, { once: true });
+        }
+      })();
+    </script>
+    
+    <script src="/js/app.js"></script>
+    <script src="/js/voice.js"></script>
+</body>
+</html>

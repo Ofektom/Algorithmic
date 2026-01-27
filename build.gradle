@@ -1,0 +1,18 @@
+// Root build.gradle
+plugins {
+    // Note: 'java' is a core Gradle plugin, applied directly in submodules
+    id 'com.android.application' version '8.2.2' apply false
+    id 'com.android.library' version '8.2.2' apply false
+}
+
+allprojects {
+    repositories {
+        google()
+        mavenCentral()
+    }
+}
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}
+

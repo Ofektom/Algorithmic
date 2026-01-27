@@ -1,0 +1,70 @@
+plugins {
+    id 'com.android.application'
+}
+
+android {
+    namespace 'com.algorithm.android'
+    compileSdk 35
+
+    defaultConfig {
+        applicationId "com.algorithm.android"
+        minSdk 24
+        targetSdk 35
+        versionCode 1
+        versionName "1.0.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        
+        // Load API keys from gradle.properties
+        def groqApiKey = project.findProperty("GROQ_API_KEY") ?: ""
+        def groqApiUrl = project.findProperty("GROQ_API_URL") ?: "https://api.groq.com/openai/v1/chat/completions"
+        def groqModel = project.findProperty("GROQ_MODEL") ?: "llama-3.1-8b-instant"
+        
+        buildConfigField "String", "GROQ_API_KEY", "\"${groqApiKey}\""
+        buildConfigField "String", "GROQ_API_URL", "\"${groqApiUrl}\""
+        buildConfigField "String", "GROQ_MODEL", "\"${groqModel}\""
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+
+    buildFeatures {
+        viewBinding true
+        buildConfig true  // Enable BuildConfig to access API keys
+    }
+}
+
+dependencies {
+    implementation project(':algorithm-core')
+    
+    // Android Core
+    implementation 'androidx.appcompat:appcompat:1.6.1'
+    implementation 'com.google.android.material:material:1.11.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+    implementation 'androidx.fragment:fragment:1.6.2'
+    implementation 'androidx.lifecycle:lifecycle-viewmodel:2.7.0'
+    implementation 'androidx.lifecycle:lifecycle-livedata:2.7.0'
+    
+    // Room Database (for future use)
+    implementation 'androidx.room:room-runtime:2.6.1'
+    annotationProcessor 'androidx.room:room-compiler:2.6.1'
+    
+    // Networking (for AI API - future)
+    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+    implementation 'com.squareup.okhttp3:okhttp:4.11.0'
+    
+    // Testing
+    testImplementation 'junit:junit:4.13.2'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+}
+

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Algorithm Solver</string>
+    <string name="category_title">Select Category</string>
+    <string name="problem_title">Select Problem</string>
+    <string name="method_title">Select Method</string>
+    <string name="voice_input">Voice Input</string>
+    <string name="execute">Execute</string>
+    <string name="result">Result</string>
+    <string name="execution_time">Execution Time</string>
+    <string name="loading">Loading...</string>
+</resources>
+

@@ -1,0 +1,16 @@
+plugins {
+    id 'java-library'
+}
+
+group = 'com.algorithm'
+version = '1.0.0'
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
+}
+
+dependencies {
+    // Core module has no external dependencies - pure Java algorithms
+}
+

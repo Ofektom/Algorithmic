@@ -1,0 +1,9 @@
+# Local Development Configuration Example
+# Copy this file to application-local.properties and fill in your values
+# This file is gitignored and won't be committed
+
+# Groq API Configuration
+groq.api.key=your_groq_api_key_here
+groq.api.url=https://api.groq.com/openai/v1/chat/completions
+groq.api.model=llama-3.1-8b-instant
+

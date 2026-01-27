@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${problem.name}">Problem</title>
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" th:href="@{/favicon.ico}">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <a th:href="@{/category/{cat}(cat=${problem.category})}" class="back-link">← Back</a>
+            <h1 th:text="${problem.name}"></h1>
+            <p class="description" th:text="${problem.description}"></p>
+        </header>
+        
+        <!-- Method selection + Algorithm code display (now consistent with result page) -->
+        <div class="method-selection result-card">
+            <!-- Header with title and dropdown -->
+            <div class="section-header">
+                <h2 class="section-title">Available Methods</h2>
+                <select id="methodSelect">
+                    <option th:each="method : ${problem.methods}" 
+                            th:value="${method}" 
+                            th:text="${method}"
+                            th:selected="${method == selectedMethod}"></option>
+                </select>
+            </div>
+
+            <!-- Algorithm code display - shows selected method's source code -->
+            <div class="algorithm-content" 
+                 th:if="${selectedMethodCode != null or selectedMethod != null}">
+                <pre class="algorithm-code" 
+                     th:if="${selectedMethodCode != null and !#strings.isEmpty(selectedMethodCode)}">
+                    <code th:inline="text">[[${selectedMethodCode}]]</code>
+                </pre>
+                <p class="algorithm-name" 
+                   th:if="${selectedMethodCode == null or #strings.isEmpty(selectedMethodCode)}" 
+                   th:text="${selectedMethod}">No source code available</p>
+            </div>
+        </div>
+        
+        <!-- Input section remains unchanged -->
+        <form id="executeForm" th:action="@{/execute}" method="post">
+            <input type="hidden" name="className" th:value="${problem.className}">
+            <input type="hidden" name="problemName" th:value="${problem.name}">
+            <input type="hidden" name="category" th:value="${problem.category}">
+            <input type="hidden" id="methodNameInput" name="methodName" value="">
+            <input type="hidden" id="inputsJsonInput" name="inputsJson" value="">
+            <input type="hidden" id="paramNamesInput" name="paramNames" th:value="${#strings.listJoin(problem.paramNames, ',')}">
+            <input type="hidden" id="paramTypesInput" name="paramTypes" th:value="${#strings.listJoin(problem.paramTypes, ',')}">
+            
+            <div class="input-section">
+                <h2>Input Parameters</h2>
+                <div class="input-hints">
+                    <p><strong>Input Format Hints:</strong></p>
+                    <ul>
+                        <li><code>int[]</code>: Enter numbers separated by commas, e.g., <code>1,2,3,4,5</code> or <code>[1,2,3,4,5]</code></li>
+                        <li><code>String[]</code>: Enter strings separated by commas, e.g., <code>hello,world,test</code></li>
+                        <li><code>int</code>: Enter a single number, e.g., <code>42</code></li>
+                        <li><code>String</code>: Enter text, e.g., <code>hello</code></li>
+                        <li><code>char[]</code>: Enter characters, e.g., <code>a,b,c</code> or <code>abc</code></li>
+                    </ul>
+                </div>
+                <div th:each="paramName, iterStat : ${problem.paramNames}" class="input-group">
+                    <label th:text="${paramName} + ' (' + ${problem.paramTypes[iterStat.index]} + ')'"></label>
+                    <input type="text" th:id="${'input_' + iterStat.index}" 
+                           th:name="${'input_' + iterStat.index}"
+                           th:data-param-type="${problem.paramTypes[iterStat.index]}"
+                           th:placeholder="${#strings.replace(#strings.replace(problem.paramTypes[iterStat.index], '[]', ' array'), 'int', 'numbers')}">
+                    <small class="input-hint" th:id="${'hint_' + iterStat.index}"></small>
+                </div>
+                <button type="button" onclick="execute()" class="execute-btn">Execute</button>
+            </div>
+        </form>
+    </div>
+    
+    <script th:inline="javascript">
+        const problem = {
+            className: /*[[${problem.className}]]*/ '',
+            methods: /*[[${problem.methods}]]*/ [],
+            paramTypes: /*[[${problem.paramTypes}]]*/ [],
+            paramNames: /*[[${problem.paramNames}]]*/ [],
+            selectedMethod: /*[[${selectedMethod}]]*/ null,
+            selectedMethodCode: /*[[${selectedMethodCode}]]*/ null
+        };
+        
+        // Set up input hints and example values
+        document.addEventListener('DOMContentLoaded', function() {
+            const exampleInputs = /*[[${problem.exampleInputs}]]*/ null;
+            if (exampleInputs) {
+                for (let i = 0; i < problem.paramTypes.length; i++) {
+                    const input = document.getElementById('input_' + i);
+                    const hint = document.getElementById('hint_' + i);
+                    const paramType = problem.paramTypes[i];
+                    
+                    if (exampleInputs[i] !== null && exampleInputs[i] !== undefined) {
+                        let exampleText = formatExample(exampleInputs[i], paramType);
+                        if (hint) {
+                            hint.textContent = 'Example: ' + exampleText;
+                            hint.style.color = '#666';
+                            hint.style.fontSize = '0.85em';
+                        }
+                        if (input && !input.value) {
+                            input.placeholder = 'Example: ' + exampleText;
+                        }
+                    } else {
+                        // Set generic hint based on type
+                        if (hint) {
+                            if (paramType === 'int[]') {
+                                hint.textContent = 'Format: 1,2,3,4,5 or [1,2,3,4,5]';
+                            } else if (paramType === 'String[]') {
+                                hint.textContent = 'Format: hello,world,test';
+                            } else if (paramType === 'int') {
+                                hint.textContent = 'Format: 42';
+                            } else if (paramType === 'String') {
+                                hint.textContent = 'Format: hello';
+                            } else if (paramType === 'char[]') {
+                                hint.textContent = 'Format: a,b,c or abc';
+                            }
+                            hint.style.color = '#666';
+                            hint.style.fontSize = '0.85em';
+                        }
+                    }
+                }
+            }
+        });
+        
+        function formatExample(value, type) {
+            if (type === 'int[]' && Array.isArray(value)) {
+                return value.join(',');
+            } else if (type === 'String[]' && Array.isArray(value)) {
+                return value.join(',');
+            } else if (type === 'char[]' && Array.isArray(value)) {
+                return value.join(',');
+            } else if (type === 'int[][]' && Array.isArray(value)) {
+                return JSON.stringify(value).replace(/[\[\]]/g, '').replace(/,/g, ',');
+            }
+            return String(value);
+        }
+        
+        function execute() {
+            const methodName = document.getElementById('methodSelect').value;
+            const inputs = [];
+            const paramCount = problem.paramTypes.length;
+            
+            // Validate inputs
+            for (let i = 0; i < paramCount; i++) {
+                const input = document.getElementById('input_' + i).value.trim();
+                if (!input) {
+                    alert('Please fill in all input fields');
+                    return;
+                }
+            }
+            
+            try {
+                for (let i = 0; i < paramCount; i++) {
+                    const input = document.getElementById('input_' + i).value;
+                    inputs.push(parseInput(input, problem.paramTypes[i]));
+                }
+                
+                document.getElementById('methodNameInput').value = methodName;
+                document.getElementById('inputsJsonInput').value = JSON.stringify(inputs);
+                
+                console.log('Submitting form with:', {
+                    methodName: methodName,
+                    inputs: inputs,
+                    className: problem.className
+                });
+                
+                document.getElementById('executeForm').submit();
+            } catch (err) {
+                console.error('Error in execute:', err);
+                alert('Error parsing inputs: ' + err.message);
+            }
+        }
+        
+        function parseInput(input, type) {
+            input = input.trim();
+            
+            if (type === 'int[]') {
+                input = input.replace(/^\[|\]$/g, '');
+                const parts = input.split(/[,\s]+/).filter(x => x.length > 0);
+                return parts.map(x => {
+                    const num = parseInt(x.trim());
+                    if (isNaN(num)) {
+                        throw new Error('Invalid number in array: ' + x);
+                    }
+                    return num;
+                });
+            } else if (type === 'String[]') {
+                input = input.replace(/^\[|\]$/g, '');
+                return input.split(',').map(s => s.trim().replace(/^["']|["']$/g, ''));
+            } else if (type === 'char[]') {
+                if (input.includes(',')) {
+                    return input.split(',').map(c => c.trim().charAt(0));
+                } else {
+                    return input.split('').filter(c => c.trim().length > 0);
+                }
+            } else if (type === 'int') {
+                const num = parseInt(input);
+                if (isNaN(num)) {
+                    throw new Error('Invalid integer: ' + input);
+                }
+                return num;
+            } else if (type === 'String') {
+                return input.replace(/^["']|["']$/g, '');
+            } else if (type === 'double') {
+                const num = parseFloat(input);
+                if (isNaN(num)) {
+                    throw new Error('Invalid number: ' + input);
+                }
+                return num;
+            }
+            return input;
+        }
+    </script>
+    <script src="/js/voice.js"></script>
+</body>
+</html>

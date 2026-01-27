@@ -12,9 +12,8 @@ services:
       # Groq API Configuration - Set these in Render Dashboard Environment Variables
       # DO NOT put actual values here - set them in Render dashboard
       - key: GROQ_API_KEY
-        sync: false  # This means you must set it manually in Render dashboard
+        sync: false # This means you must set it manually in Render dashboard
       - key: GROQ_API_URL
         value: https://api.groq.com/openai/v1/chat/completions
       - key: GROQ_MODEL
         value: llama-3.1-8b-instant
-

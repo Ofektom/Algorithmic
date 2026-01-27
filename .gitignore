@@ -37,3 +37,5 @@ gradle.properties
 
 ### Android ###
 local.properties
+DEPLOYMENT.md
+/algorithm-android/

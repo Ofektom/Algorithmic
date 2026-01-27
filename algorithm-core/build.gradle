@@ -6,18 +6,11 @@ group = 'com.algorithm'
 version = '1.0.0'
 
 java {
-    toolchain {
-        languageVersion = JavaLanguageVersion.of(17)
-    }
-    // Optional if you prefer legacy flags
-    // sourceCompatibility = JavaVersion.VERSION_17
-    // targetCompatibility = JavaVersion.VERSION_17
-}
-
-repositories {
-    mavenCentral()
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
 }
 
 dependencies {
     // Core module has no external dependencies - pure Java algorithms
 }
+

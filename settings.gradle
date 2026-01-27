@@ -12,5 +12,3 @@ include 'algorithm-core'
 include 'algorithm-console'
 include 'algorithm-android'
 include 'algorithm-web'
-include 'algorithm-web'
-

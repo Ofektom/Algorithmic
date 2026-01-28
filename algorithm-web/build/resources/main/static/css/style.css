@@ -51,7 +51,7 @@ header p {
 }
 
 .description {
-    font-size: 1rem;
+    font-size: 0.5rem;
     margin-top: 10px;
     opacity: 0.9;
     line-height: 1.6;
@@ -477,7 +477,7 @@ header p {
     max-width: 100%;
     box-sizing: border-box;
     font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
-    font-size: 0.875rem;             /* Base size — 14px (you can change this) */
+    font-size: 0.5rem;             /* Base size — 14px (you can change this) */
     line-height: 1.6;
     color: #333;
     tab-size: 4;
@@ -503,7 +503,7 @@ header p {
 /* Mobile: even smaller + strong scroll behavior */
 @media (max-width: 768px) {
     .algorithm-code {
-        font-size: 0.75rem;          /* 12px on mobile — very compact */
+        font-size: 0.3rem;          /* 12px on mobile — very compact */
         padding: 1rem 1.25rem;
         word-break: break-word;
         overflow-x: auto;

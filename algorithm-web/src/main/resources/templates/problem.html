@@ -16,7 +16,7 @@
             <p class="description" th:text="${problem.description}"></p>
         </header>
         
-        <!-- Method selection + Algorithm code display (now consistent with result page) -->
+        <!-- Method selection + Algorithm code display (consistent with result page) -->
         <div class="method-selection result-card">
             <!-- Header with title and dropdown -->
             <div class="section-header">
@@ -126,6 +126,18 @@
                     }
                 }
             }
+
+            // Auto-submit on method change (same as result page)
+            const select = document.getElementById('methodSelect');
+            if (select) {
+                select.addEventListener('change', function() {
+                    if (!this.value.trim()) return;
+                    // Visual feedback
+                    this.style.opacity = '0.7';
+                    // Submit the execute form to reload with new method code
+                    document.getElementById('executeForm').submit();
+                });
+            }
         });
         
         function formatExample(value, type) {
@@ -217,6 +229,7 @@
             return input;
         }
     </script>
+    
     <script src="/js/app.js" th:src="@{/js/app.js}"></script>
     <script src="/js/voice.js"></script>
 </body>

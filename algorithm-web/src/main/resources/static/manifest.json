@@ -1,6 +1,6 @@
 {
-  "name": "Algorithm Testing System",
-  "short_name": "AlgoTest",
+  "name": "Algorithmic",
+  "short_name": "Algorithmic",
   "description": "Test and learn algorithms interactively",
   "start_url": "/",
   "display": "standalone",

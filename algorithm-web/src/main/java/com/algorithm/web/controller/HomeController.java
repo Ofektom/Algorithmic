@@ -33,7 +33,6 @@ public class HomeController {
         List<String> categories = problemRegistry.getCategories();
         model.addAttribute("categories", categories);
 
-        // Prepare structured problem list for voice/navigation
         List<Map<String, Object>> problemsForVoice = problemRegistry.getAllProblems().stream()
                 .map(problem -> {
                     Map<String, Object> entry = new HashMap<>();
@@ -64,7 +63,9 @@ public class HomeController {
     }
 
     @GetMapping("/problem/{name}")
-    public String problem(@PathVariable String name, Model model) {
+    public String problem(@PathVariable String name,
+            @RequestParam(value = "method", required = false) String selectedMethodParam,
+            Model model) {
         var problem = problemRegistry.findProblem(name);
         if (problem == null) {
             return "redirect:/";
@@ -72,14 +73,21 @@ public class HomeController {
 
         model.addAttribute("problem", problem);
 
-        // Select default method (first one) and load its source code for display
-        if (problem.getMethods() != null && !problem.getMethods().isEmpty()) {
-            String defaultMethod = problem.getMethods().get(0); // first method as default
-            String methodCode = sourceCodeService.getMethodSourceCode(problem.getClassName(), defaultMethod);
-
-            model.addAttribute("selectedMethod", defaultMethod);
-            model.addAttribute("selectedMethodCode", methodCode != null ? methodCode : ""); // empty string if no code
+        // Determine selected method: from query param, or default to first method
+        String selectedMethod = selectedMethodParam;
+        if (selectedMethod == null || !problem.getMethods().contains(selectedMethod)) {
+            selectedMethod = problem.getMethods() != null && !problem.getMethods().isEmpty()
+                    ? problem.getMethods().get(0)
+                    : null;
         }
+
+        String methodCode = null;
+        if (selectedMethod != null) {
+            methodCode = sourceCodeService.getMethodSourceCode(problem.getClassName(), selectedMethod);
+        }
+
+        model.addAttribute("selectedMethod", selectedMethod);
+        model.addAttribute("selectedMethodCode", methodCode != null ? methodCode : "");
 
         return "problem";
     }
@@ -94,15 +102,20 @@ public class HomeController {
             @RequestParam String[] paramTypes,
             RedirectAttributes redirectAttributes) {
         try {
-            // Parse JSON inputs
+            // Parse JSON inputs - allow empty array
             ObjectMapper mapper = new ObjectMapper();
-            List<?> inputsList = mapper.readValue(inputsJson, List.class);
+            List<?> inputsList;
+            if (inputsJson == null || inputsJson.trim().isEmpty()) {
+                inputsList = new ArrayList<>(); // empty inputs
+            } else {
+                inputsList = mapper.readValue(inputsJson, List.class);
+            }
             Object[] parsedInputs = inputsList.toArray();
 
             // Execute algorithm
             Map<String, Object> result = executionService.execute(className, methodName, parsedInputs);
 
-            // Get source code of the executed method
+            // Get source code of executed method
             String methodSourceCode = sourceCodeService.getMethodSourceCode(className, methodName);
 
             // Get problem info
@@ -135,7 +148,6 @@ public class HomeController {
 
     @GetMapping("/result")
     public String result(Model model) {
-        // Flash attributes are automatically added to the model by Spring
         System.out.println("Result page accessed - Model keys: " + model.asMap().keySet());
         return "result";
     }

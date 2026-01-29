@@ -26,7 +26,16 @@
                 </a>
             </div>
             <div th:if="${#lists.isEmpty(results)}" class="no-results">
-                <p>No results found for "<span th:text="${query}"></span>"</p>
+                <p>No algorithms found for "<span th:text="${query}"></span>"</p>
+                
+                <div style="margin-top: 30px;">
+                    <h3>Try AI Fallback</h3>
+                    <p>Let Groq generate a solution for this problem.</p>
+                    <form action="/ai-solution" method="get">
+                        <input type="hidden" name="problem" th:value="${query}">
+                        <button type="submit" class="execute-btn">Get AI Solution</button>
+                    </form>
+                </div>
             </div>
         </div>
     </div>

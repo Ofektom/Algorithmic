@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${title ?: 'AI Solution'}">AI Solution</title>
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" th:href="@{/favicon.ico}">
+    <link rel="manifest" href="/manifest.json" th:href="@{/manifest.json}">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <a href="/" class="back-link">← Back</a>
+            <h1 th:text="${title ?: 'AI Solution'}">AI Solution</h1>
+        </header>
+
+        <div class="ai-solution-card result-card">
+            <div th:if="${loading}" id="loading" style="text-align:center; padding: 40px;">
+                <h3>Loading AI solution...</h3>
+                <p>Please wait while Groq generates the response...</p>
+            </div>
+
+            <div th:if="${error}" id="error" style="color: #f44336; padding: 20px; background: #ffebee; border-radius: 8px;">
+                <h3>Error</h3>
+                <p th:text="${error}">Failed to get AI solution</p>
+            </div>
+
+            <div th:if="${solution}" id="result" style="display:none;">
+                <h2>Explanation</h2>
+                <p th:text="${solution.explanation}">No explanation available</p>
+
+                <h2>Step-by-Step Solution</h2>
+                <p th:text="${solution.solution}">No solution provided</p>
+
+                <h2>Java Code</h2>
+                <pre class="algorithm-code" th:if="${solution.code}">
+                    <code th:inline="text">[[${solution.code}]]</code>
+                </pre>
+                <p th:if="!${solution.code}">No code provided by AI</p>
+
+                <div style="margin-top: 30px;">
+                    <a href="/" class="btn btn-secondary">Back to Home</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script th:inline="javascript">
+        document.addEventListener('DOMContentLoaded', () => {
+            const loading = document.getElementById('loading');
+            const errorDiv = document.getElementById('error');
+            const resultDiv = document.getElementById('result');
+
+            fetch('/api/ai/solution?' + new URLSearchParams({
+                problemStatement: /*[[${problemStatement}]]*/ '',
+                language: 'Java'
+            }))
+            .then(response => response.json())
+            .then(data => {
+                loading.style.display = 'none';
+
+                if (data.explanation || data.solution || data.code) {
+                    document.getElementById('aiExplanation').textContent = data.explanation || 'No explanation';
+                    document.getElementById('aiSolution').textContent = data.solution || 'No solution';
+                    document.getElementById('aiCode').textContent = data.code || 'No code provided';
+                    resultDiv.style.display = 'block';
+                } else {
+                    errorDiv.innerHTML = '<h3>No response from AI</h3><p>Try describing the problem differently.</p>';
+                    errorDiv.style.display = 'block';
+                }
+            })
+            .catch(err => {
+                loading.style.display = 'none';
+                errorDiv.innerHTML = '<h3>Error</h3><p>' + err.message + '</p>';
+                errorDiv.style.display = 'block';
+            });
+        });
+    </script>
+</body>
+</html>

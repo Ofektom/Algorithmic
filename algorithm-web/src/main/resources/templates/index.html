@@ -36,6 +36,15 @@
         </div>
     </div>
     
+    <div class="ai-quick" style="margin-top: 40px; text-align: center;">
+      <h2>Ask AI for any algorithm solution</h2>
+      <p>Don't see your problem? Let Groq generate a solution!</p>
+      <form action="/ai-solution" method="get">
+          <input type="text" name="problem" placeholder="Describe the problem (e.g., 'find two numbers that sum to target')" style="width: 80%; max-width: 500px; padding: 12px; margin: 10px 0;">
+          <button type="submit" class="execute-btn">Ask AI</button>
+      </form>
+    </div>
+    
     <!-- Floating Voice Button – fixed position, high z-index, circular for modern feel -->
     <button id="voiceButton" class="voice-button" 
             title="Click or tap to start voice navigation (say 'solve two sum', 'show merge intervals', etc.)" 

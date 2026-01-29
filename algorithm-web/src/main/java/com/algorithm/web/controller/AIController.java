@@ -1,7 +1,6 @@
 package com.algorithm.web.controller;
 
 import com.algorithm.web.service.AIFallbackService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,7 +10,6 @@ import java.util.concurrent.CompletableFuture;
 @RequestMapping("/api/ai")
 public class AIController {
 
-    @Autowired
     private final AIFallbackService aiService;
 
     public AIController(AIFallbackService aiService) {
@@ -30,7 +28,7 @@ public class AIController {
         }
 
         return aiService.getSolution(problemStatement, language)
-                .thenApply(solution -> ResponseEntity.ok(solution));
+                .thenApply(ResponseEntity::ok);
     }
 
     @PostMapping("/solution-with-inputs")
@@ -49,7 +47,7 @@ public class AIController {
                 request.inputs,
                 request.paramTypes,
                 request.language)
-                .thenApply(solution -> ResponseEntity.ok(solution));
+                .thenApply(ResponseEntity::ok);
     }
 
     public static class AISolutionRequest {

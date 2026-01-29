@@ -1,4 +1,4 @@
-// VoiceNavigation - enhanced for direct LeetCode problem voice access
+// VoiceNavigation - enhanced for direct LeetCode problem voice access + AI fallback hint
 class VoiceNavigation {
     constructor() {
         this.recognition = null;
@@ -40,7 +40,6 @@ class VoiceNavigation {
     }
 
     async loadData() {
-        // 1. Categories from DOM (as before)
         try {
             const els = document.querySelectorAll('.category-card h3, [data-category]');
             this.categories = Array.from(els).map(el => el.textContent.trim()).filter(Boolean);
@@ -48,7 +47,6 @@ class VoiceNavigation {
             console.warn('Could not load categories from DOM', e);
         }
 
-        // 2. Problems should be in window.PROBLEMS (set by template or API)
         if (!window.PROBLEMS || !Array.isArray(window.PROBLEMS) || window.PROBLEMS.length === 0) {
             console.warn('window.PROBLEMS not found or empty → voice problem matching limited');
         }
@@ -103,12 +101,11 @@ class VoiceNavigation {
         const commonMappings = {
             'two sum': 'two sum',
             'add two numbers': 'add two numbers',
-            'add the two numbers': 'add two numbers',
             'longest substring': 'longest substring without repeating characters',
             'median of two sorted arrays': 'median of two sorted arrays',
             'merge intervals': 'merge intervals',
             'merge two sorted lists': 'merge two sorted lists',
-            // add more popular ones...
+            // add more...
         };
 
         for (const [spoken, canonical] of Object.entries(commonMappings)) {
@@ -130,7 +127,7 @@ class VoiceNavigation {
             return;
         }
 
-        // Final fallback: search
+        // Final fallback: search (AI will kick in if no results)
         this.searchForProblem(transcript);
     }
 
@@ -143,18 +140,15 @@ class VoiceNavigation {
 
         const q = this.normalize(query);
 
-        // 1. Exact match
         let match = window.PROBLEMS.find(p => this.normalize(p.title || p.name) === q);
         if (match) return match;
 
-        // 2. Contains (either direction)
         match = window.PROBLEMS.find(p => {
             const t = this.normalize(p.title || p.name);
             return t.includes(q) || q.includes(t);
         });
         if (match) return match;
 
-        // 3. Token overlap (best score)
         const qTokens = new Set(q.split(' '));
         let bestScore = 0;
         let best = null;
@@ -171,7 +165,6 @@ class VoiceNavigation {
 
         if (bestScore >= 2 || (bestScore >= 1 && q.length > 12)) return best;
 
-        // 4. Fuzzy (last resort)
         for (const p of window.PROBLEMS) {
             const t = this.normalize(p.title || p.name);
             if (this.fuzzyMatch(q, t)) return p;
@@ -192,6 +185,9 @@ class VoiceNavigation {
 
     async searchForProblem(query) {
         try {
+            // Quick feedback for voice users
+            this.showMessage('Searching for "' + query + '"... (AI ready if needed)');
+
             const res = await fetch(`/api/search?q=${encodeURIComponent(query)}`);
             if (res.ok) {
                 const problems = await res.json();
@@ -203,7 +199,8 @@ class VoiceNavigation {
         } catch (err) {
             console.error('Search API failed', err);
         }
-        // Ultimate fallback
+
+        // Fallback to search page (AI fallback will trigger there)
         window.location.href = `/search?q=${encodeURIComponent(query)}`;
     }
 
@@ -213,7 +210,7 @@ class VoiceNavigation {
         const shorter = a.length > b.length ? b : a;
         const dist = this.levenshteinDistance(longer, shorter);
         const ratio = (longer.length - dist) / longer.length;
-        return ratio > 0.68; // tuned a bit higher than 0.6
+        return ratio > 0.68;
     }
 
     levenshteinDistance(a, b) {
@@ -242,7 +239,7 @@ class VoiceNavigation {
         if (!btn) return;
         if (this.isListening) {
             btn.classList.add('listening');
-            btn.innerHTML = '🎤 Listening...';
+            btn.innerHTML = 'Listening...';
             btn.title = 'Click to stop';
         } else {
             btn.classList.remove('listening');
@@ -263,15 +260,29 @@ class VoiceNavigation {
         document.body.appendChild(div);
         setTimeout(() => div.remove(), 4500);
     }
+
+    // NEW: Temporary message for better UX during fallback
+    showMessage(msg, duration = 4000) {
+        const div = document.createElement('div');
+        div.textContent = msg;
+        Object.assign(div.style, {
+            position: 'fixed', bottom: '80px', left: '50%', transform: 'translateX(-50%)',
+            background: '#333', color: 'white', padding: '12px 24px',
+            borderRadius: '8px', zIndex: '1001', boxShadow: '0 4px 12px #0006',
+            fontSize: '1.1rem'
+        });
+        document.body.appendChild(div);
+        setTimeout(() => div.remove(), duration);
+    }
 }
 
-// ── Global init ────────────────────────────────────────────────
+// Global init
 let voiceNav = null;
 
 function initVoice() {
     try {
         voiceNav = new VoiceNavigation();
-        voiceNav.loadData(); // async but we don't await — ok for now
+        voiceNav.loadData();
     } catch (e) {
         console.error('Voice init failed', e);
     }
@@ -288,7 +299,6 @@ function setupVoiceButton() {
     });
 }
 
-// Run initialization
 if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', () => {
         initVoice();
@@ -299,7 +309,6 @@ if (document.readyState === 'loading') {
     setupVoiceButton();
 }
 
-// Extra safety nets
 document.addEventListener('DOMContentLoaded', setupVoiceButton);
 setTimeout(setupVoiceButton, 300);
 window.addEventListener('load', setupVoiceButton);

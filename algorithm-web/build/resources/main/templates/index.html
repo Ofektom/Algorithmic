@@ -10,7 +10,6 @@
     <title>Algorithmic</title>
     <link rel="icon" type="image/x-icon" href="/favicon.ico" th:href="@{/favicon.ico}">
     <link rel="manifest" href="/manifest.json" th:href="@{/manifest.json}">
-    <link rel="manifest" href="/manifest.json">
     <meta name="theme-color" content="#6366f1">
     <link rel="apple-touch-icon" href="/icon-192.png">
     <link rel="stylesheet" href="/css/style.css">
@@ -36,46 +35,20 @@
         </div>
     </div>
     
-    <div class="ai-quick" style="margin-top: 40px; text-align: center;">
-      <h2>Ask AI for any algorithm solution</h2>
-      <p>Don't see your problem? Let Groq generate a solution!</p>
-      <form action="/ai-solution" method="get">
-          <input type="text" name="problem" placeholder="Describe the problem (e.g., 'find two numbers that sum to target')" style="width: 80%; max-width: 500px; padding: 12px; margin: 10px 0;">
-          <button type="submit" class="execute-btn">Ask AI</button>
-      </form>
-    </div>
-    
-    <!-- Floating Voice Button – fixed position, high z-index, circular for modern feel -->
+    <!-- Floating Voice Button -->
     <button id="voiceButton" class="voice-button" 
             title="Click or tap to start voice navigation (say 'solve two sum', 'show merge intervals', etc.)" 
-            aria-label="Start voice navigation"
-            style="position: fixed !important; bottom: 24px !important; right: 24px !important; 
-                   width: 64px !important; height: 64px !important; border-radius: 50% !important; 
-                   background: linear-gradient(135deg, #667eea, #764ba2) !important; 
-                   color: white !important; border: none !important; font-size: 1.5rem !important; 
-                   cursor: pointer !important; box-shadow: 0 6px 16px rgba(0,0,0,0.35) !important; 
-                   z-index: 10000 !important; display: flex !important; align-items: center !important; 
-                   justify-content: center !important; padding: 0 !important; margin: 0 !important; 
-                   transition: all 0.2s ease !important;">
+            aria-label="Start voice navigation">
         🎤
     </button>
 
-    <!-- Expose problem data for voice.js to match spoken problem names -->
+    <!-- Expose problem data for voice.js -->
     <script th:inline="javascript">
-      /*<![CDATA[*/
-      // Expected format: array of objects like 
-      // [{ title: "Two Sum", slug: "two-sum", name: "Two Sum", difficulty: "Easy", ... }]
       window.PROBLEMS = /*[[${problemsJson}]]*/ [];
-      
-      // Optional: categories if you want voice.js to use them too
       window.CATEGORIES = /*[[${categoriesJson}]]*/ [];
-      
-      // Optional debug helper (remove in production)
-      // console.log('Loaded ' + window.PROBLEMS.length + ' problems for voice navigation');
-      /*]]>*/
     </script>
 
-    <!-- Quick voice support check + placeholder gesture for iOS/Safari -->
+    <!-- Voice support check -->
     <script>
       (function(){
         const btn = document.getElementById('voiceButton');
@@ -83,20 +56,29 @@
 
         const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
         if (!SpeechRecognition) {
-          btn.title = 'Voice navigation not supported in this browser (try Chrome/Edge)';
+          btn.title = 'Voice navigation not supported in this browser';
           btn.style.opacity = '0.5';
           btn.disabled = true;
           btn.innerHTML = '🎤 ×';
         } else {
-          // Add one-time gesture listener (helps unlock audio context on iOS)
           btn.addEventListener('click', function gestureUnlock() {
-            // No-op — just needs user gesture
             btn.removeEventListener('click', gestureUnlock);
           }, { once: true });
         }
       })();
     </script>
+
     <script src="/js/app.js" th:src="@{/js/app.js}"></script>
     <script src="/js/voice.js"></script>
+
+    <!-- Simple search redirect -->
+    <script>
+      function search() {
+          const query = document.getElementById('searchInput').value.trim();
+          if (query) {
+              window.location.href = '/search?q=' + encodeURIComponent(query);
+          }
+      }
+    </script>
 </body>
 </html>

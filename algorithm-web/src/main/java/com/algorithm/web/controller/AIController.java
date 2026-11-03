@@ -1,6 +1,7 @@
 package com.algorithm.web.controller;
 
 import com.algorithm.web.service.AIFallbackService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,12 +24,11 @@ public class AIController {
 
         if (!aiService.isConfigured()) {
             return CompletableFuture.completedFuture(
-                    ResponseEntity.badRequest().body(
-                            new AIFallbackService.AISolution(null, "AI service not configured", null)));
+                    ResponseEntity.badRequest().body(AIFallbackService.AISolution.failure(AIFallbackService.UNAVAILABLE_MESSAGE)));
         }
 
         return aiService.getSolution(problemStatement, language)
-                .thenApply(ResponseEntity::ok);
+                .thenApply(AIController::toResponse);
     }
 
     @PostMapping("/solution-with-inputs")
@@ -37,8 +37,7 @@ public class AIController {
 
         if (!aiService.isConfigured()) {
             return CompletableFuture.completedFuture(
-                    ResponseEntity.badRequest().body(
-                            new AIFallbackService.AISolution(null, "AI service not configured", null)));
+                    ResponseEntity.badRequest().body(AIFallbackService.AISolution.failure(AIFallbackService.UNAVAILABLE_MESSAGE)));
         }
 
         return aiService.getSolutionWithInputs(
@@ -47,7 +46,14 @@ public class AIController {
                 request.inputs,
                 request.paramTypes,
                 request.language)
-                .thenApply(ResponseEntity::ok);
+                .thenApply(AIController::toResponse);
+    }
+
+    // A failed generation is an upstream problem, not a successful answer
+    private static ResponseEntity<AIFallbackService.AISolution> toResponse(AIFallbackService.AISolution solution) {
+        return solution.error != null
+                ? ResponseEntity.status(HttpStatus.BAD_GATEWAY).body(solution)
+                : ResponseEntity.ok(solution);
     }
 
     public static class AISolutionRequest {

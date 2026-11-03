@@ -10,9 +10,40 @@ public class ProblemRegistryService {
     private final Map<String, List<ProblemInfo>> categoryMap = new HashMap<>();
     private final List<ProblemInfo> allProblems = new ArrayList<>();
 
+    // Index for matching spoken/pasted problem statements (built once at startup)
+    private final Map<ProblemInfo, Set<String>> problemTerms = new LinkedHashMap<>();
+    private final Map<ProblemInfo, List<String>> problemPhrases = new LinkedHashMap<>();
+    private final Map<ProblemInfo, Set<String>> problemNameTerms = new LinkedHashMap<>();
+    private final Map<String, Double> termWeights = new HashMap<>();
+
+    // Leading command words people say before the problem itself ("solve two sum", "show me ...")
+    private static final java.util.regex.Pattern INTENT_PREFIX = java.util.regex.Pattern.compile(
+            "^(?:(?:please|can you|could you|hey|ok|okay)\\s+)*"
+                    + "(?:solve|answer|show me|show|open|go to|view|display|find me|find|give me|what is|explain)\\s+"
+                    + "(?:the\\s+)?(?:problem\\s+|question\\s+|solution\\s+(?:to|for)\\s+)?");
+
+    private static final Set<String> MATCH_STOP_WORDS = Set.of(
+            "the", "a", "an", "and", "or", "but", "in", "on", "at", "to", "for", "of", "with", "by", "from",
+            "as", "is", "are", "was", "were", "be", "been", "being", "have", "has", "had", "do", "does", "did",
+            "will", "would", "should", "could", "may", "might", "must", "can", "this", "that", "these", "those",
+            "you", "your", "we", "our", "they", "their", "them", "it", "its", "given", "return", "returns",
+            "which", "such", "each", "any", "all", "into", "than", "then", "there", "if", "not", "no", "so",
+            "example", "input", "output", "explanation", "note", "constraints", "equals", "function");
+
+    // Minimum match score (see score()) for a statement to count as a built-in problem
+    static final double MATCH_THRESHOLD = 0.65;
+    // ...and beat the runner-up by this margin, so near-identical problems fall back to the AI
+    static final double MATCH_MARGIN = 0.15;
+    // Below a confident match, candidates above this are offered as "similar" suggestions
+    static final double SUGGESTION_THRESHOLD = 0.35;
+    // Short questions must contain every word of the problem's name: "number of palindromic substrings"
+    // overlaps "Longest Palindromic Substring" heavily but is a different problem
+    static final int SHORT_QUERY_TERMS = 10;
+
     @PostConstruct
     public void initialize() {
         initializeRegistry();
+        buildMatchIndex();
     }
 
     public List<String> getCategories() {
@@ -75,6 +106,182 @@ public class ProblemRegistryService {
                 .limit(20) // Limit to top 20 results
                 .map(Map.Entry::getKey)
                 .collect(java.util.stream.Collectors.toList());
+    }
+
+    /**
+     * Result of resolving free text (typically a spoken question) to a built-in problem.
+     * {@code match} is set only when confident; otherwise {@code suggestion} may hold the closest candidate.
+     */
+    public record Resolution(ProblemInfo match, ProblemInfo suggestion, String category) {
+    }
+
+    /**
+     * Resolve a command ("solve two sum"), a category ("go to strings") or a full problem statement read
+     * aloud. Precision beats recall here: an unconfident match returns no {@code match} so the caller can
+     * fall back to the AI instead of showing the wrong solution.
+     */
+    public Resolution resolve(String text) {
+        String normalized = normalizeForMatch(stripIntent(normalizeForMatch(text)));
+        List<String> queryTokens = contentTokens(normalized);
+        String query = String.join(" ", queryTokens);
+        if (query.isEmpty()) {
+            return new Resolution(null, null, null);
+        }
+
+        for (String category : getCategories()) {
+            if (normalizeForMatch(category).equals(normalized)) {
+                return new Resolution(null, null, category);
+            }
+        }
+
+        Set<String> queryTerms = new HashSet<>(queryTokens);
+        ProblemInfo named = findNamedProblem(query, queryTerms);
+        if (named != null) {
+            return new Resolution(named, null, null);
+        }
+
+        ProblemInfo best = null;
+        double bestScore = 0;
+        double secondScore = 0;
+        for (Map.Entry<ProblemInfo, Set<String>> entry : problemTerms.entrySet()) {
+            double score = score(entry.getValue(), queryTerms);
+            if (score > bestScore) {
+                secondScore = bestScore;
+                bestScore = score;
+                best = entry.getKey();
+            } else if (score > secondScore) {
+                secondScore = score;
+            }
+        }
+
+        boolean namesProblem = queryTerms.size() >= SHORT_QUERY_TERMS
+                || (best != null && queryTerms.containsAll(problemNameTerms.get(best)));
+        if (bestScore >= MATCH_THRESHOLD && bestScore - secondScore >= MATCH_MARGIN && namesProblem) {
+            return new Resolution(best, null, null);
+        }
+        return new Resolution(null, bestScore >= SUGGESTION_THRESHOLD ? best : null, null);
+    }
+
+    /**
+     * Exact name/alias, or a multi-word name/alias said as part of a longer statement, compared on content
+     * words so "maximum depth of a binary tree" still names "Maximum Depth of Binary Tree".
+     * Short queries must be just the name: extra words often mean a variant ("reverse linked list from
+     * position left to right"). In long statements only the official name counts mid-sentence (aliases
+     * like "Can Jump" occur in ordinary prose), and the description must overlap too.
+     */
+    private ProblemInfo findNamedProblem(String query, Set<String> queryTerms) {
+        String padded = " " + query + " ";
+        ProblemInfo best = null;
+        int bestLength = 0;
+        boolean longQuery = queryTerms.size() >= SHORT_QUERY_TERMS;
+        for (Map.Entry<ProblemInfo, List<String>> entry : problemPhrases.entrySet()) {
+            List<String> phrases = entry.getValue();
+            for (int i = 0; i < phrases.size(); i++) {
+                String phrase = phrases.get(i);
+                if (phrase.equals(query)) {
+                    return entry.getKey();
+                }
+                boolean officialName = i == 0;
+                if (!longQuery || !officialName) {
+                    continue;
+                }
+                // Single words ("subsets", "jump") are too ambiguous inside a longer statement
+                boolean mentioned = phrase.contains(" ") && padded.contains(" " + phrase + " ")
+                        && score(problemTerms.get(entry.getKey()), queryTerms) >= SUGGESTION_THRESHOLD;
+                // Prefer the most specific mention: "two sum ii" over "two sum"
+                if (mentioned && phrase.length() > bestLength) {
+                    best = entry.getKey();
+                    bestLength = phrase.length();
+                }
+            }
+        }
+        return best;
+    }
+
+    private void buildMatchIndex() {
+        Map<String, Integer> documentFrequency = new HashMap<>();
+        for (ProblemInfo problem : getAllProblems()) {
+            Set<String> docTerms = new HashSet<>(
+                    contentTokens(normalizeForMatch(problem.getName() + " " + problem.getDescription())));
+            problemTerms.put(problem, docTerms);
+            docTerms.forEach(t -> documentFrequency.merge(t, 1, Integer::sum));
+            problemNameTerms.put(problem, new HashSet<>(contentTokens(normalizeForMatch(problem.getName()))));
+
+            List<String> phrases = new ArrayList<>();
+            phrases.add(String.join(" ", contentTokens(normalizeForMatch(problem.getName()))));
+            for (String alias : problem.getAliases()) {
+                phrases.add(String.join(" ", contentTokens(normalizeForMatch(splitCamelCase(alias)))));
+            }
+            phrases.removeIf(String::isEmpty);
+            problemPhrases.put(problem, phrases);
+        }
+        // Rare terms ("diagonal", "valley") identify a problem; common ones ("array", "integer") barely count
+        int documents = problemTerms.size();
+        documentFrequency.forEach((term, df) -> termWeights.put(term, Math.log((double) (documents + 1) / df)));
+    }
+
+    /**
+     * F2 score of the overlap: mostly how much of the problem the statement covers (recall), tempered by
+     * how much of the statement the problem explains (precision). Precision is what stops a short
+     * description like "longest palindromic substring" claiming "count the palindromic substrings".
+     */
+    private double score(Set<String> problemTermSet, Set<String> queryTerms) {
+        double recall = weightedShare(problemTermSet, queryTerms);
+        double precision = weightedShare(queryTerms, problemTermSet);
+        double denominator = 4 * precision + recall;
+        return denominator == 0 ? 0 : 5 * precision * recall / denominator;
+    }
+
+    /** Weighted share of {@code terms} that also appear in {@code other}; unknown terms weigh nothing. */
+    private double weightedShare(Set<String> terms, Set<String> other) {
+        double total = 0;
+        double shared = 0;
+        for (String term : terms) {
+            double weight = termWeights.getOrDefault(term, 0.0);
+            total += weight;
+            if (other.contains(term)) {
+                shared += weight;
+            }
+        }
+        return total == 0 ? 0 : shared / total;
+    }
+
+    /** Stemmed content words in order (stop words and single characters dropped). */
+    private static List<String> contentTokens(String normalized) {
+        List<String> result = new ArrayList<>();
+        for (String word : normalized.split(" ")) {
+            if (word.length() > 1 && !MATCH_STOP_WORDS.contains(word)) {
+                result.add(stem(word));
+            }
+        }
+        return result;
+    }
+
+    // Light plural folding so "sums"/"sum" and "diagonals"/"diagonal" compare equal
+    private static String stem(String word) {
+        if (word.length() > 4 && word.endsWith("ies")) {
+            return word.substring(0, word.length() - 3) + "y";
+        }
+        if (word.length() > 3 && word.endsWith("s") && !word.endsWith("ss")) {
+            return word.substring(0, word.length() - 1);
+        }
+        return word;
+    }
+
+    private static String stripIntent(String normalized) {
+        return INTENT_PREFIX.matcher(normalized).replaceFirst("");
+    }
+
+    private static String splitCamelCase(String text) {
+        return text.replaceAll("(?<=[a-z0-9])(?=[A-Z])|(?<=[A-Z])(?=[A-Z][a-z])", " ");
+    }
+
+    // Lowercase, "&" -> "and", everything non-alphanumeric -> single spaces
+    static String normalizeForMatch(String text) {
+        if (text == null) {
+            return "";
+        }
+        return text.toLowerCase().replace("&", " and ").replaceAll("[^a-z0-9]+", " ").trim();
     }
 
     private double calculateMatchScore(String query, ProblemInfo problem) {
@@ -443,7 +650,7 @@ public class ProblemRegistryService {
         allProblems.addAll(Arrays.asList(problems));
     }
 
-    // Arrays & Hashing - 13 problems
+    // Arrays & Hashing - 18 problems
     private ProblemInfo[] createArrayProblems() {
         return new ProblemInfo[] {
                 new ProblemInfo("Two Sum",
@@ -604,11 +811,66 @@ public class ProblemRegistryService {
                                 "computeWithCyclic"),
                         Arrays.asList("nums", "k"),
                         Arrays.asList("int[]", "int"),
-                        new Object[] { new int[] { 1, 2, 3, 4, 5, 6, 7 }, 3 })
+                        new Object[] { new int[] { 1, 2, 3, 4, 5, 6, 7 }, 3 }),
+                new ProblemInfo("Diagonal Difference",
+                        Arrays.asList("DiagonalDifference", "Matrix Diagonal Difference"),
+                        "Given a square matrix, calculate the absolute difference between the sum of its primary diagonal (top-left to bottom-right) and the sum of its secondary diagonal (top-right to bottom-left).",
+                        "Absolute difference between the two diagonal sums",
+                        Arrays.asList("matrix", "diagonal", "square", "difference", "absolute", "sum"),
+                        "Arrays & Hashing",
+                        "arrays.DiagonalDifference",
+                        Arrays.asList("computeWithSinglePass", "computeWithFullScan"),
+                        List.of("matrix"),
+                        List.of("int[][]"),
+                        new Object[] { new int[][] { { 11, 2, 4 }, { 4, 5, 6 }, { 10, 8, -12 } } }),
+                new ProblemInfo("Plus Minus",
+                        Arrays.asList("PlusMinus", "Positive Negative Zero Ratio"),
+                        "Given an array of integers, calculate the ratios of its elements that are positive, negative, and zero. Return each ratio with 6 digits after the decimal point.",
+                        "Ratios of positive, negative and zero elements",
+                        Arrays.asList("array", "ratio", "positive", "negative", "zero", "fraction", "decimal"),
+                        "Arrays & Hashing",
+                        "arrays.PlusMinus",
+                        Arrays.asList("computeWithCounting", "computeWithStreams"),
+                        List.of("arr"),
+                        List.of("int[]"),
+                        new Object[] { new int[] { -4, 3, -9, 0, 4, 1 } }),
+                new ProblemInfo("Mini-Max Sum",
+                        Arrays.asList("MiniMaxSum", "Min Max Sum", "Minimum Maximum Sum"),
+                        "Given five positive integers, find the minimum and maximum values that can be calculated by summing exactly four of the five integers.",
+                        "Min and max sum of four out of five integers",
+                        Arrays.asList("array", "minimum", "maximum", "sum", "four", "five", "integers"),
+                        "Arrays & Hashing",
+                        "arrays.MiniMaxSum",
+                        Arrays.asList("computeWithSinglePass", "computeWithSort"),
+                        List.of("arr"),
+                        List.of("int[]"),
+                        new Object[] { new int[] { 1, 2, 3, 4, 5 } }),
+                new ProblemInfo("Birthday Cake Candles",
+                        Arrays.asList("BirthdayCakeCandles", "Tallest Candles"),
+                        "You are given the heights of the candles on a birthday cake. A child can only blow out the tallest candles. Count how many candles are the tallest.",
+                        "Count how many candles are the tallest",
+                        Arrays.asList("array", "candles", "tallest", "maximum", "count", "birthday"),
+                        "Arrays & Hashing",
+                        "arrays.BirthdayCakeCandles",
+                        Arrays.asList("computeWithSinglePass", "computeWithSort"),
+                        List.of("candles"),
+                        List.of("int[]"),
+                        new Object[] { new int[] { 3, 2, 1, 3 } }),
+                new ProblemInfo("Sales by Match",
+                        Arrays.asList("SalesByMatch", "Sock Merchant", "Matching Socks"),
+                        "Given an array of integers representing the color of each sock, determine how many pairs of socks with matching colors there are.",
+                        "Count pairs of matching socks",
+                        Arrays.asList("array", "socks", "pairs", "matching", "color", "count", "hashset"),
+                        "Arrays & Hashing",
+                        "arrays.SalesByMatch",
+                        Arrays.asList("computeWithHashSet", "computeWithSort"),
+                        List.of("socks"),
+                        List.of("int[]"),
+                        new Object[] { new int[] { 10, 20, 20, 10, 10, 30, 50, 10, 20 } })
         };
     }
 
-    // Strings - 18 problems
+    // Strings - 21 problems
     private ProblemInfo[] createStringProblems() {
         return new ProblemInfo[] {
                 new ProblemInfo("Valid Anagram",
@@ -816,7 +1078,51 @@ public class ProblemRegistryService {
                                 "computeRecursive"),
                         Arrays.asList("a", "b"),
                         Arrays.asList("String", "String"),
-                        new Object[] { "11", "1" })
+                        new Object[] { "11", "1" }),
+                new ProblemInfo("Time Conversion",
+                        Arrays.asList("TimeConversion", "12 Hour to 24 Hour", "Military Time"),
+                        "Given a time in 12-hour AM/PM format (hh:mm:ssAM or hh:mm:ssPM), convert it to 24-hour military time (HH:mm:ss). Midnight is 12:00:00AM in 12-hour format and 00:00:00 in 24-hour format.",
+                        "Convert 12-hour AM/PM time to 24-hour time",
+                        Arrays.asList("string", "time", "conversion", "12-hour", "24-hour", "military", "am", "pm"),
+                        "Strings",
+                        "strings.TimeConversion",
+                        Arrays.asList("computeWithParsing", "computeWithLocalTime"),
+                        List.of("s"),
+                        List.of("String"),
+                        new Object[] { "07:05:45PM" }),
+                new ProblemInfo("Counting Valleys",
+                        Arrays.asList("CountingValleys", "Valleys"),
+                        "A hiker starts and ends at sea level. Each step in the path is either 'U' (one unit up) or 'D' (one unit down). A valley is a sequence of consecutive steps below sea level, starting with a step down from sea level and ending with a step up to sea level. Count the valleys walked through.",
+                        "Count valleys walked through on a hike",
+                        Arrays.asList("string", "valley", "sea level", "hike", "steps", "up", "down", "altitude"),
+                        "Strings",
+                        "strings.CountingValleys",
+                        List.of("computeWithAltitude"),
+                        Arrays.asList("steps", "path"),
+                        Arrays.asList("int", "String"),
+                        new Object[] { 8, "UDDDUDUU" }),
+                new ProblemInfo("Repeated String",
+                        Arrays.asList("RepeatedString", "Count A in Infinite String"),
+                        "A string s of lowercase letters is repeated infinitely many times. Given an integer n, count the occurrences of the letter 'a' in the first n characters of the infinite string.",
+                        "Count 'a' in first n chars of an infinitely repeated string",
+                        Arrays.asList("string", "repeated", "infinite", "count", "letter", "a", "modulo"),
+                        "Strings",
+                        "strings.RepeatedString",
+                        Arrays.asList("computeWithMath", "computeWithBruteForce"),
+                        Arrays.asList("s", "n"),
+                        Arrays.asList("String", "long"),
+                        new Object[] { "aba", 10L }),
+                new ProblemInfo("Caesar Cipher",
+                        Arrays.asList("CaesarCipher", "Caesar Shift", "Shift Cipher"),
+                        "Encrypt a string by shifting each letter by k positions in the alphabet, wrapping from z back to a. Uppercase and lowercase letters keep their case, and all other characters remain unchanged.",
+                        "Shift each letter by k positions in the alphabet",
+                        Arrays.asList("string", "cipher", "caesar", "shift", "rotate", "encrypt", "alphabet"),
+                        "Strings",
+                        "strings.CaesarCipher",
+                        Arrays.asList("computeWithShift", "computeWithLookup"),
+                        Arrays.asList("s", "k"),
+                        Arrays.asList("String", "int"),
+                        new Object[] { "middle-Outz", 2 })
         };
     }
 
@@ -1679,7 +1985,7 @@ public class ProblemRegistryService {
         };
     }
 
-    // Greedy - 1 problem
+    // Greedy - 2 problems
     private ProblemInfo[] createGreedyProblems() {
         return new ProblemInfo[] {
                 new ProblemInfo("Jump Game",
@@ -1692,7 +1998,18 @@ public class ProblemRegistryService {
                         Arrays.asList("computeWithGreedy", "computeWithDP", "computeRecursive"),
                         List.of("nums"),
                         List.of("int[]"),
-                        new Object[] { new int[] { 2, 3, 1, 1, 4 } })
+                        new Object[] { new int[] { 2, 3, 1, 1, 4 } }),
+                new ProblemInfo("Jumping on the Clouds",
+                        Arrays.asList("JumpingOnTheClouds", "Cloud Jump"),
+                        "Clouds are numbered 0 (safe) or 1 (thunderhead). Starting on the first cloud, you may jump 1 or 2 clouds ahead, but only onto safe clouds. Determine the minimum number of jumps needed to reach the last cloud. The first and last clouds are always safe.",
+                        "Minimum jumps to reach the last safe cloud",
+                        Arrays.asList("array", "clouds", "jump", "minimum", "greedy", "dp", "thunderhead"),
+                        "Greedy",
+                        "greedy.JumpingOnTheClouds",
+                        Arrays.asList("computeWithGreedy", "computeWithDP"),
+                        List.of("clouds"),
+                        List.of("int[]"),
+                        new Object[] { new int[] { 0, 0, 1, 0, 0, 1, 0 } })
         };
     }
 
@@ -1713,5 +2030,4 @@ public class ProblemRegistryService {
                         new Object[] { 11 })
         };
     }
-
 }

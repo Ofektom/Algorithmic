@@ -2,20 +2,22 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-title" content="Algorithmic">
     <title th:text="${category}">Category</title>
     <link rel="icon" type="image/x-icon" href="/favicon.ico" th:href="@{/favicon.ico}">
     <link rel="manifest" href="/manifest.json" th:href="@{/manifest.json}">
+    <meta name="theme-color" content="#667eea">
     <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
     <div class="container">
         <header>
-            <a href="/" class="back-link">← Back</a>
+            <a href="/" class="back-link">← Home</a>
             <h1 th:text="${category}"></h1>
+            <p th:text="${#lists.size(problems) + (#lists.size(problems) == 1 ? ' problem' : ' problems')}"></p>
         </header>
         
         <div class="problems-list">

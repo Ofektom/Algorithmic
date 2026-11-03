@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.algorithm.web.security.AccessControlFilterTest" tests="6" skipped="0" failures="0" errors="0" timestamp="2026-11-03T23:29:52" hostname="macs-MacBook-Air-6.local" time="0.104">
+  <properties/>
+  <testcase name="challengesWithoutCredentials()" classname="com.algorithm.web.security.AccessControlFilterTest" time="0.024"/>
+  <testcase name="rejectsWrongPassword()" classname="com.algorithm.web.security.AccessControlFilterTest" time="0.011"/>
+  <testcase name="rejectsMalformedHeaders()" classname="com.algorithm.web.security.AccessControlFilterTest" time="0.005"/>
+  <testcase name="acceptsCorrectPasswordWithAnyUsername()" classname="com.algorithm.web.security.AccessControlFilterTest" time="0.007"/>
+  <testcase name="openWhenNoPasswordConfigured()" classname="com.algorithm.web.security.AccessControlFilterTest" time="0.001"/>
+  <testcase name="passwordMayContainColons()" classname="com.algorithm.web.security.AccessControlFilterTest" time="0.009"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

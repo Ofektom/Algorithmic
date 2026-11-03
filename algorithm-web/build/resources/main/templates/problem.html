@@ -2,51 +2,44 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-title" content="Algorithmic">
     <title th:text="${problem.name}">Problem</title>
     <link rel="icon" type="image/x-icon" href="/favicon.ico" th:href="@{/favicon.ico}">
     <link rel="manifest" href="/manifest.json" th:href="@{/manifest.json}">
+    <meta name="theme-color" content="#667eea">
     <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
     <div class="container">
         <header>
-            <a th:href="@{/category/{cat}(cat=${problem.category})}" class="back-link">← Back</a>
+            <a th:href="@{/category/{cat}(cat=${problem.category})}" class="back-link">← <span th:text="${problem.category}">Back</span></a>
             <h1 th:text="${problem.name}"></h1>
             <p class="description" th:text="${problem.description}"></p>
         </header>
-        
-        <!-- Method selection + Algorithm code display (consistent with result page) -->
-        <div class="method-selection result-card">
-            <!-- Header with title and dropdown -->
+
+        <!-- Solution code for the selected method -->
+        <section class="result-card algorithm-section">
             <div class="section-header">
-                <h2 class="section-title">Available Methods</h2>
-                <select id="methodSelect">
-                    <option th:each="method : ${problem.methods}" 
-                            th:value="${method}" 
+                <h2 class="section-title">Solution</h2>
+                <select id="methodSelect" aria-label="Solution method">
+                    <option th:each="method : ${problem.methods}"
+                            th:value="${method}"
                             th:text="${method}"
                             th:selected="${method == selectedMethod}"></option>
                 </select>
             </div>
-
-            <!-- Algorithm code display - shows selected method's source code -->
-            <div class="algorithm-content" 
-                 th:if="${selectedMethodCode != null or selectedMethod != null}">
-                <pre class="algorithm-code" 
-                     th:if="${selectedMethodCode != null and !#strings.isEmpty(selectedMethodCode)}">
-                    <code th:inline="text">[[${selectedMethodCode}]]</code>
-                </pre>
-                <p class="algorithm-name" 
-                   th:if="${selectedMethodCode == null or #strings.isEmpty(selectedMethodCode)}" 
-                   th:text="${selectedMethod}">No source code available</p>
+            <div class="code-block" th:if="${selectedMethodCode != null and !#strings.isEmpty(selectedMethodCode)}">
+                <pre class="algorithm-code"><code th:text="${selectedMethodCode}"></code></pre>
             </div>
-        </div>
-        
-        <!-- Input section remains unchanged -->
-        <form id="executeForm" th:action="@{/execute}" method="post">
+            <p class="algorithm-name"
+               th:if="${selectedMethodCode == null or #strings.isEmpty(selectedMethodCode)}"
+               th:text="${selectedMethod}">No source code available</p>
+        </section>
+
+        <form id="executeForm" th:action="@{/execute}" method="post" novalidate>
             <input type="hidden" name="className" th:value="${problem.className}">
             <input type="hidden" name="problemName" th:value="${problem.name}">
             <input type="hidden" name="category" th:value="${problem.category}">
@@ -54,32 +47,42 @@
             <input type="hidden" id="inputsJsonInput" name="inputsJson" value="">
             <input type="hidden" id="paramNamesInput" name="paramNames" th:value="${#strings.listJoin(problem.paramNames, ',')}">
             <input type="hidden" id="paramTypesInput" name="paramTypes" th:value="${#strings.listJoin(problem.paramTypes, ',')}">
-            
-            <div class="input-section">
-                <h2>Input Parameters</h2>
-                <div class="input-hints">
-                    <p><strong>Input Format Hints:</strong></p>
+
+            <section class="input-section">
+                <h2>Try it</h2>
+                <details class="input-hints">
+                    <summary>Input format help</summary>
                     <ul>
-                        <li><code>int[]</code>: Enter numbers separated by commas, e.g., <code>1,2,3,4,5</code> or <code>[1,2,3,4,5]</code></li>
-                        <li><code>String[]</code>: Enter strings separated by commas, e.g., <code>hello,world,test</code></li>
-                        <li><code>int</code>: Enter a single number, e.g., <code>42</code></li>
-                        <li><code>String</code>: Enter text, e.g., <code>hello</code></li>
-                        <li><code>char[]</code>: Enter characters, e.g., <code>a,b,c</code> or <code>abc</code></li>
+                        <li><code>int[]</code>: numbers separated by commas, e.g. <code>1,2,3</code> or <code>[1,2,3]</code></li>
+                        <li><code>int[][]</code>: a grid, e.g. <code>[ [1,2], [3,4] ]</code></li>
+                        <li><code>String[]</code>: words separated by commas, e.g. <code>hello,world</code></li>
+                        <li><code>int</code>: one number, e.g. <code>42</code></li>
+                        <li><code>String</code>: text, e.g. <code>hello</code></li>
+                        <li><code>char[]</code>: characters, e.g. <code>a,b,c</code> or <code>abc</code></li>
                     </ul>
-                </div>
+                </details>
                 <div th:each="paramName, iterStat : ${problem.paramNames}" class="input-group">
-                    <label th:text="${paramName} + ' (' + ${problem.paramTypes[iterStat.index]} + ')'"></label>
-                    <input type="text" th:id="${'input_' + iterStat.index}" 
+                    <label th:for="${'input_' + iterStat.index}">
+                        <span th:text="${paramName}"></span>
+                        <span class="param-type" th:text="${problem.paramTypes[iterStat.index]}"></span>
+                    </label>
+                    <!-- Phone keyboards must not capitalise or "correct" input like abc or [1,2] -->
+                    <input type="text" th:id="${'input_' + iterStat.index}"
                            th:name="${'input_' + iterStat.index}"
                            th:data-param-type="${problem.paramTypes[iterStat.index]}"
-                           th:placeholder="${#strings.replace(#strings.replace(problem.paramTypes[iterStat.index], '[]', ' array'), 'int', 'numbers')}">
+                           autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false"
+                           enterkeyhint="go">
                     <small class="input-hint" th:id="${'hint_' + iterStat.index}"></small>
                 </div>
-                <button type="button" onclick="execute()" class="execute-btn">Execute</button>
-            </div>
+                <p class="form-error" id="formError" role="alert" hidden></p>
+                <div class="input-actions">
+                    <button type="button" class="btn btn-secondary" id="fillExample" hidden>Fill example</button>
+                    <button type="button" onclick="execute()" class="execute-btn">Run</button>
+                </div>
+            </section>
         </form>
     </div>
-    
+
     <script th:inline="javascript">
         const problem = {
             className: /*[[${problem.className}]]*/ '',
@@ -90,59 +93,66 @@
             selectedMethodCode: /*[[${selectedMethodCode}]]*/ null
         };
         
-        // Set up input hints and example values
-        document.addEventListener('DOMContentLoaded', function() {
-            const exampleInputs = /*[[${problem.exampleInputs}]]*/ null;
-            if (exampleInputs) {
-                for (let i = 0; i < problem.paramTypes.length; i++) {
-                    const input = document.getElementById('input_' + i);
-                    const hint = document.getElementById('hint_' + i);
-                    const paramType = problem.paramTypes[i];
-                    
-                    if (exampleInputs[i] !== null && exampleInputs[i] !== undefined) {
-                        let exampleText = formatExample(exampleInputs[i], paramType);
-                        if (hint) {
-                            hint.textContent = 'Example: ' + exampleText;
-                            hint.style.color = '#666';
-                            hint.style.fontSize = '0.85em';
-                        }
-                        if (input && !input.value) {
-                            input.placeholder = 'Example: ' + exampleText;
-                        }
-                    } else {
-                        // Set generic hint based on type
-                        if (hint) {
-                            if (paramType === 'int[]') {
-                                hint.textContent = 'Format: 1,2,3,4,5 or [1,2,3,4,5]';
-                            } else if (paramType === 'String[]') {
-                                hint.textContent = 'Format: hello,world,test';
-                            } else if (paramType === 'int') {
-                                hint.textContent = 'Format: 42';
-                            } else if (paramType === 'String') {
-                                hint.textContent = 'Format: hello';
-                            } else if (paramType === 'char[]') {
-                                hint.textContent = 'Format: a,b,c or abc';
-                            }
-                            hint.style.color = '#666';
-                            hint.style.fontSize = '0.85em';
-                        }
-                    }
-                }
-            }
+        const exampleInputs = /*[[${problem.exampleInputs}]]*/ null;
 
-            // Auto-submit on method change (same as result page)
-            const select = document.getElementById('methodSelect');
-            if (select) {
-                select.addEventListener('change', function() {
-                    if (!this.value.trim()) return;
-                    // Visual feedback
-                    this.style.opacity = '0.7';
-                    // Submit the execute form to reload with new method code
-                    document.getElementById('executeForm').submit();
+        // Hints show each parameter's example; "Fill example" puts them all in at once
+        document.addEventListener('DOMContentLoaded', function() {
+            let hasExamples = false;
+            problem.paramTypes.forEach(function(paramType, i) {
+                const hint = document.getElementById('hint_' + i);
+                const input = document.getElementById('input_' + i);
+                if (exampleInputs && exampleInputs[i] !== null && exampleInputs[i] !== undefined) {
+                    const exampleText = formatExample(exampleInputs[i], paramType);
+                    hint.textContent = 'Example: ' + exampleText;
+                    input.placeholder = 'e.g. ' + exampleText;
+                    hasExamples = true;
+                }
+                input.addEventListener('input', function() { clearError(); });
+                input.addEventListener('keydown', function(e) {
+                    if (e.key === 'Enter') { e.preventDefault(); execute(); }
+                });
+            });
+
+            const fill = document.getElementById('fillExample');
+            if (hasExamples) {
+                fill.hidden = false;
+                fill.addEventListener('click', function() {
+                    problem.paramTypes.forEach(function(paramType, i) {
+                        if (exampleInputs[i] !== null && exampleInputs[i] !== undefined) {
+                            document.getElementById('input_' + i).value = formatExample(exampleInputs[i], paramType);
+                        }
+                    });
+                    clearError();
                 });
             }
+
+            // Switching method reloads this page with that method's code
+            document.getElementById('methodSelect').addEventListener('change', function() {
+                this.classList.add('loading');
+                const url = new URL(window.location.href);
+                url.searchParams.set('method', this.value);
+                window.location.href = url.toString();
+            });
         });
-        
+
+        function showError(message, inputIndex) {
+            const box = document.getElementById('formError');
+            box.textContent = message;
+            box.hidden = false;
+            if (inputIndex !== undefined) {
+                const input = document.getElementById('input_' + inputIndex);
+                input.setAttribute('aria-invalid', 'true');
+                input.focus();
+            }
+        }
+
+        function clearError() {
+            document.getElementById('formError').hidden = true;
+            document.querySelectorAll('.input-group input').forEach(function(input) {
+                input.removeAttribute('aria-invalid');
+            });
+        }
+
         function formatExample(value, type) {
             if (type === 'int[]' && Array.isArray(value)) {
                 return value.join(',');
@@ -151,47 +161,33 @@
             } else if (type === 'char[]' && Array.isArray(value)) {
                 return value.join(',');
             } else if (type === 'int[][]' && Array.isArray(value)) {
-                return JSON.stringify(value).replace(/[\[\]]/g, '').replace(/,/g, ',');
+                return JSON.stringify(value);
             }
             return String(value);
         }
         
         function execute() {
-            const methodName = document.getElementById('methodSelect').value;
+            clearError();
             const inputs = [];
-            const paramCount = problem.paramTypes.length;
-            
-            // Validate inputs
-            for (let i = 0; i < paramCount; i++) {
-                const input = document.getElementById('input_' + i).value.trim();
-                if (!input) {
-                    alert('Please fill in all input fields');
+            for (let i = 0; i < problem.paramTypes.length; i++) {
+                const value = document.getElementById('input_' + i).value.trim();
+                if (!value) {
+                    showError('Fill in ' + problem.paramNames[i] + ' (or tap "Fill example").', i);
+                    return;
+                }
+                try {
+                    inputs.push(parseInput(value, problem.paramTypes[i]));
+                } catch (err) {
+                    showError(problem.paramNames[i] + ': ' + err.message, i);
                     return;
                 }
             }
-            
-            try {
-                for (let i = 0; i < paramCount; i++) {
-                    const input = document.getElementById('input_' + i).value;
-                    inputs.push(parseInput(input, problem.paramTypes[i]));
-                }
-                
-                document.getElementById('methodNameInput').value = methodName;
-                document.getElementById('inputsJsonInput').value = JSON.stringify(inputs);
-                
-                console.log('Submitting form with:', {
-                    methodName: methodName,
-                    inputs: inputs,
-                    className: problem.className
-                });
-                
-                document.getElementById('executeForm').submit();
-            } catch (err) {
-                console.error('Error in execute:', err);
-                alert('Error parsing inputs: ' + err.message);
-            }
+            document.getElementById('methodNameInput').value = document.getElementById('methodSelect').value;
+            document.getElementById('inputsJsonInput').value = JSON.stringify(inputs);
+            showLoading();
+            document.getElementById('executeForm').submit();
         }
-        
+
         function parseInput(input, type) {
             input = input.trim();
             
@@ -222,6 +218,23 @@
                 return num;
             } else if (type === 'String') {
                 return input.replace(/^["']|["']$/g, '');
+            } else if (type === 'long') {
+                const num = Number(input);
+                if (!Number.isInteger(num)) {
+                    throw new Error('Invalid integer: ' + input);
+                }
+                return num;
+            } else if (type === 'int[][]') {
+                let matrix;
+                try {
+                    matrix = JSON.parse(input);
+                } catch (e) {
+                    throw new Error('Expected a 2D array like [ [1,2], [3,4] ]');
+                }
+                if (!Array.isArray(matrix) || !matrix.every(row => Array.isArray(row))) {
+                    throw new Error('Expected a 2D array like [ [1,2], [3,4] ]');
+                }
+                return matrix;
             } else if (type === 'double') {
                 const num = parseFloat(input);
                 if (isNaN(num)) {

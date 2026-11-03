@@ -180,6 +180,13 @@ public class AlgorithmExecutionService {
                 } else {
                     converted[i] = input;
                 }
+            } else if (expectedType == long.class) {
+                // Convert Number to long
+                if (input instanceof Number) {
+                    converted[i] = ((Number) input).longValue();
+                } else {
+                    converted[i] = input;
+                }
             } else if (expectedType == List.class) {
                 // Keep as List if already a List
                 converted[i] = input;
@@ -205,6 +212,7 @@ public class AlgorithmExecutionService {
     private String formatResult(Object result) {
         if (result == null) return "null";
         if (result instanceof int[]) return Arrays.toString((int[]) result);
+        if (result instanceof long[]) return Arrays.toString((long[]) result);
         if (result instanceof String[]) return Arrays.toString((String[]) result);
         if (result instanceof char[]) return Arrays.toString((char[]) result);
         if (result instanceof int[][]) return Arrays.deepToString((int[][]) result);

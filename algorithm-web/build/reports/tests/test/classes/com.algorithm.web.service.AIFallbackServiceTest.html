@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta http-equiv="x-ua-compatible" content="IE=edge"/>
+<title>Test results - AIFallbackServiceTest</title>
+<link href="../css/base-style.css" rel="stylesheet" type="text/css"/>
+<link href="../css/style.css" rel="stylesheet" type="text/css"/>
+<script src="../js/report.js" type="text/javascript"></script>
+</head>
+<body>
+<div id="content">
+<h1>AIFallbackServiceTest</h1>
+<div class="breadcrumbs">
+<a href="../index.html">all</a> &gt; 
+<a href="../packages/com.algorithm.web.service.html">com.algorithm.web.service</a> &gt; AIFallbackServiceTest</div>
+<div id="summary">
+<table>
+<tr>
+<td>
+<div class="summaryGroup">
+<table>
+<tr>
+<td>
+<div class="infoBox" id="tests">
+<div class="counter">11</div>
+<p>tests</p>
+</div>
+</td>
+<td>
+<div class="infoBox" id="failures">
+<div class="counter">0</div>
+<p>failures</p>
+</div>
+</td>
+<td>
+<div class="infoBox" id="ignored">
+<div class="counter">0</div>
+<p>ignored</p>
+</div>
+</td>
+<td>
+<div class="infoBox" id="duration">
+<div class="counter">2.801s</div>
+<p>duration</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</td>
+<td>
+<div class="infoBox success" id="successRate">
+<div class="percent">100%</div>
+<p>successful</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div id="tabs">
+<ul class="tabLinks">
+<li>
+<a href="#tab0">Tests</a>
+</li>
+<li>
+<a href="#tab1">Standard output</a>
+</li>
+</ul>
+<div id="tab0" class="tab">
+<h2>Tests</h2>
+<table>
+<thead>
+<tr>
+<th>Test</th>
+<th>Duration</th>
+<th>Result</th>
+</tr>
+</thead>
+<tr>
+<td class="success">cachesSuccessfulAnswersAcrossWordingNoise()</td>
+<td class="success">0.512s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">doesNotCacheFailures()</td>
+<td class="success">0.032s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">doesNotWaitOutLongRateLimits()</td>
+<td class="success">0.104s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">failsNeutrallyWhenGroqErrors()</td>
+<td class="success">0.067s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">failsNeutrallyWhenNoEngineIsAvailable()</td>
+<td class="success">0.012s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">fallsBackToGroqWhenClaudeCodeFails()</td>
+<td class="success">0.159s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">parsesSectionsInCommonHeaderStyles()</td>
+<td class="success">0.037s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">retriesOnceWhenRateLimitedBriefly()</td>
+<td class="success">1.475s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">unformattedReplyBecomesExplanation()</td>
+<td class="success">0.354s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">usesClaudeCodeWhenAvailable()</td>
+<td class="success">0.011s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">usesGroqWhenClaudeCodeUnavailable()</td>
+<td class="success">0.038s</td>
+<td class="success">passed</td>
+</tr>
+</table>
+</div>
+<div id="tab1" class="tab">
+<h2>Standard output</h2>
+<span class="code">
+<pre>2026-11-04T00:29:53.781+01:00  INFO 80724 --- [algorithm-web] [ution-generator] c.a.web.service.AIFallbackService        : Groq rate limited; retrying in 1s
+2026-11-04T00:29:55.085+01:00 ERROR 80724 --- [algorithm-web] [ution-generator] c.a.web.service.AIFallbackService        : Groq request failed
+
+org.springframework.web.client.HttpClientErrorException$TooManyRequests: 429 : &quot;{&quot;choices&quot;:[{&quot;message&quot;:{&quot;content&quot;:&quot;**EXPLANATION:** Use a hash map.\n\nSOLUTION:\n1. Store each value's index.\n\nCODE:\n```java\nint[] twoSum(int[] nums, int target) { return new int[0]; }\n```\n\n## Complexity\nO(n) time, O(n) space.&quot;}}]}&quot;
+	at org.springframework.web.client.HttpClientErrorException.create(HttpClientErrorException.java:130) ~[spring-web-6.1.1.jar:6.1.1]
+	at org.springframework.web.client.DefaultResponseErrorHandler.handleError(DefaultResponseErrorHandler.java:183) ~[spring-web-6.1.1.jar:6.1.1]
+	at org.springframework.web.client.DefaultResponseErrorHandler.handleError(DefaultResponseErrorHandler.java:137) ~[spring-web-6.1.1.jar:6.1.1]
+	at org.springframework.web.client.ResponseErrorHandler.handleError(ResponseErrorHandler.java:63) ~[spring-web-6.1.1.jar:6.1.1]
+	at org.springframework.web.client.RestTemplate.handleResponse(RestTemplate.java:932) ~[spring-web-6.1.1.jar:6.1.1]
+	at org.springframework.web.client.RestTemplate.doExecute(RestTemplate.java:881) ~[spring-web-6.1.1.jar:6.1.1]
+	at org.springframework.web.client.RestTemplate.execute(RestTemplate.java:781) ~[spring-web-6.1.1.jar:6.1.1]
+	at org.springframework.web.client.RestTemplate.postForObject(RestTemplate.java:498) ~[spring-web-6.1.1.jar:6.1.1]
+	at com.algorithm.web.service.AIFallbackService.postWithRateLimitRetry(AIFallbackService.java:224) ~[main/:na]
+	at com.algorithm.web.service.AIFallbackService.callGroqApi(AIFallbackService.java:203) ~[main/:na]
+	at com.algorithm.web.service.AIFallbackService.generate(AIFallbackService.java:142) ~[main/:na]
+	at com.algorithm.web.service.AIFallbackService.lambda$getSolutionWithInputs$1(AIFallbackService.java:117) ~[main/:na]
+	at java.base/java.util.concurrent.CompletableFuture$AsyncSupply.run(CompletableFuture.java:1768) ~[na:na]
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1144) ~[na:na]
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642) ~[na:na]
+	at java.base/java.lang.Thread.run(Thread.java:1583) ~[na:na]
+
+2026-11-04T00:29:55.576+01:00 ERROR 80724 --- [algorithm-web] [ution-generator] c.a.web.service.AIFallbackService        : Groq request failed
+
+org.springframework.web.client.HttpServerErrorException$InternalServerError: 500 Internal Server Error: &quot;{&quot;choices&quot;:[{&quot;message&quot;:{&quot;content&quot;:&quot;**EXPLANATION:** Use a hash map.\n\nSOLUTION:\n1. Store each value's index.\n\nCODE:\n```java\nint[] twoSum(int[] nums, int target) { return new int[0]; }\n```\n\n## Complexity\nO(n) time, O(n) space.&quot;}}]}&quot;
+	at org.springframework.web.client.HttpServerErrorException.create(HttpServerErrorException.java:102) ~[spring-web-6.1.1.jar:6.1.1]
+	at org.springframework.web.client.DefaultResponseErrorHandler.handleError(DefaultResponseErrorHandler.java:186) ~[spring-web-6.1.1.jar:6.1.1]
+	at org.springframework.web.client.DefaultResponseErrorHandler.handleError(DefaultResponseErrorHandler.java:137) ~[spring-web-6.1.1.jar:6.1.1]
+	at org.springframework.web.client.ResponseErrorHandler.handleError(ResponseErrorHandler.java:63) ~[spring-web-6.1.1.jar:6.1.1]
+	at org.springframework.web.client.RestTemplate.handleResponse(RestTemplate.java:932) ~[spring-web-6.1.1.jar:6.1.1]
+	at org.springframework.web.client.RestTemplate.doExecute(RestTemplate.java:881) ~[spring-web-6.1.1.jar:6.1.1]
+	at org.springframework.web.client.RestTemplate.execute(RestTemplate.java:781) ~[spring-web-6.1.1.jar:6.1.1]
+	at org.springframework.web.client.RestTemplate.postForObject(RestTemplate.java:498) ~[spring-web-6.1.1.jar:6.1.1]
+	at com.algorithm.web.service.AIFallbackService.postWithRateLimitRetry(AIFallbackService.java:224) ~[main/:na]
+	at com.algorithm.web.service.AIFallbackService.callGroqApi(AIFallbackService.java:203) ~[main/:na]
+	at com.algorithm.web.service.AIFallbackService.generate(AIFallbackService.java:142) ~[main/:na]
+	at com.algorithm.web.service.AIFallbackService.lambda$getSolutionWithInputs$1(AIFallbackService.java:117) ~[main/:na]
+	at java.base/java.util.concurrent.CompletableFuture$AsyncSupply.run(CompletableFuture.java:1768) ~[na:na]
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1144) ~[na:na]
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642) ~[na:na]
+	at java.base/java.lang.Thread.run(Thread.java:1583) ~[na:na]
+
+2026-11-04T00:29:55.774+01:00  WARN 80724 --- [algorithm-web] [ution-generator] c.a.web.service.AIFallbackService        : Claude Code request failed, falling back to Groq
+
+java.io.IOException: usage limit reached
+	at com.algorithm.web.service.ClaudeCodeService.ask(ClaudeCodeService.java:80) ~[main/:na]
+	at com.algorithm.web.service.AIFallbackService.generate(AIFallbackService.java:130) ~[main/:na]
+	at com.algorithm.web.service.AIFallbackService.lambda$getSolutionWithInputs$1(AIFallbackService.java:117) ~[main/:na]
+	at java.base/java.util.concurrent.CompletableFuture$AsyncSupply.run(CompletableFuture.java:1768) ~[na:na]
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1144) ~[na:na]
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642) ~[na:na]
+	at java.base/java.lang.Thread.run(Thread.java:1583) ~[na:na]
+
+2026-11-04T00:29:55.815+01:00 ERROR 80724 --- [algorithm-web] [ution-generator] c.a.web.service.AIFallbackService        : Groq request failed
+
+org.springframework.web.client.HttpServerErrorException$InternalServerError: 500 Internal Server Error: &quot;{&quot;choices&quot;:[{&quot;message&quot;:{&quot;content&quot;:&quot;**EXPLANATION:** Use a hash map.\n\nSOLUTION:\n1. Store each value's index.\n\nCODE:\n```java\nint[] twoSum(int[] nums, int target) { return new int[0]; }\n```\n\n## Complexity\nO(n) time, O(n) space.&quot;}}]}&quot;
+	at org.springframework.web.client.HttpServerErrorException.create(HttpServerErrorException.java:102) ~[spring-web-6.1.1.jar:6.1.1]
+	at org.springframework.web.client.DefaultResponseErrorHandler.handleError(DefaultResponseErrorHandler.java:186) ~[spring-web-6.1.1.jar:6.1.1]
+	at org.springframework.web.client.DefaultResponseErrorHandler.handleError(DefaultResponseErrorHandler.java:137) ~[spring-web-6.1.1.jar:6.1.1]
+	at org.springframework.web.client.ResponseErrorHandler.handleError(ResponseErrorHandler.java:63) ~[spring-web-6.1.1.jar:6.1.1]
+	at org.springframework.web.client.RestTemplate.handleResponse(RestTemplate.java:932) ~[spring-web-6.1.1.jar:6.1.1]
+	at org.springframework.web.client.RestTemplate.doExecute(RestTemplate.java:881) ~[spring-web-6.1.1.jar:6.1.1]
+	at org.springframework.web.client.RestTemplate.execute(RestTemplate.java:781) ~[spring-web-6.1.1.jar:6.1.1]
+	at org.springframework.web.client.RestTemplate.postForObject(RestTemplate.java:498) ~[spring-web-6.1.1.jar:6.1.1]
+	at com.algorithm.web.service.AIFallbackService.postWithRateLimitRetry(AIFallbackService.java:224) ~[main/:na]
+	at com.algorithm.web.service.AIFallbackService.callGroqApi(AIFallbackService.java:203) ~[main/:na]
+	at com.algorithm.web.service.AIFallbackService.generate(AIFallbackService.java:142) ~[main/:na]
+	at com.algorithm.web.service.AIFallbackService.lambda$getSolutionWithInputs$1(AIFallbackService.java:117) ~[main/:na]
+	at java.base/java.util.concurrent.CompletableFuture$AsyncSupply.run(CompletableFuture.java:1768) ~[na:na]
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1144) ~[na:na]
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642) ~[na:na]
+	at java.base/java.lang.Thread.run(Thread.java:1583) ~[na:na]
+
+2026-11-04T00:29:55.852+01:00  WARN 80724 --- [algorithm-web] [    Test worker] c.a.web.service.AIFallbackService        : Solution requested but no engine is available (Claude Code not signed in, GROQ_API_KEY not set)
+</pre>
+</span>
+</div>
+</div>
+<div id="footer">
+<p>
+<div>
+<label class="hidden" id="label-for-line-wrapping-toggle" for="line-wrapping-toggle">Wrap lines
+<input id="line-wrapping-toggle" type="checkbox" autocomplete="off"/>
+</label>
+</div>Generated by 
+<a href="http://www.gradle.org">Gradle 8.5</a> at 4 Nov 2026, 00:30:15</p>
+</div>
+</div>
+</body>
+</html>

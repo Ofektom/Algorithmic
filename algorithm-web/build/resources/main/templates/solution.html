@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <title>Solution</title>
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" th:href="@{/favicon.ico}">
+    <link rel="manifest" href="/manifest.json" th:href="@{/manifest.json}">
+    <meta name="theme-color" content="#667eea">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <a href="/" class="back-link">← Back</a>
+            <h1>Solution</h1>
+            <p class="description solution-question" id="question"></p>
+        </header>
+
+        <!-- Shown when a built-in problem is close but not a confident match -->
+        <div class="result-card solution-suggestion" id="suggestion" hidden>
+            Similar built-in problem: <a id="suggestionLink" href="#"></a>
+        </div>
+
+        <div class="result-card loading-card" id="loading" role="status">
+            <div class="loading-spinner"></div>
+            <p>Loading…</p>
+        </div>
+
+        <div class="result-card solution-error" id="error" hidden>
+            <h2 class="section-title">Couldn't get a solution</h2>
+            <p id="errorMessage"></p>
+            <button class="btn btn-primary" id="retry">Try again</button>
+        </div>
+
+        <div id="result" hidden>
+            <div class="result-card" id="explanationCard">
+                <h2 class="section-title">Explanation</h2>
+                <p class="solution-text" id="explanation"></p>
+            </div>
+            <div class="result-card" id="solutionCard">
+                <h2 class="section-title">Approach</h2>
+                <p class="solution-text" id="solution"></p>
+            </div>
+            <div class="result-card" id="codeCard">
+                <h2 class="section-title">Java Code</h2>
+                <div class="code-block">
+                    <pre class="algorithm-code"><code id="code"></code></pre>
+                </div>
+            </div>
+            <div class="result-card" id="complexityCard">
+                <h2 class="section-title">Complexity</h2>
+                <p class="solution-text" id="complexity"></p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // The question arrives as ?q= (links) or via sessionStorage (search box and voice: avoids long URLs)
+        let stored = '';
+        try { stored = sessionStorage.getItem('solutionQuestion') || ''; } catch (e) { /* storage unavailable */ }
+        const question = new URLSearchParams(location.search).get('q') || stored;
+        const $ = id => document.getElementById(id);
+
+        function show(id, visible) { $(id).hidden = !visible; }
+
+        function fill(cardId, textId, value) {
+            $(textId).textContent = value || '';
+            show(cardId, Boolean(value && value.trim()));
+        }
+
+        async function loadSuggestion() {
+            try {
+                const res = await fetch('/api/resolve', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ query: question })
+                });
+                const data = await res.json();
+                // A confident match (e.g. a shared link) is offered too: the built-in solution is runnable
+                const target = data.type === 'problem' ? data : data.suggestion;
+                if (target) {
+                    $('suggestionLink').textContent = target.name;
+                    $('suggestionLink').href = target.url;
+                    show('suggestion', true);
+                }
+            } catch (e) {
+                // Suggestions are optional
+            }
+        }
+
+        async function loadSolution() {
+            show('error', false);
+            show('result', false);
+            show('loading', true);
+
+            try {
+                const res = await fetch('/api/ai/solution-with-inputs', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ problemStatement: question, language: 'Java' })
+                });
+                const data = await res.json().catch(() => ({}));
+                if (!res.ok || data.error) {
+                    throw new Error(data.error || "Couldn't load a solution right now.");
+                }
+                fill('explanationCard', 'explanation', data.explanation);
+                fill('solutionCard', 'solution', data.solution);
+                fill('codeCard', 'code', data.code);
+                fill('complexityCard', 'complexity', data.complexity);
+                show('result', true);
+            } catch (err) {
+                // fetch's own errors (offline etc.) are technical; show a plain message for those
+                $('errorMessage').textContent = err instanceof TypeError
+                    ? "Couldn't reach the server. Check your connection and try again." : err.message;
+                show('error', true);
+            } finally {
+                show('loading', false);
+            }
+        }
+
+        if (!question.trim()) {
+            location.replace('/');
+        } else {
+            $('question').textContent = '“' + question + '”';
+            $('retry').addEventListener('click', loadSolution);
+            loadSuggestion();
+            loadSolution();
+        }
+    </script>
+    <script src="/js/app.js"></script>
+    <script src="/js/voice.js"></script>
+</body>
+</html>

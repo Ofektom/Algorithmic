@@ -3,19 +3,21 @@ package com.algorithm.web.controller;
 import com.algorithm.web.service.AlgorithmExecutionService;
 import com.algorithm.web.service.AlgorithmSourceCodeService;
 import com.algorithm.web.service.ProblemRegistryService;
+import com.algorithm.web.model.ProblemInfo;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.util.UriUtils;
 
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 @Controller
 public class HomeController {
@@ -32,32 +34,19 @@ public class HomeController {
     @GetMapping("/")
     public String home(Model model) {
         List<String> categories = problemRegistry.getCategories();
+        Map<String, Integer> counts = new LinkedHashMap<>();
+        categories.forEach(c -> counts.put(c, problemRegistry.getProblemsForCategory(c).size()));
         model.addAttribute("categories", categories);
-
-        List<Map<String, Object>> problemsForVoice = problemRegistry.getAllProblems().stream()
-                .map(problem -> {
-                    Map<String, Object> entry = new HashMap<>();
-                    entry.put("title", problem.getName() != null ? problem.getName() : "");
-                    entry.put("slug", problem.getClassName() != null && !problem.getClassName().isEmpty()
-                            ? problem.getClassName()
-                            : (problem.getName() != null ? problem.getName() : ""));
-                    entry.put("name", problem.getName());
-                    entry.put("category", problem.getCategory());
-                    entry.put("shortDescription", problem.getShortDescription());
-                    entry.put("aliases", problem.getAliases() != null ? problem.getAliases() : List.of());
-                    entry.put("keywords", problem.getKeywords() != null ? problem.getKeywords() : List.of());
-                    return entry;
-                })
-                .collect(Collectors.toList());
-
-        model.addAttribute("problemsJson", problemsForVoice);
-        model.addAttribute("categoriesJson", categories);
-
+        model.addAttribute("categoryCounts", counts);
         return "index";
     }
 
-    @GetMapping("/category/{category}")
+    // {*category} captures the rest of the path so names containing "/" (e.g. "Math/Geometry") resolve
+    @GetMapping("/category/{*category}")
     public String category(@PathVariable String category, Model model) {
+        if (category.startsWith("/")) {
+            category = category.substring(1); // drop the leading "/" included by the capture
+        }
         model.addAttribute("category", category);
         model.addAttribute("problems", problemRegistry.getProblemsForCategory(category));
         return "category";
@@ -153,11 +142,52 @@ public class HomeController {
         return "result";
     }
 
+    // Kept for existing links: lands where the search box would, without a results list in between
     @GetMapping("/search")
-    public String search(@RequestParam String q, Model model) {
-        model.addAttribute("query", q);
-        model.addAttribute("results", problemRegistry.searchProblems(q));
-        return "search";
+    public String search(@RequestParam String q) {
+        Map<String, Object> target = resolve(Map.of("query", q));
+        if (target.containsKey("url")) {
+            return "redirect:" + target.get("url");
+        }
+        return "redirect:/solution?q=" + UriUtils.encodeQueryParam(q, StandardCharsets.UTF_8);
+    }
+
+    /**
+     * Resolve a spoken or typed question to where its solution lives: a built-in problem, a category,
+     * or (type "ai") nowhere built-in, in which case the client opens the generated-solution page.
+     */
+    @PostMapping("/api/resolve")
+    @ResponseBody
+    public Map<String, Object> resolve(@RequestBody Map<String, String> body) {
+        var resolution = problemRegistry.resolve(body.getOrDefault("query", ""));
+        Map<String, Object> response = new LinkedHashMap<>();
+        if (resolution.match() != null) {
+            response.put("type", "problem");
+            response.put("name", resolution.match().getName());
+            response.put("url", problemUrl(resolution.match()));
+        } else if (resolution.category() != null) {
+            response.put("type", "category");
+            response.put("name", resolution.category());
+            response.put("url", "/category/" + UriUtils.encodePath(resolution.category(), StandardCharsets.UTF_8));
+        } else {
+            response.put("type", "ai");
+            if (resolution.suggestion() != null) {
+                response.put("suggestion", Map.of(
+                        "name", resolution.suggestion().getName(),
+                        "url", problemUrl(resolution.suggestion())));
+            }
+        }
+        return response;
+    }
+
+    @GetMapping("/solution")
+    public String solution() {
+        // The page reads the question from ?q= or sessionStorage and fetches the answer itself
+        return "solution";
+    }
+
+    private static String problemUrl(ProblemInfo problem) {
+        return "/problem/" + UriUtils.encodePathSegment(problem.getName(), StandardCharsets.UTF_8);
     }
 
     @GetMapping("/api/search")

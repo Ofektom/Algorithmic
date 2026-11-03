@@ -2,107 +2,84 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-title" content="Algorithmic">
     <title>Execution Result</title>
     <link rel="icon" type="image/x-icon" href="/favicon.ico" th:href="@{/favicon.ico}">
     <link rel="manifest" href="/manifest.json" th:href="@{/manifest.json}">
+    <meta name="theme-color" content="#667eea">
     <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
     <div class="container">
         <header>
-            <a th:href="@{/problem/{name}(name=${problemName})}" 
-               class="back-link" 
-               th:if="${problemName != null}">← Back</a>
-            <a href="/" 
-               class="back-link" 
-               th:if="${problemName == null}">← Back</a>
-            <h1 th:text="${problemName != null ? problemName : 'Execution Result'}">Execution Result</h1>
+            <a th:href="${problemName != null} ? @{/problem/{name}(name=${problemName})} : @{/}"
+               class="back-link">← Back</a>
+            <h1 th:text="${problemName != null ? problemName : 'Result'}">Result</h1>
         </header>
 
         <div th:if="${methodName != null or success != null or error != null}">
 
-            <!-- Algorithm section with integrated dropdown on the right -->
-            <div class="result-card algorithm-section" 
-                 th:if="${methodName != null or (allMethods != null and !#lists.isEmpty(allMethods))}">
-
-                <div class="section-header">
-                    <h2 class="section-title">Algorithm</h2>
-
-                    <!-- Dropdown - shown only when there are multiple methods -->
-                    <div th:if="${allMethods != null and !#lists.isEmpty(allMethods)}">
-                        <form id="reexecuteForm" th:action="@{/execute}" method="post">
-                            <input type="hidden" name="className"    th:value="${className}">
-                            <input type="hidden" name="problemName"  th:value="${problemName}">
-                            <input type="hidden" name="category"     th:value="${category}">
-                            <input type="hidden" name="inputsJson"   th:value="${inputsJson}">
-                            <input type="hidden" name="paramNames"   th:value="${paramNames != null ? #strings.listJoin(paramNames, ',') : ''}">
-                            <input type="hidden" name="paramTypes"   th:value="${paramTypes != null ? #strings.listJoin(paramTypes, ',') : ''}">
-
-                            <select name="methodName" id="methodSelect" required>
-                                <option value="" disabled th:if="${#strings.isEmpty(methodName)}">— Select implementation —</option>
-                                <option th:each="method : ${allMethods}"
-                                        th:value="${method}"
-                                        th:text="${method}"
-                                        th:selected="${method == methodName}"></option>
-                            </select>
-                        </form>
-                    </div>
-                </div>
-
-                <div class="algorithm-content">
-                    <pre class="algorithm-code" th:if="${methodSourceCode != null and !#strings.isEmpty(methodSourceCode)}">
-<code th:inline="text">[[${methodSourceCode}]]</code></pre>
-                    <p class="algorithm-name" th:if="${methodSourceCode == null or #strings.isEmpty(methodSourceCode)}" 
-                       th:text="${methodName}"></p>
-                </div>
-            </div>
-
-            <!-- Success Result -->
-            <div class="result-card result-section-content" th:if="${success == true}">
+            <!-- The answer first: it's what the user ran this for -->
+            <section class="result-card result-section-content" th:if="${success == true}">
                 <h2 class="section-title">Result</h2>
-                <div class="result-content">
-                    <p class="result-value" th:text="${result}"></p>
-                </div>
-            </div>
+                <p class="result-value" th:text="${result}"></p>
+            </section>
 
-            <!-- Error -->
-            <div class="result-card error-section" th:if="${success == false}">
+            <section class="result-card error-section" th:if="${success == false}">
                 <h2 class="section-title">Error</h2>
-                <div class="error-content">
-                    <p class="error-message" th:text="${error != null ? error : 'An unknown error occurred'}"></p>
+                <p class="error-message" th:text="${error != null ? error : 'An unknown error occurred'}"></p>
+            </section>
+
+            <!-- Code that produced it; switching method re-runs with the same inputs -->
+            <section class="result-card algorithm-section"
+                     th:if="${methodName != null or (allMethods != null and !#lists.isEmpty(allMethods))}">
+                <div class="section-header">
+                    <h2 class="section-title">Solution</h2>
+                    <form id="reexecuteForm" th:action="@{/execute}" method="post"
+                          th:if="${allMethods != null and !#lists.isEmpty(allMethods)}">
+                        <input type="hidden" name="className"    th:value="${className}">
+                        <input type="hidden" name="problemName"  th:value="${problemName}">
+                        <input type="hidden" name="category"     th:value="${category}">
+                        <input type="hidden" name="inputsJson"   th:value="${inputsJson}">
+                        <input type="hidden" name="paramNames"   th:value="${paramNames != null ? #strings.listJoin(paramNames, ',') : ''}">
+                        <input type="hidden" name="paramTypes"   th:value="${paramTypes != null ? #strings.listJoin(paramTypes, ',') : ''}">
+                        <select name="methodName" id="methodSelect" aria-label="Solution method" required>
+                            <option value="" disabled th:if="${#strings.isEmpty(methodName)}">Select a method</option>
+                            <option th:each="method : ${allMethods}"
+                                    th:value="${method}"
+                                    th:text="${method}"
+                                    th:selected="${method == methodName}"></option>
+                        </select>
+                    </form>
                 </div>
-            </div>
+                <div class="code-block" th:if="${methodSourceCode != null and !#strings.isEmpty(methodSourceCode)}">
+                    <pre class="algorithm-code"><code th:text="${methodSourceCode}"></code></pre>
+                </div>
+                <p class="algorithm-name" th:if="${methodSourceCode == null or #strings.isEmpty(methodSourceCode)}"
+                   th:text="${methodName}"></p>
+            </section>
 
             <div class="action-buttons">
-                <a th:href="@{/category/{cat}(cat=${category})}" 
-                   class="btn btn-secondary" 
-                   th:if="${category != null}">Back to Category</a>
+                <a th:href="@{/problem/{name}(name=${problemName})}" class="btn btn-primary"
+                   th:if="${problemName != null}">Try other inputs</a>
+                <a th:href="@{/category/{cat}(cat=${category})}" class="btn btn-secondary"
+                   th:if="${category != null}" th:text="${'More ' + category}">More problems</a>
                 <a href="/" class="btn btn-secondary">Home</a>
             </div>
-            
         </div>
 
-        <!-- No result case -->
+        <!-- Opened directly (e.g. refresh after the one-time result was shown) -->
         <div th:if="${methodName == null and success == null and error == null}">
-            <div class="result-card">
-                <h2 class="section-title">No Result Available</h2>
-                <p>No execution result found. Please execute an algorithm first.</p>
-            </div>
+            <section class="result-card">
+                <h2 class="section-title">No result to show</h2>
+                <p>Run a problem first to see its result here.</p>
+            </section>
             <div class="action-buttons">
-                <a href="/" class="btn btn-primary">Go Home</a>
+                <a href="/" class="btn btn-primary">Go home</a>
             </div>
-        </div>
-
-        <!-- Optional debug section -->
-        <div th:if="${methodName != null}" style="margin-top: 30px; padding: 16px; background: rgba(255,255,255,0.15); border-radius: 8px; color: white;">
-            <strong>DEBUG:</strong><br>
-            methodName: <span th:text="${methodName}">—</span><br>
-            success: <span th:text="${success}">—</span><br>
-            result: <span th:text="${result}">—</span>
         </div>
     </div>
 
@@ -113,8 +90,9 @@
 
             select.addEventListener('change', function() {
                 if (!this.value.trim()) return;
-                this.style.opacity = '0.7';
-                setTimeout(() => this.form.submit(), 80);
+                this.classList.add('loading');
+                showLoading();
+                this.form.submit();
             });
         });
     </script>

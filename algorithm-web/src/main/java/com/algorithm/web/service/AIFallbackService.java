@@ -29,12 +29,12 @@ public class AIFallbackService {
 
     private static final Logger log = LoggerFactory.getLogger(AIFallbackService.class);
     private static final int CACHE_SIZE = 200;
-    // Long solutions (code + explanation) exceed 2000 tokens on the 70B model; still < $0.003 per answer
-    private static final int MAX_COMPLETION_TOKENS = 3000;
+    // Two code blocks (the solution and the full program) plus explanation; still well under a cent per answer
+    private static final int MAX_COMPLETION_TOKENS = 4000;
     // Wait at most this long for a rate-limit retry before giving up (the user is watching "Loading…")
     private static final long MAX_RETRY_WAIT_SECONDS = 10;
     private static final String GROQ_SYSTEM_PROMPT = "You are an expert algorithm tutor. Explain clearly, "
-            + "write correct, complete code in the requested language, follow any required signature exactly, "
+            + "write correct code in the requested language, follow any required signature exactly, "
             + "and follow the requested section format exactly.";
     // User-supplied guidance is free text; cap it so one request can't blow the prompt budget
     private static final int MAX_GUIDANCE_CHARS = 4000;
@@ -42,7 +42,7 @@ public class AIFallbackService {
     public static final String UNAVAILABLE_MESSAGE = "Couldn't load a solution right now. Please try again.";
     private static final Pattern SECTION_HEADER = Pattern.compile(
             // "EXPLANATION:", "**Solution:**", "## Code" — header alone on its line or followed by a colon
-            "(?im)^[ \\t]*(?:#+[ \\t]*)?(?:\\*\\*)?(PROBLEM|EXPLANATION|SOLUTION|CODE|COMPLEXITY)(?:\\*\\*)?[ \\t]*(?::(?:\\*\\*)?|$)");
+            "(?im)^[ \\t]*(?:#+[ \\t]*)?(?:\\*\\*)?(PROBLEM|EXPLANATION|SOLUTION|CODE|(?:FULL[ \\t]+)?PROGRAM|COMPLEXITY)(?:\\*\\*)?[ \\t]*(?::(?:\\*\\*)?|$)");
     private static final Pattern CODE_BLOCK = Pattern.compile("```[a-zA-Z+#]*\\s*\\n(.*?)```", Pattern.DOTALL);
 
     // Generation blocks for seconds (minutes for Claude Code); keep it off the common pool
@@ -211,7 +211,9 @@ public class AIFallbackService {
             sb.append("Required signature / starter code. Use it exactly as given: the same function name, ")
                     .append("parameter types (e.g. a pointer such as int* stays a pointer, with its length passed ")
                     .append("as given) and return type. Do not substitute other types:\n```\n")
-                    .append(clip(guidance.signature())).append("\n```\n\n");
+                    .append(clip(guidance.signature())).append("\n```\n")
+                    .append("CODE is this starter code with the body filled in: keep its class and function ")
+                    .append("declaration as given, and leave out any main or driver class it contains.\n\n");
         }
         if (!isBlank(guidance.previousCode())) {
             sb.append("A previous answer did not fit. Here is its code; fix it rather than repeating its mistakes:\n```\n")
@@ -228,8 +230,17 @@ public class AIFallbackService {
                 + "then one example input and its output]\n\n");
         sb.append("EXPLANATION:\n[clear step-by-step explanation]\n\n");
         sb.append("SOLUTION:\n[step-by-step solution]\n\n");
-        sb.append("CODE:\n```").append(fenceTag(language)).append("\n[complete ").append(language)
-                .append(" code]\n```\n\n");
+        // The solution alone, as a platform such as HackerRank or LeetCode expects it pasted in;
+        // the runnable program with an entry point goes in its own section
+        sb.append("CODE:\n```").append(fenceTag(language)).append("\n[only the solution: the function that ")
+                .append("solves the problem, plus any helper functions and imports it uses. No main method or other ")
+                .append("entry point, no reading input, no printing. Where ").append(language)
+                .append(" needs a class, use the starter code's class if one was given, otherwise a class named Solution.]")
+                .append("\n```\n\n");
+        sb.append("PROGRAM:\n```").append(fenceTag(language)).append("\n[a complete program that runs as is: ")
+                .append("the solution above unchanged, plus a main method or entry point that calls it on the ")
+                .append("example from PROBLEM, hard-coded rather than read from input, and prints the result]")
+                .append("\n```\n\n");
         sb.append("COMPLEXITY:\n[time and space complexity analysis]");
 
         return sb.toString();
@@ -309,18 +320,27 @@ public class AIFallbackService {
             if (current != null) {
                 sections.put(current, content.substring(bodyStart, header.start()).trim());
             }
-            current = header.group(1).toUpperCase();
+            String name = header.group(1).toUpperCase();
+            current = name.endsWith("PROGRAM") ? "PROGRAM" : name;
             bodyStart = header.end();
         }
         if (current != null) {
             sections.put(current, content.substring(bodyStart).trim());
         }
 
-        // Code comes from the fenced block wherever the model put it
-        String code = "";
-        Matcher block = CODE_BLOCK.matcher(content);
-        if (block.find()) {
-            code = block.group(1).trim();
+        // The full program comes only from its own section; the solution from CODE, or else the
+        // first fenced block wherever the model put it
+        String program = firstCodeBlock(sections.getOrDefault("PROGRAM", ""));
+        String code = firstCodeBlock(sections.getOrDefault("CODE", ""));
+        if (code.isEmpty()) {
+            Matcher block = CODE_BLOCK.matcher(content);
+            while (block.find()) {
+                String candidate = block.group(1).trim();
+                if (!candidate.equals(program)) {
+                    code = candidate;
+                    break;
+                }
+            }
         }
 
         if (sections.isEmpty()) {
@@ -332,7 +352,13 @@ public class AIFallbackService {
                 stripCodeBlocks(sections.getOrDefault("EXPLANATION", "")),
                 code,
                 stripCodeBlocks(sections.getOrDefault("COMPLEXITY", "")),
-                stripCodeBlocks(sections.getOrDefault("PROBLEM", "")));
+                stripCodeBlocks(sections.getOrDefault("PROBLEM", "")),
+                program);
+    }
+
+    private static String firstCodeBlock(String text) {
+        Matcher block = CODE_BLOCK.matcher(text);
+        return block.find() ? block.group(1).trim() : "";
     }
 
     private static String stripCodeBlocks(String text) {
@@ -355,34 +381,42 @@ public class AIFallbackService {
         public final String complexity;
         /** The problem as the model understood it, so the user can check it solved what they meant. */
         public final String problem;
+        /** The solution with a main method that runs it on the example; empty if the model left it out. */
+        public final String program;
         /** Set (and the other fields empty) when no solution could be produced. */
         public final String error;
 
         public AISolution(String solution, String explanation, String code) {
-            this(solution, explanation, code, null, null, null);
+            this(solution, explanation, code, null, null, null, null);
         }
 
         public AISolution(String solution, String explanation, String code, String complexity) {
-            this(solution, explanation, code, complexity, null, null);
+            this(solution, explanation, code, complexity, null, null, null);
         }
 
         public AISolution(String solution, String explanation, String code, String complexity, String problem) {
-            this(solution, explanation, code, complexity, problem, null);
+            this(solution, explanation, code, complexity, problem, "", null);
+        }
+
+        public AISolution(String solution, String explanation, String code, String complexity, String problem,
+                String program) {
+            this(solution, explanation, code, complexity, problem, program, null);
         }
 
         private AISolution(String solution, String explanation, String code, String complexity, String problem,
-                String error) {
+                String program, String error) {
             this.solution = solution;
             this.explanation = explanation;
             this.code = code;
             this.complexity = complexity;
             this.problem = problem;
+            this.program = program;
             this.error = error;
         }
 
         public static AISolution failure(String message) {
             // explanation kept for clients that only read that field
-            return new AISolution(null, message, null, null, null, message);
+            return new AISolution(null, message, null, null, null, null, message);
         }
     }
 }

@@ -119,7 +119,7 @@ class AIFallbackServiceTest {
         assertEquals("user", request.at("/messages/1/role").asText());
         assertTrue(request.at("/messages/1/content").asText().contains("Problem with \"quotes\"\nand a newline"));
         // Current parameter name; max_tokens is deprecated
-        assertEquals(3000, request.path("max_completion_tokens").asInt());
+        assertEquals(4000, request.path("max_completion_tokens").asInt());
         assertTrue(request.path("max_tokens").isMissingNode());
     }
 
@@ -258,6 +258,40 @@ class AIFallbackServiceTest {
     @Test
     void problemIsEmptyWhenTheModelSkipsIt() {
         assertEquals("", service.parseSolutionContent(REPLY).problem);
+    }
+
+    @Test
+    void separatesTheSolutionFromTheFullProgram() {
+        AIFallbackService.AISolution solution = service.parseSolutionContent(REPLY + """
+
+
+                **Full program:**
+                ```java
+                class Solution { static int[] twoSum(int[] n, int t) { return null; } public static void main(String[] a) {} }
+                ```""");
+
+        assertEquals("int[] twoSum(int[] nums, int target) { return new int[0]; }", solution.code);
+        assertTrue(solution.program.contains("public static void main"));
+        assertEquals("O(n) time, O(n) space.", solution.complexity, "the program block must not leak into complexity");
+    }
+
+    @Test
+    void programIsEmptyWhenTheModelSkipsIt() {
+        assertEquals("", service.parseSolutionContent(REPLY).program);
+    }
+
+    @Test
+    void promptAsksForTheMethodAloneAndARunnableProgram() throws Exception {
+        when(claudeCode.isAvailable()).thenReturn(false);
+
+        service.getSolutionWithInputs("find k in arr", null, null, null, "Java",
+                new AIFallbackService.Guidance("public static String findNumber(List<Integer> arr, int k)", null, null))
+                .join();
+
+        String prompt = groqRequests.get(0).at("/messages/1/content").asText();
+        assertTrue(prompt.contains("No main method"));
+        assertTrue(prompt.contains("PROGRAM:"));
+        assertTrue(prompt.contains("leave out any main or driver class"));
     }
 
     @Test

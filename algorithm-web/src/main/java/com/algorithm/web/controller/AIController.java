@@ -1,6 +1,7 @@
 package com.algorithm.web.controller;
 
 import com.algorithm.web.service.AIFallbackService;
+import com.algorithm.web.service.MissedQuestionService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,15 +13,19 @@ import java.util.concurrent.CompletableFuture;
 public class AIController {
 
     private final AIFallbackService aiService;
+    private final MissedQuestionService missedQuestions;
 
-    public AIController(AIFallbackService aiService) {
+    public AIController(AIFallbackService aiService, MissedQuestionService missedQuestions) {
         this.aiService = aiService;
+        this.missedQuestions = missedQuestions;
     }
 
     @GetMapping("/solution")
     public CompletableFuture<ResponseEntity<AIFallbackService.AISolution>> getSolution(
             @RequestParam String problemStatement,
             @RequestParam(defaultValue = "Java") String language) {
+        // Reaching the generator means no built-in problem matched this question
+        missedQuestions.record(problemStatement);
 
         if (!aiService.isConfigured()) {
             return CompletableFuture.completedFuture(
@@ -34,6 +39,7 @@ public class AIController {
     @PostMapping("/solution-with-inputs")
     public CompletableFuture<ResponseEntity<AIFallbackService.AISolution>> getSolutionWithInputs(
             @RequestBody AISolutionRequest request) {
+        missedQuestions.record(request.problemStatement);
 
         if (!aiService.isConfigured()) {
             return CompletableFuture.completedFuture(

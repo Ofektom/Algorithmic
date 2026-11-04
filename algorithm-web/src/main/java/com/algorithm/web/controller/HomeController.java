@@ -33,12 +33,40 @@ public class HomeController {
 
     @GetMapping("/")
     public String home(Model model) {
+        addCategories(model);
+        return "index";
+    }
+
+    @GetMapping("/browse")
+    public String browse(Model model) {
+        addCategories(model);
+        return "browse";
+    }
+
+    // History and settings live in the browser (localStorage); the server only serves the pages
+    @GetMapping("/history")
+    public String history() {
+        return "history";
+    }
+
+    @GetMapping("/settings")
+    public String settings() {
+        return "settings";
+    }
+
+    private void addCategories(Model model) {
         List<String> categories = problemRegistry.getCategories();
         Map<String, Integer> counts = new LinkedHashMap<>();
-        categories.forEach(c -> counts.put(c, problemRegistry.getProblemsForCategory(c).size()));
+        // Problem names per category let the page show progress from the browser's "ran" list
+        Map<String, List<String>> names = new LinkedHashMap<>();
+        for (String c : categories) {
+            List<ProblemInfo> problems = problemRegistry.getProblemsForCategory(c);
+            counts.put(c, problems.size());
+            names.put(c, problems.stream().map(ProblemInfo::getName).toList());
+        }
         model.addAttribute("categories", categories);
         model.addAttribute("categoryCounts", counts);
-        return "index";
+        model.addAttribute("categoryProblems", names);
     }
 
     // {*category} captures the rest of the path so names containing "/" (e.g. "Math/Geometry") resolve
@@ -78,6 +106,16 @@ public class HomeController {
 
         model.addAttribute("selectedMethod", selectedMethod);
         model.addAttribute("selectedMethodCode", methodCode != null ? methodCode : "");
+
+        Map<String, String> labels = new LinkedHashMap<>();
+        if (problem.getMethods() != null) {
+            problem.getMethods().forEach(m -> labels.put(m, methodLabel(m)));
+        }
+        model.addAttribute("methodLabels", labels);
+        model.addAttribute("related", problemRegistry.getProblemsForCategory(problem.getCategory()).stream()
+                .filter(p -> !p.getName().equals(problem.getName()))
+                .limit(4)
+                .toList());
 
         return "problem";
     }
@@ -184,6 +222,33 @@ public class HomeController {
     public String solution() {
         // The page reads the question from ?q= or sessionStorage and fetches the answer itself
         return "solution";
+    }
+
+    /** "computeWithHashMapTwoPass" -> "Hash map two pass"; acronyms such as BFS, DP and XOR stay upper case. */
+    static String methodLabel(String method) {
+        if (method == null || method.isEmpty()) {
+            return "";
+        }
+        String core = method.replaceFirst("^compute(With|Using|By)?", "");
+        if (core.isEmpty()) {
+            core = method;
+        }
+        String[] words = core.split("(?<=[a-z0-9])(?=[A-Z])|(?<=[A-Z])(?=[A-Z][a-z])");
+        StringBuilder label = new StringBuilder();
+        for (String word : words) {
+            if (word.isEmpty()) {
+                continue;
+            }
+            boolean acronym = word.length() > 1 && word.equals(word.toUpperCase());
+            String part = acronym ? word : word.toLowerCase();
+            if (label.length() == 0) {
+                part = Character.toUpperCase(part.charAt(0)) + part.substring(1);
+            } else {
+                label.append(' ');
+            }
+            label.append(part);
+        }
+        return label.toString();
     }
 
     private static String problemUrl(ProblemInfo problem) {

@@ -13,6 +13,9 @@ services:
       # DO NOT put actual values here - set them in Render dashboard
       - key: GROQ_API_KEY
         sync: false # This means you must set it manually in Render dashboard
+      # Optional: turns on /insights?key=<value> (questions with no built-in answer). Unset = page off
+      - key: INSIGHTS_KEY
+        sync: false
       - key: GROQ_API_URL
         value: https://api.groq.com/openai/v1/chat/completions
       - key: GROQ_MODEL

@@ -4,8 +4,8 @@
   "description": "Test and learn algorithms interactively",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#667eea",
-  "theme_color": "#667eea",
+  "background_color": "#f6f7fb",
+  "theme_color": "#4c5bd4",
   "icons": [
     {
       "src": "/icon-192.png",

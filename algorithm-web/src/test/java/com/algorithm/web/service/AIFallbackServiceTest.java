@@ -196,6 +196,21 @@ class AIFallbackServiceTest {
     }
 
     @Test
+    void parsesRestatedProblem() {
+        AIFallbackService.AISolution solution = service.parseSolutionContent(
+                "PROBLEM:\nReturn the longest palindromic substring of s.\ns = \"babad\" -> \"bab\"\n\n" + REPLY);
+
+        assertEquals("Return the longest palindromic substring of s.\ns = \"babad\" -> \"bab\"", solution.problem);
+        assertEquals("Use a hash map.", solution.explanation);
+        assertEquals("O(n) time, O(n) space.", solution.complexity);
+    }
+
+    @Test
+    void problemIsEmptyWhenTheModelSkipsIt() {
+        assertEquals("", service.parseSolutionContent(REPLY).problem);
+    }
+
+    @Test
     void unformattedReplyBecomesExplanation() {
         AIFallbackService.AISolution solution = service.parseSolutionContent(
                 "Just loop over it.\n```java\nint x = 1;\n```");

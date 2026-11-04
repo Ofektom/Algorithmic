@@ -127,4 +127,41 @@ class HomeControllerTest {
         mockMvc.perform(get("/search").param("q", "design an lru cache & more"))
                 .andExpect(redirectedUrl("/solution?q=design%20an%20lru%20cache%20%26%20more"));
     }
+
+    @Test
+    void browseHistoryAndSettingsPagesRender() throws Exception {
+        mockMvc.perform(get("/browse"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("browse"))
+                .andExpect(model().attributeExists("categories", "categoryCounts", "categoryProblems"));
+        mockMvc.perform(get("/history")).andExpect(status().isOk()).andExpect(view().name("history"));
+        mockMvc.perform(get("/settings")).andExpect(status().isOk()).andExpect(view().name("settings"));
+    }
+
+    @Test
+    void homeRendersWithCategoryProblems() throws Exception {
+        mockMvc.perform(get("/"))
+                .andExpect(status().isOk())
+                .andExpect(model().attributeExists("categoryProblems"))
+                .andExpect(content().string(containsString("What do you want to solve?")));
+    }
+
+    @Test
+    void problemPageHasReadableMethodNamesAndSourceIndicator() throws Exception {
+        mockMvc.perform(get("/problem/Two Sum"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("problem"))
+                .andExpect(model().attributeExists("methodLabels", "related"))
+                .andExpect(content().string(containsString("Built-in solution")))
+                .andExpect(content().string(containsString("Hash map")));
+    }
+
+    @Test
+    void methodLabelsAreReadable() {
+        org.junit.jupiter.api.Assertions.assertEquals("Hash map", HomeController.methodLabel("computeWithHashMap"));
+        org.junit.jupiter.api.Assertions.assertEquals("Hash map two pass", HomeController.methodLabel("computeWithHashMapTwoPass"));
+        org.junit.jupiter.api.Assertions.assertEquals("BFS", HomeController.methodLabel("computeWithBFS"));
+        org.junit.jupiter.api.Assertions.assertEquals("Recursive", HomeController.methodLabel("computeRecursive"));
+        org.junit.jupiter.api.Assertions.assertEquals("DFS and memo", HomeController.methodLabel("computeWithDFSAndMemo"));
+    }
 }

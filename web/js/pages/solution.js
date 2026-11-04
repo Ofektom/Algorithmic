@@ -42,14 +42,25 @@
         $('builtInMatches').hidden = found.length === 0;
     }).catch(function() { /* optional */ });
 
+    // The language sticks between questions: someone practising in C wants C next time too
+    const languages = Array.from($('refineLanguage').options).map(function(o) { return o.value; });
+    const savedLanguage = Store.setting('solutionLanguage', 'Java');
+    $('refineLanguage').value = languages.indexOf(savedLanguage) !== -1 ? savedLanguage : 'Java';
+    let lastCode = '';
+    // Corrections currently applied; Try again after a failed refinement resends them
+    let guidance = null;
+
     async function loadSolution() {
         $('error').hidden = true;
         $('answer').hidden = true;
+        $('refine').hidden = true;
         tabsEl.hidden = false;
         $('loading').hidden = false;
         $('loadingText').textContent = 'Writing a solution… this can take a few seconds.';
         try {
-            const res = await postJson('/api/ai/solution-with-inputs', { problemStatement: question, language: 'Java' },
+            const body = { problemStatement: question, language: $('refineLanguage').value };
+            if (guidance) Object.assign(body, guidance);
+            const res = await postJson('/api/ai/solution-with-inputs', body,
                 function() { $('loadingText').textContent = 'Waking up the server… the first answer after a quiet spell can take up to a minute.'; });
             const data = await res.json().catch(function() { return {}; });
             if (!res.ok || data.error) throw new Error(data.error || "Couldn't load a solution right now.");
@@ -67,7 +78,10 @@
             $('problemText').hidden = !problemText;
             $('problemMissing').hidden = Boolean(problemText);
 
+            lastCode = (data.code || '').trim();
             $('answer').hidden = false;
+            $('refine').hidden = false;
+            $('refineApplied').hidden = !guidance;
             selectTab('solution', false);
             Store.addHistory({ type: 'generated', title: title, url: '/solution?q=' + encodeURIComponent(question) });
         } catch (err) {
@@ -75,11 +89,35 @@
             $('errorMessage').textContent = err instanceof TypeError
                 ? "Couldn't reach the server. Check your connection and try again." : err.message;
             $('error').hidden = false;
+            // The corrections can still be changed after a failed attempt
+            $('refine').hidden = !guidance;
         } finally {
             $('loading').hidden = true;
         }
     }
 
+    function refine() {
+        const signature = $('refineSignature').value.trim();
+        const instructions = $('refineInstructions').value.trim();
+        const language = $('refineLanguage').value;
+        const languageChanged = language !== Store.setting('solutionLanguage', 'Java');
+        if (!signature && !instructions && !languageChanged) {
+            $('refineError').textContent = 'Add the required signature, describe what should change, or pick another language.';
+            $('refineError').hidden = false;
+            return;
+        }
+        $('refineError').hidden = true;
+        Store.setSetting('solutionLanguage', language);
+        // Send the code being corrected so the model fixes it instead of starting over.
+        // A language change alone just asks for a fresh answer in that language.
+        guidance = (signature || instructions)
+            ? { signature: signature, instructions: instructions, previousCode: lastCode }
+            : null;
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        loadSolution();
+    }
+
+    $('refineButton').addEventListener('click', refine);
     $('retry').addEventListener('click', loadSolution);
     loadSolution();
 })();

@@ -39,7 +39,7 @@ public class AIFallbackService {
     public static final String UNAVAILABLE_MESSAGE = "Couldn't load a solution right now. Please try again.";
     private static final Pattern SECTION_HEADER = Pattern.compile(
             // "EXPLANATION:", "**Solution:**", "## Code" — header alone on its line or followed by a colon
-            "(?im)^[ \\t]*(?:#+[ \\t]*)?(?:\\*\\*)?(EXPLANATION|SOLUTION|CODE|COMPLEXITY)(?:\\*\\*)?[ \\t]*(?::(?:\\*\\*)?|$)");
+            "(?im)^[ \\t]*(?:#+[ \\t]*)?(?:\\*\\*)?(PROBLEM|EXPLANATION|SOLUTION|CODE|COMPLEXITY)(?:\\*\\*)?[ \\t]*(?::(?:\\*\\*)?|$)");
     private static final Pattern CODE_BLOCK = Pattern.compile("```[a-zA-Z]*\\s*\\n(.*?)```", Pattern.DOTALL);
 
     // Generation blocks for seconds (minutes for Claude Code); keep it off the common pool
@@ -175,6 +175,8 @@ public class AIFallbackService {
         }
 
         sb.append("Please provide in this exact format:\n");
+        sb.append("PROBLEM:\n[the exact problem you are solving, restated in one or two sentences, "
+                + "then one example input and its output]\n\n");
         sb.append("EXPLANATION:\n[clear step-by-step explanation]\n\n");
         sb.append("SOLUTION:\n[step-by-step solution]\n\n");
         sb.append("CODE:\n```java\n[complete Java code]\n```\n\n");
@@ -242,7 +244,7 @@ public class AIFallbackService {
         }
     }
 
-    /** Split the model's reply into the EXPLANATION / SOLUTION / CODE / COMPLEXITY sections it was asked for. */
+    /** Split the model's reply into the PROBLEM / EXPLANATION / SOLUTION / CODE / COMPLEXITY sections it was asked for. */
     AISolution parseSolutionContent(String content) {
         Map<String, String> sections = new LinkedHashMap<>();
         Matcher header = SECTION_HEADER.matcher(content);
@@ -274,7 +276,8 @@ public class AIFallbackService {
                 stripCodeBlocks(sections.getOrDefault("SOLUTION", "")),
                 stripCodeBlocks(sections.getOrDefault("EXPLANATION", "")),
                 code,
-                stripCodeBlocks(sections.getOrDefault("COMPLEXITY", "")));
+                stripCodeBlocks(sections.getOrDefault("COMPLEXITY", "")),
+                stripCodeBlocks(sections.getOrDefault("PROBLEM", "")));
     }
 
     private static String stripCodeBlocks(String text) {
@@ -286,28 +289,36 @@ public class AIFallbackService {
         public final String explanation;
         public final String code;
         public final String complexity;
+        /** The problem as the model understood it, so the user can check it solved what they meant. */
+        public final String problem;
         /** Set (and the other fields empty) when no solution could be produced. */
         public final String error;
 
         public AISolution(String solution, String explanation, String code) {
-            this(solution, explanation, code, null, null);
+            this(solution, explanation, code, null, null, null);
         }
 
         public AISolution(String solution, String explanation, String code, String complexity) {
-            this(solution, explanation, code, complexity, null);
+            this(solution, explanation, code, complexity, null, null);
         }
 
-        private AISolution(String solution, String explanation, String code, String complexity, String error) {
+        public AISolution(String solution, String explanation, String code, String complexity, String problem) {
+            this(solution, explanation, code, complexity, problem, null);
+        }
+
+        private AISolution(String solution, String explanation, String code, String complexity, String problem,
+                String error) {
             this.solution = solution;
             this.explanation = explanation;
             this.code = code;
             this.complexity = complexity;
+            this.problem = problem;
             this.error = error;
         }
 
         public static AISolution failure(String message) {
             // explanation kept for clients that only read that field
-            return new AISolution(null, message, null, null, message);
+            return new AISolution(null, message, null, null, null, message);
         }
     }
 }

@@ -1,252 +1,383 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-    <meta name="mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-title" content="Algorithmic">
-    <title th:text="${problem.name}">Problem</title>
-    <link rel="icon" type="image/x-icon" href="/favicon.ico" th:href="@{/favicon.ico}">
-    <link rel="manifest" href="/manifest.json" th:href="@{/manifest.json}">
-    <meta name="theme-color" content="#667eea">
-    <link rel="stylesheet" href="/css/style.css">
-</head>
+<head th:replace="~{fragments/layout :: head(${problem.name + ' · Algorithmic'})}"></head>
 <body>
-    <div class="container">
-        <header>
-            <a th:href="@{/category/{cat}(cat=${problem.category})}" class="back-link">← <span th:text="${problem.category}">Back</span></a>
-            <h1 th:text="${problem.name}"></h1>
-            <p class="description" th:text="${problem.description}"></p>
-        </header>
+<main class="page has-action" id="problemPage">
+    <div class="appbar">
+        <a th:href="@{/category/{cat}(cat=${problem.category})}" class="icon-btn" th:attr="aria-label=${'Back to ' + problem.category}">←</a>
+        <h1><span class="crumb" th:text="${problem.category}">Category</span><span th:text="${problem.name}">Problem</span></h1>
+        <button type="button" class="icon-btn" data-share aria-label="Share this problem" title="Share">⤴</button>
+    </div>
+    <div class="source-row"><span class="source" title="Tested solution from the built-in library. You can run it.">Built-in solution</span></div>
 
-        <!-- Solution code for the selected method -->
-        <section class="result-card algorithm-section">
-            <div class="section-header">
-                <h2 class="section-title">Solution</h2>
-                <select id="methodSelect" aria-label="Solution method">
-                    <option th:each="method : ${problem.methods}"
-                            th:value="${method}"
-                            th:text="${method}"
+    <div class="tabs" role="tablist" aria-label="Problem sections">
+        <button type="button" role="tab" data-tab="problem" aria-controls="panel-problem" aria-selected="false">Problem</button>
+        <button type="button" role="tab" data-tab="solution" aria-controls="panel-solution" aria-selected="true">Solution<span class="desktop-only"> &amp; Run</span></button>
+        <button type="button" role="tab" data-tab="run" aria-controls="panel-run" aria-selected="false" class="mobile-only">Run</button>
+    </div>
+
+    <!-- Problem -->
+    <section class="panel" id="panel-problem" role="tabpanel">
+        <p class="prose" th:text="${problem.description}">Description</p>
+        <div class="card soft" style="margin-top:14px" id="exampleCard" hidden>
+            <p class="small muted">Example</p>
+            <p class="mono" style="margin-top:6px;font-size:13.5px;line-height:1.6;overflow-wrap:anywhere">
+                <span id="exampleInput"></span><br><span class="muted">→ </span><span id="exampleOutput" class="muted">…</span>
+            </p>
+        </div>
+        <th:block th:if="${!#lists.isEmpty(related)}">
+            <h2 class="h2" th:text="${'More in ' + problem.category}">More in category</h2>
+            <div class="list">
+                <a th:each="other : ${related}" class="row-link" th:href="@{/problem/{name}(name=${other.name})}">
+                    <div class="grow"><div class="t" th:text="${other.name}">Problem</div><div class="st" th:text="${other.shortDescription}"></div></div>
+                    <span class="chev">›</span>
+                </a>
+            </div>
+        </th:block>
+    </section>
+
+    <div class="split" id="split">
+        <!-- Solution: the code -->
+        <section class="panel on" id="panel-solution" role="tabpanel">
+            <nav class="seg" aria-label="Solution methods" th:if="${#lists.size(problem.methods) > 1}">
+                <a th:each="method : ${problem.methods}" th:href="@{/problem/{name}(name=${problem.name},method=${method},tab='solution')}"
+                   th:classappend="${method == selectedMethod} ? 'on'" th:attr="aria-current=${method == selectedMethod} ? 'true'"
+                   th:text="${methodLabels.get(method)}">Method</a>
+            </nav>
+            <div class="code-tools">
+                <span class="badge" th:text="${methodLabels.get(selectedMethod)}">Method</span>
+                <span class="small muted mono" th:text="${selectedMethod + '()'}"></span>
+                <span class="grow"></span>
+                <button type="button" class="copy-btn" data-copy="methodCode" th:if="${!#strings.isEmpty(selectedMethodCode)}">⧉ Copy</button>
+            </div>
+            <pre class="code" id="methodCode" th:if="${!#strings.isEmpty(selectedMethodCode)}" th:text="${selectedMethodCode}">code</pre>
+            <p class="card soft muted" th:if="${#strings.isEmpty(selectedMethodCode)}">The source for this method isn't available, but you can still run it.</p>
+        </section>
+
+        <!-- Run -->
+        <section class="panel" id="panel-run" role="tabpanel">
+            <h2 class="h2 desktop-only" style="margin-top:0">Run</h2>
+            <div class="method-row" th:if="${#lists.size(problem.methods) > 1}">
+                <label for="methodSelect">Method</label>
+                <select id="methodSelect">
+                    <option th:each="method : ${problem.methods}" th:value="${method}" th:text="${methodLabels.get(method)}"
                             th:selected="${method == selectedMethod}"></option>
                 </select>
             </div>
-            <div class="code-block" th:if="${selectedMethodCode != null and !#strings.isEmpty(selectedMethodCode)}">
-                <pre class="algorithm-code"><code th:text="${selectedMethodCode}"></code></pre>
+            <div th:each="paramName, it : ${problem.paramNames}" class="field">
+                <label th:for="${'input_' + it.index}"><span th:text="${paramName}">param</span><span class="type" th:text="${problem.paramTypes[it.index]}">int</span></label>
+                <!-- Phone keyboards must not capitalise or "correct" input like abc or [1,2] -->
+                <input type="text" th:id="${'input_' + it.index}" autocomplete="off" autocapitalize="off" autocorrect="off"
+                       spellcheck="false" enterkeyhint="go">
+                <p class="hint" th:id="${'hint_' + it.index}"></p>
             </div>
-            <p class="algorithm-name"
-               th:if="${selectedMethodCode == null or #strings.isEmpty(selectedMethodCode)}"
-               th:text="${selectedMethod}">No source code available</p>
+            <p class="form-error" id="formError" role="alert" hidden></p>
+            <div class="chips">
+                <button type="button" class="chip" id="fillExample" hidden>↺ Fill example</button>
+                <button type="button" class="chip" id="clearInputs">✕ Clear</button>
+            </div>
+            <button type="button" class="btn primary block" id="runButton" style="margin-top:14px">▶ Run</button>
+
+            <div class="card result" id="result" hidden aria-live="polite">
+                <div class="result-head">
+                    <span class="badge" id="resultStatus"></span>
+                    <span class="small muted" id="resultMeta"></span>
+                    <span class="grow"></span>
+                    <button type="button" class="link-btn" data-copy="resultValue" id="copyResult">Copy</button>
+                </div>
+                <p class="value" id="resultValue"></p>
+                <p class="error-text" id="resultError" hidden></p>
+                <div class="btn-row" th:if="${#lists.size(problem.methods) > 1}">
+                    <button type="button" class="btn secondary" id="compareButton">Compare methods</button>
+                    <button type="button" class="btn primary" id="runAgain">Run again</button>
+                </div>
+            </div>
+
+            <div class="card" id="compare" hidden style="margin-top:14px">
+                <h2 class="h2" style="margin-top:0">Compare methods</h2>
+                <p class="small muted mono" id="compareInput"></p>
+                <table class="compare" style="margin-top:8px">
+                    <thead><tr><th>Method</th><th>Output</th><th>Time</th></tr></thead>
+                    <tbody id="compareRows"></tbody>
+                </table>
+                <p class="notice" id="compareVerdict" hidden></p>
+                <p class="small muted" style="margin-top:10px">Times on small inputs mostly measure overhead, so a slower Big-O can still win here.</p>
+            </div>
         </section>
-
-        <form id="executeForm" th:action="@{/execute}" method="post" novalidate>
-            <input type="hidden" name="className" th:value="${problem.className}">
-            <input type="hidden" name="problemName" th:value="${problem.name}">
-            <input type="hidden" name="category" th:value="${problem.category}">
-            <input type="hidden" id="methodNameInput" name="methodName" value="">
-            <input type="hidden" id="inputsJsonInput" name="inputsJson" value="">
-            <input type="hidden" id="paramNamesInput" name="paramNames" th:value="${#strings.listJoin(problem.paramNames, ',')}">
-            <input type="hidden" id="paramTypesInput" name="paramTypes" th:value="${#strings.listJoin(problem.paramTypes, ',')}">
-
-            <section class="input-section">
-                <h2>Try it</h2>
-                <details class="input-hints">
-                    <summary>Input format help</summary>
-                    <ul>
-                        <li><code>int[]</code>: numbers separated by commas, e.g. <code>1,2,3</code> or <code>[1,2,3]</code></li>
-                        <li><code>int[][]</code>: a grid, e.g. <code>[ [1,2], [3,4] ]</code></li>
-                        <li><code>String[]</code>: words separated by commas, e.g. <code>hello,world</code></li>
-                        <li><code>int</code>: one number, e.g. <code>42</code></li>
-                        <li><code>String</code>: text, e.g. <code>hello</code></li>
-                        <li><code>char[]</code>: characters, e.g. <code>a,b,c</code> or <code>abc</code></li>
-                    </ul>
-                </details>
-                <div th:each="paramName, iterStat : ${problem.paramNames}" class="input-group">
-                    <label th:for="${'input_' + iterStat.index}">
-                        <span th:text="${paramName}"></span>
-                        <span class="param-type" th:text="${problem.paramTypes[iterStat.index]}"></span>
-                    </label>
-                    <!-- Phone keyboards must not capitalise or "correct" input like abc or [1,2] -->
-                    <input type="text" th:id="${'input_' + iterStat.index}"
-                           th:name="${'input_' + iterStat.index}"
-                           th:data-param-type="${problem.paramTypes[iterStat.index]}"
-                           autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false"
-                           enterkeyhint="go">
-                    <small class="input-hint" th:id="${'hint_' + iterStat.index}"></small>
-                </div>
-                <p class="form-error" id="formError" role="alert" hidden></p>
-                <div class="input-actions">
-                    <button type="button" class="btn btn-secondary" id="fillExample" hidden>Fill example</button>
-                    <button type="button" onclick="execute()" class="execute-btn">Run</button>
-                </div>
-            </section>
-        </form>
     </div>
+</main>
 
-    <script th:inline="javascript">
-        const problem = {
-            className: /*[[${problem.className}]]*/ '',
-            methods: /*[[${problem.methods}]]*/ [],
-            paramTypes: /*[[${problem.paramTypes}]]*/ [],
-            paramNames: /*[[${problem.paramNames}]]*/ [],
-            selectedMethod: /*[[${selectedMethod}]]*/ null,
-            selectedMethodCode: /*[[${selectedMethodCode}]]*/ null
-        };
-        
-        const exampleInputs = /*[[${problem.exampleInputs}]]*/ null;
+<div class="action-bar" id="runAction">
+    <button type="button" class="btn primary block" id="goRun">▶ Run this method</button>
+</div>
 
-        // Hints show each parameter's example; "Fill example" puts them all in at once
-        document.addEventListener('DOMContentLoaded', function() {
-            let hasExamples = false;
-            problem.paramTypes.forEach(function(paramType, i) {
-                const hint = document.getElementById('hint_' + i);
-                const input = document.getElementById('input_' + i);
-                if (exampleInputs && exampleInputs[i] !== null && exampleInputs[i] !== undefined) {
-                    const exampleText = formatExample(exampleInputs[i], paramType);
-                    hint.textContent = 'Example: ' + exampleText;
-                    input.placeholder = 'e.g. ' + exampleText;
-                    hasExamples = true;
-                }
-                input.addEventListener('input', function() { clearError(); });
-                input.addEventListener('keydown', function(e) {
-                    if (e.key === 'Enter') { e.preventDefault(); execute(); }
-                });
+<nav th:replace="~{fragments/layout :: nav('browse')}"></nav>
+
+<script th:inline="javascript">
+    const problem = {
+        name: /*[[${problem.name}]]*/ '',
+        category: /*[[${problem.category}]]*/ '',
+        className: /*[[${problem.className}]]*/ '',
+        methods: /*[[${problem.methods}]]*/ [],
+        labels: /*[[${methodLabels}]]*/ {},
+        paramTypes: /*[[${problem.paramTypes}]]*/ [],
+        paramNames: /*[[${problem.paramNames}]]*/ [],
+        selectedMethod: /*[[${selectedMethod}]]*/ null,
+        exampleInputs: /*[[${problem.exampleInputs}]]*/ null
+    };
+</script>
+<th:block th:replace="~{fragments/layout :: scripts}"></th:block>
+<script>
+(function() {
+    const $ = function(id) { return document.getElementById(id); };
+    const desktop = window.matchMedia('(min-width: 1024px)');
+    const hasExamples = Array.isArray(problem.exampleInputs) && problem.exampleInputs.some(function(v) { return v !== null && v !== undefined; });
+    let lastInputs = null;
+
+    Store.addHistory({ type: 'problem', title: problem.name, category: problem.category,
+        url: '/problem/' + encodeURIComponent(problem.name) });
+
+    // ── Tabs: Solution by default; on desktop Solution and Run share one view ──
+    function onTab(name) {
+        const both = desktop.matches && (name === 'solution' || name === 'run');
+        $('split').classList.toggle('on', both);
+        $('runAction').hidden = desktop.matches || name !== 'solution';
+        if (name === 'problem') loadExampleOutput();
+    }
+    const selectTab = initTabs(document.querySelector('.tabs'), onTab);
+    let start = new URLSearchParams(location.search).get('tab') || 'solution';
+    if (desktop.matches && start === 'run') start = 'solution';
+    selectTab(start, false);
+    desktop.addEventListener('change', function() {
+        const current = document.querySelector('.tabs [aria-selected="true"]').dataset.tab;
+        selectTab(desktop.matches && current === 'run' ? 'solution' : current, false);
+    });
+    $('goRun').addEventListener('click', function() {
+        selectTab('run', true);
+        window.scrollTo({ top: 0 });
+    });
+
+    // ── Inputs ──
+    function formatExample(value, type) {
+        if (Array.isArray(value) && (type === 'int[]' || type === 'String[]' || type === 'char[]' || type === 'long[]')) {
+            return value.join(',');
+        }
+        if (Array.isArray(value) || (value !== null && typeof value === 'object')) return JSON.stringify(value);
+        return String(value);
+    }
+
+    function parseInput(input, type) {
+        input = input.trim();
+        if (type === 'int[]' || type === 'long[]') {
+            input = input.replace(/^\[|\]$/g, '');
+            return input.split(/[,\s]+/).filter(function(x) { return x.length > 0; }).map(function(x) {
+                const num = Number(x);
+                if (!Number.isInteger(num)) throw new Error('"' + x + '" is not a whole number');
+                return num;
             });
+        } else if (type === 'String[]') {
+            input = input.replace(/^\[|\]$/g, '');
+            return input.split(',').map(function(s) { return s.trim().replace(/^["']|["']$/g, ''); });
+        } else if (type === 'char[]') {
+            if (input.includes(',')) return input.split(',').map(function(c) { return c.trim().charAt(0); });
+            return input.split('').filter(function(c) { return c.trim().length > 0; });
+        } else if (type === 'int' || type === 'long') {
+            const num = Number(input);
+            if (!Number.isInteger(num)) throw new Error('"' + input + '" is not a whole number');
+            return num;
+        } else if (type === 'double') {
+            const num = parseFloat(input);
+            if (isNaN(num)) throw new Error('"' + input + '" is not a number');
+            return num;
+        } else if (type === 'boolean') {
+            if (!/^(true|false)$/i.test(input)) throw new Error('Use true or false');
+            return input.toLowerCase() === 'true';
+        } else if (type === 'String') {
+            return input.replace(/^["']|["']$/g, '');
+        } else if (type.indexOf('[]') !== -1 || /^[\[{]/.test(input)) {
+            try { return JSON.parse(input); } catch (e) { throw new Error('Expected JSON, e.g. [ [1,2], [3,4] ]'); }
+        }
+        return input;
+    }
 
-            const fill = document.getElementById('fillExample');
-            if (hasExamples) {
-                fill.hidden = false;
-                fill.addEventListener('click', function() {
-                    problem.paramTypes.forEach(function(paramType, i) {
-                        if (exampleInputs[i] !== null && exampleInputs[i] !== undefined) {
-                            document.getElementById('input_' + i).value = formatExample(exampleInputs[i], paramType);
-                        }
-                    });
-                    clearError();
-                });
-            }
-
-            // Switching method reloads this page with that method's code
-            document.getElementById('methodSelect').addEventListener('change', function() {
-                this.classList.add('loading');
-                const url = new URL(window.location.href);
-                url.searchParams.set('method', this.value);
-                window.location.href = url.toString();
-            });
+    problem.paramTypes.forEach(function(type, i) {
+        const input = $('input_' + i);
+        if (hasExamples && problem.exampleInputs[i] !== null && problem.exampleInputs[i] !== undefined) {
+            const text = formatExample(problem.exampleInputs[i], type);
+            $('hint_' + i).textContent = 'Example: ' + text;
+            input.placeholder = 'e.g. ' + text;
+        }
+        input.addEventListener('input', clearError);
+        input.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') { e.preventDefault(); run(); }
         });
+    });
+    $('fillExample').hidden = !hasExamples;
+    $('fillExample').addEventListener('click', fillExample);
+    $('clearInputs').addEventListener('click', function() {
+        problem.paramTypes.forEach(function(t, i) { $('input_' + i).value = ''; });
+        clearError();
+    });
 
-        function showError(message, inputIndex) {
-            const box = document.getElementById('formError');
-            box.textContent = message;
-            box.hidden = false;
-            if (inputIndex !== undefined) {
-                const input = document.getElementById('input_' + inputIndex);
-                input.setAttribute('aria-invalid', 'true');
-                input.focus();
+    function fillExample() {
+        problem.paramTypes.forEach(function(type, i) {
+            const v = problem.exampleInputs[i];
+            if (v !== null && v !== undefined) $('input_' + i).value = formatExample(v, type);
+        });
+        clearError();
+    }
+
+    function showError(message, index) {
+        $('formError').textContent = message;
+        $('formError').hidden = false;
+        if (index !== undefined) {
+            $('input_' + index).setAttribute('aria-invalid', 'true');
+            $('input_' + index).focus();
+        }
+    }
+    function clearError() {
+        $('formError').hidden = true;
+        document.querySelectorAll('#panel-run input').forEach(function(i) { i.removeAttribute('aria-invalid'); });
+    }
+
+    function readInputs() {
+        const inputs = [];
+        for (let i = 0; i < problem.paramTypes.length; i++) {
+            const value = $('input_' + i).value.trim();
+            if (!value) {
+                showError('Fill in ' + problem.paramNames[i] + (hasExamples ? ' (or tap “Fill example”).' : '.'), i);
+                return null;
+            }
+            try {
+                inputs.push(parseInput(value, problem.paramTypes[i]));
+            } catch (err) {
+                showError(problem.paramNames[i] + ': ' + err.message, i);
+                return null;
             }
         }
+        return inputs;
+    }
 
-        function clearError() {
-            document.getElementById('formError').hidden = true;
-            document.querySelectorAll('.input-group input').forEach(function(input) {
-                input.removeAttribute('aria-invalid');
-            });
-        }
+    function describeInputs(inputs) {
+        return problem.paramNames.map(function(n, i) { return n + ' = ' + formatExample(inputs[i], problem.paramTypes[i]); }).join(' · ');
+    }
 
-        function formatExample(value, type) {
-            if (type === 'int[]' && Array.isArray(value)) {
-                return value.join(',');
-            } else if (type === 'String[]' && Array.isArray(value)) {
-                return value.join(',');
-            } else if (type === 'char[]' && Array.isArray(value)) {
-                return value.join(',');
-            } else if (type === 'int[][]' && Array.isArray(value)) {
-                return JSON.stringify(value);
-            }
-            return String(value);
-        }
-        
-        function execute() {
-            clearError();
-            const inputs = [];
-            for (let i = 0; i < problem.paramTypes.length; i++) {
-                const value = document.getElementById('input_' + i).value.trim();
-                if (!value) {
-                    showError('Fill in ' + problem.paramNames[i] + ' (or tap "Fill example").', i);
-                    return;
-                }
-                try {
-                    inputs.push(parseInput(value, problem.paramTypes[i]));
-                } catch (err) {
-                    showError(problem.paramNames[i] + ': ' + err.message, i);
-                    return;
-                }
-            }
-            document.getElementById('methodNameInput').value = document.getElementById('methodSelect').value;
-            document.getElementById('inputsJsonInput').value = JSON.stringify(inputs);
-            showLoading();
-            document.getElementById('executeForm').submit();
-        }
+    // ── Running ──
+    async function execute(method, inputs) {
+        const res = await fetch('/api/execute', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ className: problem.className, methodName: method, inputs: inputs })
+        });
+        if (!res.ok) throw new Error('The server returned ' + res.status);
+        return res.json();
+    }
 
-        function parseInput(input, type) {
-            input = input.trim();
-            
-            if (type === 'int[]') {
-                input = input.replace(/^\[|\]$/g, '');
-                const parts = input.split(/[,\s]+/).filter(x => x.length > 0);
-                return parts.map(x => {
-                    const num = parseInt(x.trim());
-                    if (isNaN(num)) {
-                        throw new Error('Invalid number in array: ' + x);
-                    }
-                    return num;
-                });
-            } else if (type === 'String[]') {
-                input = input.replace(/^\[|\]$/g, '');
-                return input.split(',').map(s => s.trim().replace(/^["']|["']$/g, ''));
-            } else if (type === 'char[]') {
-                if (input.includes(',')) {
-                    return input.split(',').map(c => c.trim().charAt(0));
-                } else {
-                    return input.split('').filter(c => c.trim().length > 0);
-                }
-            } else if (type === 'int') {
-                const num = parseInt(input);
-                if (isNaN(num)) {
-                    throw new Error('Invalid integer: ' + input);
-                }
-                return num;
-            } else if (type === 'String') {
-                return input.replace(/^["']|["']$/g, '');
-            } else if (type === 'long') {
-                const num = Number(input);
-                if (!Number.isInteger(num)) {
-                    throw new Error('Invalid integer: ' + input);
-                }
-                return num;
-            } else if (type === 'int[][]') {
-                let matrix;
-                try {
-                    matrix = JSON.parse(input);
-                } catch (e) {
-                    throw new Error('Expected a 2D array like [ [1,2], [3,4] ]');
-                }
-                if (!Array.isArray(matrix) || !matrix.every(row => Array.isArray(row))) {
-                    throw new Error('Expected a 2D array like [ [1,2], [3,4] ]');
-                }
-                return matrix;
-            } else if (type === 'double') {
-                const num = parseFloat(input);
-                if (isNaN(num)) {
-                    throw new Error('Invalid number: ' + input);
-                }
-                return num;
+    function currentMethod() {
+        return $('methodSelect') ? $('methodSelect').value : problem.selectedMethod;
+    }
+
+    function formatTime(ms) {
+        if (typeof ms !== 'number') return '';
+        return ms < 1 ? ms.toFixed(3) + ' ms' : ms.toFixed(2) + ' ms';
+    }
+
+    async function run() {
+        clearError();
+        const inputs = readInputs();
+        if (!inputs) return;
+        lastInputs = inputs;
+        const method = currentMethod();
+        $('runButton').disabled = true;
+        $('runButton').textContent = 'Running…';
+        $('compare').hidden = true;
+        try {
+            const data = await execute(method, inputs);
+            $('result').hidden = false;
+            if (data.success) {
+                Store.markRan(problem.name);
+                $('resultStatus').className = 'badge ok';
+                $('resultStatus').textContent = '✓ Success';
+                $('resultValue').textContent = data.result;
+                $('resultValue').hidden = false;
+                $('copyResult').hidden = false;
+                $('resultError').hidden = true;
+            } else {
+                $('resultStatus').className = 'badge err';
+                $('resultStatus').textContent = 'Error';
+                $('resultValue').hidden = true;
+                $('copyResult').hidden = true;
+                $('resultError').textContent = data.error || 'Something went wrong.';
+                $('resultError').hidden = false;
             }
-            return input;
+            $('resultMeta').textContent = [formatTime(data.executionTime), problem.labels[method]].filter(Boolean).join(' · ');
+            $('result').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        } catch (err) {
+            showError(err instanceof TypeError ? "Couldn't reach the server. Check your connection and try again." : err.message);
+        } finally {
+            $('runButton').disabled = false;
+            $('runButton').textContent = '▶ Run';
         }
-    </script>
-    
-    <script src="/js/app.js" th:src="@{/js/app.js}"></script>
-    <script src="/js/voice.js"></script>
+    }
+    $('runButton').addEventListener('click', run);
+    if ($('runAgain')) $('runAgain').addEventListener('click', run);
+
+    // Same input through every method, side by side
+    if ($('compareButton')) $('compareButton').addEventListener('click', async function() {
+        if (!lastInputs) return;
+        const rows = $('compareRows');
+        rows.innerHTML = '';
+        $('compareInput').textContent = describeInputs(lastInputs);
+        $('compareVerdict').hidden = true;
+        $('compare').hidden = false;
+        const outputs = [];
+        for (const method of problem.methods) {
+            const tr = document.createElement('tr');
+            tr.innerHTML = '<td><b></b></td><td class="mono">…</td><td></td>';
+            tr.querySelector('b').textContent = problem.labels[method] || method;
+            rows.appendChild(tr);
+            try {
+                const data = await execute(method, lastInputs);
+                tr.children[1].textContent = data.success ? data.result : (data.error || 'Error');
+                tr.children[2].textContent = data.success ? formatTime(data.executionTime) : '';
+                if (data.success) outputs.push({ tr: tr, value: data.result });
+                else tr.classList.add('mismatch');
+            } catch (e) {
+                tr.children[1].textContent = 'Failed';
+                tr.classList.add('mismatch');
+            }
+        }
+        const verdict = $('compareVerdict');
+        const first = outputs.length ? outputs[0].value : null;
+        const agree = outputs.length === problem.methods.length && outputs.every(function(o) { return o.value === first; });
+        if (agree) {
+            verdict.className = 'notice ok';
+            verdict.textContent = '✓ All ' + outputs.length + ' methods agree';
+        } else {
+            outputs.forEach(function(o) { if (o.value !== first) o.tr.classList.add('mismatch'); });
+            verdict.className = 'notice warn';
+            verdict.textContent = 'The methods gave different outputs. Some problems accept several correct answers; otherwise one method has a bug.';
+        }
+        verdict.hidden = false;
+        $('compare').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    });
+
+    // ── Problem tab example: the expected output is computed by running the first method ──
+    let exampleLoaded = false;
+    async function loadExampleOutput() {
+        if (exampleLoaded || !hasExamples) return;
+        exampleLoaded = true;
+        $('exampleCard').hidden = false;
+        $('exampleInput').textContent = describeInputs(problem.exampleInputs);
+        try {
+            const data = await execute(problem.methods[0], problem.exampleInputs);
+            $('exampleOutput').textContent = data.success ? data.result : 'couldn’t be computed';
+            $('exampleOutput').classList.toggle('muted', !data.success);
+        } catch (e) {
+            $('exampleOutput').textContent = 'couldn’t be computed';
+        }
+    }
+})();
+</script>
 </body>
 </html>

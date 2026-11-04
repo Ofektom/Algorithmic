@@ -35,6 +35,7 @@
     <div class="tabs scroll" role="tablist" aria-label="Solution sections">
         <button type="button" role="tab" data-tab="problem" aria-controls="panel-problem" aria-selected="false">Problem</button>
         <button type="button" role="tab" data-tab="solution" aria-controls="panel-solution" aria-selected="true">Solution</button>
+        <button type="button" role="tab" data-tab="program" aria-controls="panel-program" aria-selected="false">Full program</button>
         <button type="button" role="tab" data-tab="explanation" aria-controls="panel-explanation" aria-selected="false">Explanation</button>
         <button type="button" role="tab" data-tab="approach" aria-controls="panel-approach" aria-selected="false">Approach</button>
         <button type="button" role="tab" data-tab="complexity" aria-controls="panel-complexity" aria-selected="false">Complexity</button>
@@ -65,7 +66,16 @@
         <section class="panel on" id="panel-solution" role="tabpanel">
             <pre class="code" id="code"></pre>
             <p class="card soft muted" id="noCode" hidden>The answer had no code. See the Explanation and Approach tabs.</p>
-            <button type="button" class="btn secondary block" data-copy="code" id="copyCode" style="margin-top:12px">⧉ Copy code</button>
+            <div class="btn-row" style="margin-top:12px">
+                <button type="button" class="btn secondary" data-copy="code" id="copyCode">⧉ Copy code</button>
+                <button type="button" class="btn secondary" id="fixButton">✎ Fix this solution</button>
+            </div>
+            <p class="small muted" id="programHint" hidden style="margin-top:8px">Just the solution, ready to paste into your platform. The <b>Full program</b> tab has it with a <code>main</code> that runs the example.</p>
+        </section>
+        <section class="panel" id="panel-program" role="tabpanel">
+            <p class="small muted" style="margin-bottom:8px">The solution with a <code>main</code> that runs the example from the Problem tab. Paste it into your editor or an online compiler to run it.</p>
+            <pre class="code" id="program"></pre>
+            <button type="button" class="btn secondary block" data-copy="program" style="margin-top:12px">⧉ Copy full program</button>
         </section>
         <section class="panel" id="panel-explanation" role="tabpanel"><p class="prose" id="explanation"></p></section>
         <section class="panel" id="panel-approach" role="tabpanel"><p class="prose" id="approach"></p></section>
@@ -75,6 +85,7 @@
     <!-- Corrections for an answer that doesn't fit the problem as the user's platform states it -->
     <details class="card refine" id="refine" hidden>
         <summary>Not quite right? Fix the solution</summary>
+        <p class="small muted" style="margin-top:8px">Paste the function exactly as your platform declares it (e.g. a <code>String</code> return, or <code>List&lt;Integer&gt;</code> instead of <code>int[]</code>), and say what's wrong.</p>
         <p class="small muted refine-applied" id="refineApplied" hidden>Showing the solution updated with your corrections.</p>
         <div class="field">
             <label for="refineLanguage">Language</label>
@@ -87,13 +98,13 @@
         <div class="field">
             <label for="refineSignature">Required signature or starter code</label>
             <textarea id="refineSignature" class="mono" spellcheck="false" autocapitalize="off"
-                      placeholder="char* solve(int arr_count, int* arr)"></textarea>
+                      placeholder="public static String findNumber(List&lt;Integer&gt; arr, int k)"></textarea>
             <p class="hint">Paste the function as the problem declares it. The answer will keep these exact parameter and return types.</p>
         </div>
         <div class="field">
             <label for="refineInstructions">What should change?</label>
             <textarea id="refineInstructions"
-                      placeholder="e.g. arr is an int* with its length passed separately, so index it instead of using for-each. Return a char* like &quot;YES&quot;/&quot;NO&quot;, not a boolean."></textarea>
+                      placeholder="e.g. Return the String &quot;YES&quot; if k is in arr, otherwise &quot;NO&quot;, not a boolean. arr is a List&lt;Integer&gt;, not an int[]."></textarea>
         </div>
         <p class="form-error" id="refineError" hidden></p>
         <button type="button" class="btn primary block" id="refineButton">Update solution</button>

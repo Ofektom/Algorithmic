@@ -70,6 +70,10 @@
             $('code').hidden = !hasCode;
             $('copyCode').hidden = !hasCode;
             $('noCode').hidden = hasCode;
+            // Older servers send no program; the tab then stays hidden
+            const hasProgram = fill('program', data.program, 'program');
+            $('programHint').hidden = !(hasCode && hasProgram);
+            $('fixButton').hidden = !hasCode;
             fill('explanation', data.explanation, 'explanation');
             fill('approach', data.solution, 'approach');
             fill('complexity', data.complexity, 'complexity');
@@ -117,6 +121,12 @@
         loadSolution();
     }
 
+    // The fix form sits below a long code block; this opens it and puts the cursor in it
+    $('fixButton').addEventListener('click', function() {
+        $('refine').open = true;
+        $('refine').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        $('refineSignature').focus({ preventScroll: true });
+    });
     $('refineButton').addEventListener('click', refine);
     $('retry').addEventListener('click', loadSolution);
     loadSolution();

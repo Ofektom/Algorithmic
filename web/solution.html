@@ -66,10 +66,7 @@
         <section class="panel on" id="panel-solution" role="tabpanel">
             <pre class="code" id="code"></pre>
             <p class="card soft muted" id="noCode" hidden>The answer had no code. See the Explanation and Approach tabs.</p>
-            <div class="btn-row" style="margin-top:12px">
-                <button type="button" class="btn secondary" data-copy="code" id="copyCode">⧉ Copy code</button>
-                <button type="button" class="btn secondary" id="fixButton">✎ Fix this solution</button>
-            </div>
+            <button type="button" class="btn secondary block" data-copy="code" id="copyCode" style="margin-top:12px">⧉ Copy code</button>
             <p class="small muted" id="programHint" hidden style="margin-top:8px">Just the solution, ready to paste into your platform. The <b>Full program</b> tab has it with a <code>main</code> that runs the example.</p>
         </section>
         <section class="panel" id="panel-program" role="tabpanel">
@@ -82,33 +79,18 @@
         <section class="panel" id="panel-complexity" role="tabpanel"><p class="prose" id="complexity"></p></section>
     </div>
 
-    <!-- Corrections for an answer that doesn't fit the problem as the user's platform states it -->
-    <details class="card refine" id="refine" hidden>
-        <summary>Not quite right? Fix the solution</summary>
-        <p class="small muted" style="margin-top:8px">Paste the function exactly as your platform declares it (e.g. a <code>String</code> return, or <code>List&lt;Integer&gt;</code> instead of <code>int[]</code>), and say what's wrong.</p>
-        <p class="small muted refine-applied" id="refineApplied" hidden>Showing the solution updated with your corrections.</p>
-        <div class="field">
-            <label for="refineLanguage">Language</label>
-            <select id="refineLanguage">
-                <option>Java</option><option>C</option><option>C++</option><option>C#</option>
-                <option>Python</option><option>JavaScript</option><option>TypeScript</option>
-                <option>Go</option><option>Kotlin</option><option>Swift</option>
-            </select>
-        </div>
-        <div class="field">
-            <label for="refineSignature">Required signature or starter code</label>
-            <textarea id="refineSignature" class="mono" spellcheck="false" autocapitalize="off"
-                      placeholder="public static String findNumber(List&lt;Integer&gt; arr, int k)"></textarea>
-            <p class="hint">Paste the function as the problem declares it. The answer will keep these exact parameter and return types.</p>
-        </div>
-        <div class="field">
-            <label for="refineInstructions">What should change?</label>
-            <textarea id="refineInstructions"
-                      placeholder="e.g. Return the String &quot;YES&quot; if k is in arr, otherwise &quot;NO&quot;, not a boolean. arr is a List&lt;Integer&gt;, not an int[]."></textarea>
-        </div>
-        <p class="form-error" id="refineError" hidden></p>
-        <button type="button" class="btn primary block" id="refineButton">Update solution</button>
-    </details>
+    <!-- Corrections as a chat: say or type what's wrong and the answer above is rewritten -->
+    <section class="chat-thread" id="chatThread" aria-live="polite" hidden></section>
+    <form class="composer" id="composer" hidden autocomplete="off">
+        <textarea id="chatInput" rows="1" aria-label="Tell me what to change"
+                  placeholder="Not right? Tell me what to change"></textarea>
+        <button type="button" class="composer-btn" id="chatMic" aria-label="Say what to change" title="Say what to change">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 14a3 3 0 0 0 3-3V5a3 3 0 0 0-6 0v6a3 3 0 0 0 3 3zm5-3a5 5 0 0 1-10 0H5a7 7 0 0 0 6 6.92V21h2v-3.08A7 7 0 0 0 19 11h-2z"/></svg>
+        </button>
+        <button type="submit" class="composer-btn send" id="chatSend" aria-label="Send">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4l-7 7 1.41 1.41L11 7.83V20h2V7.83l4.59 4.58L19 11z"/></svg>
+        </button>
+    </form>
 </main>
 
 <script src="/js/config.js"></script>

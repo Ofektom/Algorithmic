@@ -295,6 +295,38 @@ class AIFallbackServiceTest {
     }
 
     @Test
+    void chatCorrectionAsksWhatChangedAndAllowsAnotherLanguage() throws Exception {
+        when(claudeCode.isAvailable()).thenReturn(false);
+
+        service.getSolutionWithInputs("find k in arr", null, null, null, "Java",
+                new AIFallbackService.Guidance(null, "1. return type should be String", "boolean f() { return true; }"))
+                .join();
+
+        String prompt = groqRequests.get(0).at("/messages/1/content").asText();
+        assertTrue(prompt.contains("1. return type should be String"));
+        assertTrue(prompt.contains("unless the corrections ask for another language"));
+        assertTrue(prompt.contains("CHANGES:"));
+    }
+
+    @Test
+    void firstAnswerDoesNotAskWhatChanged() throws Exception {
+        when(claudeCode.isAvailable()).thenReturn(false);
+        solve("two sum");
+        String prompt = groqRequests.get(0).at("/messages/1/content").asText();
+        assertFalse(prompt.contains("CHANGES:"));
+        assertTrue(prompt.contains("Write the code in Java.\n"));
+    }
+
+    @Test
+    void parsesWhatChanged() {
+        AIFallbackService.AISolution solution = service.parseSolutionContent(
+                REPLY + "\n\nCHANGES:\nChanged the return type to String.");
+        assertEquals("Changed the return type to String.", solution.changes);
+        assertEquals("O(n) time, O(n) space.", solution.complexity);
+        assertEquals("", service.parseSolutionContent(REPLY).changes);
+    }
+
+    @Test
     void unformattedReplyBecomesExplanation() {
         AIFallbackService.AISolution solution = service.parseSolutionContent(
                 "Just loop over it.\n```java\nint x = 1;\n```");

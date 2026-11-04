@@ -42,7 +42,7 @@ public class AIFallbackService {
     public static final String UNAVAILABLE_MESSAGE = "Couldn't load a solution right now. Please try again.";
     private static final Pattern SECTION_HEADER = Pattern.compile(
             // "EXPLANATION:", "**Solution:**", "## Code" — header alone on its line or followed by a colon
-            "(?im)^[ \\t]*(?:#+[ \\t]*)?(?:\\*\\*)?(PROBLEM|EXPLANATION|SOLUTION|CODE|(?:FULL[ \\t]+)?PROGRAM|COMPLEXITY)(?:\\*\\*)?[ \\t]*(?::(?:\\*\\*)?|$)");
+            "(?im)^[ \\t]*(?:#+[ \\t]*)?(?:\\*\\*)?(PROBLEM|EXPLANATION|SOLUTION|CODE|(?:FULL[ \\t]+)?PROGRAM|COMPLEXITY|CHANGES)(?:\\*\\*)?[ \\t]*(?::(?:\\*\\*)?|$)");
     private static final Pattern CODE_BLOCK = Pattern.compile("```[a-zA-Z+#]*\\s*\\n(.*?)```", Pattern.DOTALL);
 
     // Generation blocks for seconds (minutes for Claude Code); keep it off the common pool
@@ -219,12 +219,18 @@ public class AIFallbackService {
             sb.append("A previous answer did not fit. Here is its code; fix it rather than repeating its mistakes:\n```\n")
                     .append(clip(guidance.previousCode())).append("\n```\n\n");
         }
-        if (!isBlank(guidance.instructions())) {
-            sb.append("Additional instructions from the user. These override any assumption you would ")
-                    .append("otherwise make:\n").append(clip(guidance.instructions())).append("\n\n");
+        boolean corrected = !isBlank(guidance.instructions());
+        if (corrected) {
+            // Chat corrections, oldest first: "return type should be String", a pasted starter stub, "use Python"
+            sb.append("Corrections from the user, oldest first. They override any assumption you would otherwise ")
+                    .append("make, including the language and the types. If they include starter code or a ")
+                    .append("signature, use it exactly (names, parameter and return types, enclosing class) and ")
+                    .append("leave out any main or driver class it contains:\n")
+                    .append(clip(guidance.instructions())).append("\n\n");
         }
 
-        sb.append("Write the code in ").append(language).append(".\n\n");
+        sb.append("Write the code in ").append(language)
+                .append(corrected ? ", unless the corrections ask for another language.\n\n" : ".\n\n");
         sb.append("Please provide in this exact format:\n");
         sb.append("PROBLEM:\n[the exact problem you are solving, restated in one or two sentences, "
                 + "then one example input and its output]\n\n");
@@ -242,6 +248,10 @@ public class AIFallbackService {
                 .append("example from PROBLEM, hard-coded rather than read from input, and prints the result]")
                 .append("\n```\n\n");
         sb.append("COMPLEXITY:\n[time and space complexity analysis]");
+        if (!guidance.isEmpty()) {
+            sb.append("\n\nCHANGES:\n[one or two plain sentences to the user on what you changed from the ")
+                    .append("previous answer, e.g. \"Changed the return type to String: it now returns YES or NO.\"]");
+        }
 
         return sb.toString();
     }
@@ -353,7 +363,8 @@ public class AIFallbackService {
                 code,
                 stripCodeBlocks(sections.getOrDefault("COMPLEXITY", "")),
                 stripCodeBlocks(sections.getOrDefault("PROBLEM", "")),
-                program);
+                program,
+                stripCodeBlocks(sections.getOrDefault("CHANGES", "")));
     }
 
     private static String firstCodeBlock(String text) {
@@ -383,40 +394,48 @@ public class AIFallbackService {
         public final String problem;
         /** The solution with a main method that runs it on the example; empty if the model left it out. */
         public final String program;
+        /** After a correction: what the model says it changed, for the chat reply; empty otherwise. */
+        public final String changes;
         /** Set (and the other fields empty) when no solution could be produced. */
         public final String error;
 
         public AISolution(String solution, String explanation, String code) {
-            this(solution, explanation, code, null, null, null, null);
+            this(solution, explanation, code, null, null, null, null, null);
         }
 
         public AISolution(String solution, String explanation, String code, String complexity) {
-            this(solution, explanation, code, complexity, null, null, null);
+            this(solution, explanation, code, complexity, null, null, null, null);
         }
 
         public AISolution(String solution, String explanation, String code, String complexity, String problem) {
-            this(solution, explanation, code, complexity, problem, "", null);
+            this(solution, explanation, code, complexity, problem, "", "", null);
         }
 
         public AISolution(String solution, String explanation, String code, String complexity, String problem,
                 String program) {
-            this(solution, explanation, code, complexity, problem, program, null);
+            this(solution, explanation, code, complexity, problem, program, "", null);
+        }
+
+        public AISolution(String solution, String explanation, String code, String complexity, String problem,
+                String program, String changes) {
+            this(solution, explanation, code, complexity, problem, program, changes, null);
         }
 
         private AISolution(String solution, String explanation, String code, String complexity, String problem,
-                String program, String error) {
+                String program, String changes, String error) {
             this.solution = solution;
             this.explanation = explanation;
             this.code = code;
             this.complexity = complexity;
             this.problem = problem;
             this.program = program;
+            this.changes = changes;
             this.error = error;
         }
 
         public static AISolution failure(String message) {
             // explanation kept for clients that only read that field
-            return new AISolution(null, message, null, null, null, null, message);
+            return new AISolution(null, message, null, null, null, null, null, message);
         }
     }
 }

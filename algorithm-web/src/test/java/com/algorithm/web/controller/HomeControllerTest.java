@@ -164,4 +164,13 @@ class HomeControllerTest {
         org.junit.jupiter.api.Assertions.assertEquals("Recursive", HomeController.methodLabel("computeRecursive"));
         org.junit.jupiter.api.Assertions.assertEquals("DFS and memo", HomeController.methodLabel("computeWithDFSAndMemo"));
     }
+
+    @Test
+    void stylesheetAndScriptsAreLinkedWithAContentHash() throws Exception {
+        // A changed hash on every deploy is what stops browsers using a stale cached stylesheet
+        mockMvc.perform(get("/"))
+                .andExpect(status().isOk())
+                .andExpect(content().string(matchesPattern("(?s).*href=\"/css/style-[0-9a-f]{32}\\.css\".*")))
+                .andExpect(content().string(matchesPattern("(?s).*src=\"/js/app-[0-9a-f]{32}\\.js\".*")));
+    }
 }

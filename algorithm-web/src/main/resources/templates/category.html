@@ -9,7 +9,7 @@
     </div>
 
     <div class="search compact" th:if="${!#lists.isEmpty(problems)}">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 3a7 7 0 0 1 5.6 11.2l5.1 5.1-1.4 1.4-5.1-5.1A7 7 0 1 1 10 3zm0 2a5 5 0 1 0 0 10 5 5 0 0 0 0-10z"/></svg>
+        <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M10 3a7 7 0 0 1 5.6 11.2l5.1 5.1-1.4 1.4-5.1-5.1A7 7 0 1 1 10 3zm0 2a5 5 0 1 0 0 10 5 5 0 0 0 0-10z"/></svg>
         <input type="search" id="filterInput" th:placeholder="${'Search ' + category + '…'}" aria-label="Filter problems in this category" autocomplete="off">
     </div>
 

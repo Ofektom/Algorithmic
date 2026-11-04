@@ -1,7 +1,7 @@
 // Service Worker for PWA
 // Network first, cache as offline fallback: an installed app always gets the latest deploy when online,
 // so there's no need to reinstall or to bump the cache name for updates.
-const CACHE_NAME = 'algorithm-web-v3';
+const CACHE_NAME = 'algorithm-web-v4';
 const urlsToCache = [
   '/',
   '/css/style.css',

@@ -201,7 +201,7 @@ class AIFallbackServiceTest {
         assertTrue(prompt.contains("char* solve(int arr_count, int* arr)"));
         assertTrue(prompt.contains("return \"YES\"/\"NO\", not a boolean"));
         assertTrue(prompt.contains("for (int value : arr)"));
-        assertTrue(prompt.contains("Write the code in C."));
+        assertTrue(prompt.contains("Write the code in C, unless the corrections ask for another language."));
         assertTrue(prompt.contains("```c\n"));
     }
 

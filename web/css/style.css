@@ -444,3 +444,14 @@ table.compare tr.mismatch td { color: var(--err); }
 }
 .row-link .st { -webkit-line-clamp: 2; }
 .appbar h1 { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 3; overflow: hidden; }
+
+/* Thumb-sized hit areas (44px) for small text links, without changing how they look */
+#seeAll, .link-btn { display: inline-block; padding: 12px 6px; margin: -12px -6px; }
+.setting.tappable { cursor: pointer; }
+.tabs [role="tab"] { min-width: 44px; }
+
+/* Landscape phones: a pinned chat box would cover most of the short screen, so it scrolls
+   with the page there instead */
+@media (max-height: 500px) and (max-width: 1023px) {
+    .composer { position: static; }
+}

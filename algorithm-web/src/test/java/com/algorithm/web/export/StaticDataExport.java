@@ -85,8 +85,12 @@ public final class StaticDataExport {
                 List<Map<String, Object>> related = new ArrayList<>();
                 for (ProblemInfo other : problems) {
                     if (!other.getName().equals(p.getName()) && related.size() < 4) {
-                        related.add(Map.of("name", other.getName(), "slug", slugs.get(other.getName()),
-                                "shortDescription", String.valueOf(other.getShortDescription())));
+                        // LinkedHashMap, not Map.of: a stable key order keeps re-exports from changing every file
+                        Map<String, Object> r = new LinkedHashMap<>();
+                        r.put("name", other.getName());
+                        r.put("slug", slugs.get(other.getName()));
+                        r.put("shortDescription", String.valueOf(other.getShortDescription()));
+                        related.add(r);
                     }
                 }
                 Map<String, Object> detail = new LinkedHashMap<>();
@@ -103,7 +107,10 @@ public final class StaticDataExport {
                 detail.put("related", related);
                 json.writeValue(problemsDir.resolve(slugs.get(p.getName()) + ".json").toFile(), detail);
             }
-            categories.add(Map.of("name", category, "problems", summaries));
+            Map<String, Object> c = new LinkedHashMap<>();
+            c.put("name", category);
+            c.put("problems", summaries);
+            categories.add(c);
         }
 
         Map<String, Object> catalog = new LinkedHashMap<>();

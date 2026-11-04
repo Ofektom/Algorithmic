@@ -23,7 +23,7 @@
 <tr>
 <td>
 <div class="infoBox" id="tests">
-<div class="counter">11</div>
+<div class="counter">16</div>
 <p>tests</p>
 </div>
 </td>
@@ -41,7 +41,7 @@
 </td>
 <td>
 <div class="infoBox" id="duration">
-<div class="counter">4.232s</div>
+<div class="counter">3.042s</div>
 <p>duration</p>
 </div>
 </td>
@@ -81,58 +81,83 @@
 </tr>
 </thead>
 <tr>
+<td class="success">browseHistoryAndSettingsPagesRender()</td>
+<td class="success">0.285s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
 <td class="success">categoriesContainingSlashResolve()</td>
-<td class="success">0.127s</td>
+<td class="success">0.313s</td>
 <td class="success">passed</td>
 </tr>
 <tr>
 <td class="success">categoryWithoutNameRendersEmptyList()</td>
-<td class="success">2.866s</td>
+<td class="success">1.185s</td>
 <td class="success">passed</td>
 </tr>
 <tr>
 <td class="success">categoryWithoutSlashResolves()</td>
-<td class="success">0.059s</td>
+<td class="success">0.049s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">homeRendersWithCategoryProblems()</td>
+<td class="success">0.058s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">methodLabelsAreReadable()</td>
+<td class="success">0.019s</td>
 <td class="success">passed</td>
 </tr>
 <tr>
 <td class="success">percentEncodedSegmentsAreDecoded()</td>
-<td class="success">0.224s</td>
+<td class="success">0.032s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">problemPageHasReadableMethodNamesAndSourceIndicator()</td>
+<td class="success">0.174s</td>
 <td class="success">passed</td>
 </tr>
 <tr>
 <td class="success">resolveFallsBackToAiWithSuggestion()</td>
-<td class="success">0.020s</td>
+<td class="success">0.115s</td>
 <td class="success">passed</td>
 </tr>
 <tr>
 <td class="success">resolveReturnsCategoryUrlKeepingSlash()</td>
-<td class="success">0.027s</td>
+<td class="success">0.011s</td>
 <td class="success">passed</td>
 </tr>
 <tr>
 <td class="success">resolveReturnsProblemUrl()</td>
-<td class="success">0.026s</td>
+<td class="success">0.018s</td>
 <td class="success">passed</td>
 </tr>
 <tr>
 <td class="success">resolveUnknownQuestionHasNoSuggestion()</td>
-<td class="success">0.706s</td>
+<td class="success">0.611s</td>
 <td class="success">passed</td>
 </tr>
 <tr>
 <td class="success">searchLinksGoStraightToTheSolution()</td>
-<td class="success">0.073s</td>
+<td class="success">0.037s</td>
 <td class="success">passed</td>
 </tr>
 <tr>
 <td class="success">solutionPageRenders()</td>
-<td class="success">0.056s</td>
+<td class="success">0.054s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">stylesheetAndScriptsAreLinkedWithAContentHash()</td>
+<td class="success">0.057s</td>
 <td class="success">passed</td>
 </tr>
 <tr>
 <td class="success">unknownCategoryRendersEmptyList()</td>
-<td class="success">0.048s</td>
+<td class="success">0.024s</td>
 <td class="success">passed</td>
 </tr>
 </table>
@@ -140,8 +165,8 @@
 <div id="tab1" class="tab">
 <h2>Standard output</h2>
 <span class="code">
-<pre>00:29:28.656 [Test worker] INFO org.springframework.test.context.support.AnnotationConfigContextLoaderUtils -- Could not detect default configuration classes for test class [com.algorithm.web.controller.HomeControllerTest]: HomeControllerTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
-00:29:30.373 [Test worker] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper -- Found @SpringBootConfiguration com.algorithm.web.AlgorithmWebApplication for test class com.algorithm.web.controller.HomeControllerTest
+<pre>11:25:57.702 [Test worker] INFO org.springframework.test.context.support.AnnotationConfigContextLoaderUtils -- Could not detect default configuration classes for test class [com.algorithm.web.controller.HomeControllerTest]: HomeControllerTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+11:25:58.057 [Test worker] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper -- Found @SpringBootConfiguration com.algorithm.web.AlgorithmWebApplication for test class com.algorithm.web.controller.HomeControllerTest
 
   .   ____          _            __ _ _
  /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
@@ -151,15 +176,15 @@
  =========|_|==============|___/=/_/_/_/
  :: Spring Boot ::                (v3.2.0)
 
-2026-11-04T00:29:34.210+01:00  INFO 80724 --- [algorithm-web] [    Test worker] c.a.web.controller.HomeControllerTest    : Starting HomeControllerTest using Java 21.0.10 with PID 80724 (started by decagon in /Users/decagon/IdeaProjects/algorithm/algorithm-web)
-2026-11-04T00:29:34.215+01:00 DEBUG 80724 --- [algorithm-web] [    Test worker] c.a.web.controller.HomeControllerTest    : Running with Spring Boot v3.2.0, Spring v6.1.1
-2026-11-04T00:29:34.219+01:00  INFO 80724 --- [algorithm-web] [    Test worker] c.a.web.controller.HomeControllerTest    : No active profile set, falling back to 1 default profile: &quot;default&quot;
-2026-11-04T00:29:46.599+01:00  INFO 80724 --- [algorithm-web] [    Test worker] o.s.b.a.w.s.WelcomePageHandlerMapping    : Adding welcome page template: index
-2026-11-04T00:29:47.989+01:00 DEBUG 80724 --- [algorithm-web] [    Test worker] c.a.web.security.AccessControlFilter     : Filter 'accessControlFilter' configured for use
-2026-11-04T00:29:48.005+01:00  INFO 80724 --- [algorithm-web] [    Test worker] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
-2026-11-04T00:29:48.006+01:00  INFO 80724 --- [algorithm-web] [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
-2026-11-04T00:29:48.014+01:00  INFO 80724 --- [algorithm-web] [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 4 ms
-2026-11-04T00:29:48.195+01:00  INFO 80724 --- [algorithm-web] [    Test worker] c.a.web.controller.HomeControllerTest    : Started HomeControllerTest in 17.386 seconds (process running for 26.014)
+2026-11-04T11:25:59.560+01:00  INFO 7739 --- [algorithm-web] [    Test worker] c.a.web.controller.HomeControllerTest    : Starting HomeControllerTest using Java 21.0.10 with PID 7739 (started by decagon in /Users/decagon/IdeaProjects/algorithm/algorithm-web)
+2026-11-04T11:25:59.563+01:00 DEBUG 7739 --- [algorithm-web] [    Test worker] c.a.web.controller.HomeControllerTest    : Running with Spring Boot v3.2.0, Spring v6.1.1
+2026-11-04T11:25:59.565+01:00  INFO 7739 --- [algorithm-web] [    Test worker] c.a.web.controller.HomeControllerTest    : No active profile set, falling back to 1 default profile: &quot;default&quot;
+2026-11-04T11:26:04.262+01:00  INFO 7739 --- [algorithm-web] [    Test worker] o.s.b.a.w.s.WelcomePageHandlerMapping    : Adding welcome page template: index
+2026-11-04T11:26:06.198+01:00 DEBUG 7739 --- [algorithm-web] [    Test worker] c.a.web.security.AccessControlFilter     : Filter 'accessControlFilter' configured for use
+2026-11-04T11:26:06.221+01:00  INFO 7739 --- [algorithm-web] [    Test worker] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2026-11-04T11:26:06.222+01:00  INFO 7739 --- [algorithm-web] [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2026-11-04T11:26:06.231+01:00  INFO 7739 --- [algorithm-web] [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 5 ms
+2026-11-04T11:26:06.348+01:00  INFO 7739 --- [algorithm-web] [    Test worker] c.a.web.controller.HomeControllerTest    : Started HomeControllerTest in 8.106 seconds (process running for 10.994)
 </pre>
 </span>
 </div>
@@ -181,7 +206,7 @@ WARNING: Dynamic loading of agents will be disallowed by default in a future rel
 <input id="line-wrapping-toggle" type="checkbox" autocomplete="off"/>
 </label>
 </div>Generated by 
-<a href="http://www.gradle.org">Gradle 8.5</a> at 4 Nov 2026, 00:30:15</p>
+<a href="http://www.gradle.org">Gradle 8.5</a> at 4 Nov 2026, 11:26:32</p>
 </div>
 </div>
 </body>

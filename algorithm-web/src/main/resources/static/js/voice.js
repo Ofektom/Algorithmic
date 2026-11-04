@@ -2,16 +2,25 @@
 // sheet over whatever page is showing. Say a problem, pause, and it opens the solution through
 // openSolution() (app.js), exactly like a typed search: built-in when it matches, generated if not.
 class VoiceNavigation {
-    // Silence after the last words before the question counts as finished
+    // Silence after the last words before the question counts as finished. Someone reading a
+    // whole problem out pauses between sentences, so longer questions get longer.
     static SILENCE_MS = 2500;
+    static LONG_SILENCE_MS = 4500;
+    static LONG_QUESTION_WORDS = 8;
     static MATCH_DELAY_MS = 350;
+    // Browsers (Android Chrome especially) end a "continuous" session on their own after a few
+    // seconds; restart it this many times so a long question isn't cut off mid-sentence
+    static MAX_RESTARTS = 20;
 
     constructor(button) {
         this.button = button;
         this.recognition = null;
         this.isListening = false;
+        this.committedText = ''; // text from earlier sessions when the browser ended one early
         this.finalText = '';
         this.interimText = '';
+        this.stopRequested = false;
+        this.restarts = 0;
         this.silenceTimer = null;
         this.matchTimer = null;
         this.matchQuery = '';
@@ -37,15 +46,22 @@ class VoiceNavigation {
         this.recognition.lang = Store.setting('voiceLang', 'en-US');
 
         this.recognition.onresult = (event) => {
-            this.interimText = '';
-            for (let i = event.resultIndex; i < event.results.length; i++) {
-                const text = event.results[i][0].transcript;
+            // Rebuild from every result, not just from resultIndex: Safari and Android keep earlier
+            // results unfinished and resend them, so appending only the changed ones lost or
+            // duplicated words, and the question sent didn't match what was said.
+            const finals = [];
+            let interim = '';
+            for (let i = 0; i < event.results.length; i++) {
+                const text = event.results[i][0].transcript.trim();
+                if (!text) continue;
                 if (event.results[i].isFinal) {
-                    this.finalText += text + ' ';
+                    finals.push(text);
                 } else {
-                    this.interimText += text;
+                    interim += text + ' ';
                 }
             }
+            this.finalText = mergeSegments(finals);
+            this.interimText = interim.trim();
             this.renderTranscript();
             this.scheduleMatches();
             if (Store.setting('autoSend', true)) this.resetSilenceTimer();
@@ -66,9 +82,27 @@ class VoiceNavigation {
         // Fires after stop(), the silence timeout, or when the browser ends the session itself
         this.recognition.onend = () => {
             this.isListening = false;
+            if (this.cancelled) {
+                clearTimeout(this.silenceTimer);
+                this.updateListening();
+                return;
+            }
+            // The browser stopped on its own mid-question: keep what was heard and keep listening
+            if (!this.stopRequested && this.question() && this.restarts < VoiceNavigation.MAX_RESTARTS) {
+                this.committedText = this.question();
+                this.finalText = '';
+                this.interimText = '';
+                this.restarts++;
+                try {
+                    this.recognition.start();
+                    this.isListening = true;
+                    return;
+                } catch (err) {
+                    console.error('Voice restart failed', err);
+                }
+            }
             clearTimeout(this.silenceTimer);
             this.updateListening();
-            if (this.cancelled) return;
             const question = this.question();
             if (question) {
                 this.submit(question);
@@ -93,7 +127,7 @@ class VoiceNavigation {
     }
 
     question() {
-        return (this.finalText + ' ' + this.interimText).replace(/\s+/g, ' ').trim();
+        return (this.committedText + ' ' + this.finalText + ' ' + this.interimText).replace(/\s+/g, ' ').trim();
     }
 
     toggle() {
@@ -106,10 +140,13 @@ class VoiceNavigation {
 
     start() {
         if (!this.recognition || this.isListening) return;
+        this.committedText = '';
         this.finalText = '';
         this.interimText = '';
         this.matchQuery = '';
         this.cancelled = false;
+        this.stopRequested = false;
+        this.restarts = 0;
         this.openSheet();
         this.setStatus('Listening…');
         this.renderTranscript();
@@ -126,6 +163,8 @@ class VoiceNavigation {
 
     // Stop listening; onend then submits what was heard
     finish() {
+        this.stopRequested = true;
+        clearTimeout(this.silenceTimer);
         if (this.recognition && this.isListening) {
             this.recognition.stop();
         } else if (this.question()) {
@@ -143,7 +182,10 @@ class VoiceNavigation {
 
     resetSilenceTimer() {
         clearTimeout(this.silenceTimer);
-        this.silenceTimer = setTimeout(() => this.finish(), VoiceNavigation.SILENCE_MS);
+        const words = this.question().split(' ').length;
+        const wait = words >= VoiceNavigation.LONG_QUESTION_WORDS
+            ? VoiceNavigation.LONG_SILENCE_MS : VoiceNavigation.SILENCE_MS;
+        this.silenceTimer = setTimeout(() => this.finish(), wait);
     }
 
     submit(question) {
@@ -225,7 +267,8 @@ class VoiceNavigation {
 
     renderTranscript() {
         if (!this.sheet) return;
-        this.sheet.querySelector('.final').textContent = this.finalText;
+        this.sheet.querySelector('.final').textContent =
+            (this.committedText + ' ' + this.finalText).replace(/\s+/g, ' ').trim() + ' ';
         this.sheet.querySelector('.interim').textContent = this.interimText;
         this.sheet.querySelector('.placeholder').hidden = Boolean(this.question());
     }
@@ -257,6 +300,26 @@ class VoiceNavigation {
         this.button.title = this.isListening ? 'Tap to finish' : 'Ask by voice';
         this.button.setAttribute('aria-label', this.button.title);
     }
+}
+
+// Join final results. Android Chrome repeats the whole utterance so far in each new final result
+// ("given", "given an array", ...), so a segment that extends the text so far replaces it.
+function mergeSegments(segments) {
+    const norm = (t) => t.toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
+    let merged = '';
+    segments.forEach((segment) => {
+        const soFar = norm(merged);
+        const next = norm(segment);
+        if (!soFar) {
+            merged = segment;
+        } else if (next.startsWith(soFar)) {
+            merged = segment;
+        } else if (!(next.includes(' ') && soFar.endsWith(next))) {
+            // A repeated multi-word tail is the same result resent; a single word ("the") may be real
+            merged += ' ' + segment;
+        }
+    });
+    return merged;
 }
 
 function isTyping(el) {

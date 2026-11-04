@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('History · Algorithmic')}"></head>
+<body>
+<main class="page">
+    <div class="appbar">
+        <h1>History</h1>
+        <button type="button" class="chip" id="clearHistory" hidden>Clear</button>
+    </div>
+    <p class="small muted" style="margin-bottom:12px">Problems you opened and questions you asked, saved in this browser only.</p>
+    <div class="list" id="historyList"></div>
+    <div class="empty" id="historyEmpty" hidden>
+        <p class="t">Nothing here yet</p>
+        <p>Tap Ask and say a problem, or browse the categories.</p>
+    </div>
+</main>
+
+<nav th:replace="~{fragments/layout :: nav('history')}"></nav>
+<th:block th:replace="~{fragments/layout :: scripts}"></th:block>
+<script>
+(function() {
+    const list = document.getElementById('historyList');
+    function render() {
+        const entries = Store.history();
+        const ran = Store.ran();
+        list.innerHTML = '';
+        entries.forEach(function(e) {
+            const a = document.createElement('a');
+            a.className = 'row-link';
+            a.href = e.url;
+            const generated = e.type === 'generated';
+            a.innerHTML = '<div class="grow"><div class="t"></div><div class="st"></div></div>' +
+                '<div class="end"><span class="badge"></span><span class="ran" hidden>✓ Ran</span></div>';
+            a.querySelector('.t').textContent = e.title;
+            a.querySelector('.st').textContent = (generated ? 'Your question' : e.category || '') + ' · ' + timeAgo(e.ts);
+            const badge = a.querySelector('.badge');
+            badge.textContent = generated ? 'Generated' : 'Built-in';
+            badge.classList.add(generated ? 'warn' : 'ok');
+            a.querySelector('.ran').hidden = generated || ran.indexOf(e.title) === -1;
+            list.appendChild(a);
+        });
+        document.getElementById('historyEmpty').hidden = entries.length > 0;
+        document.getElementById('clearHistory').hidden = entries.length === 0;
+    }
+    document.getElementById('clearHistory').addEventListener('click', function() {
+        Store.set('algo.history', []);
+        render();
+    });
+    render();
+})();
+</script>
+</body>
+</html>

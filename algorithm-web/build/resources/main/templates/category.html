@@ -1,36 +1,94 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-    <meta name="mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-title" content="Algorithmic">
-    <title th:text="${category}">Category</title>
-    <link rel="icon" type="image/x-icon" href="/favicon.ico" th:href="@{/favicon.ico}">
-    <link rel="manifest" href="/manifest.json" th:href="@{/manifest.json}">
-    <meta name="theme-color" content="#667eea">
-    <link rel="stylesheet" href="/css/style.css">
-</head>
+<head th:replace="~{fragments/layout :: head(${category + ' · Algorithmic'})}"></head>
 <body>
-    <div class="container">
-        <header>
-            <a href="/" class="back-link">← Home</a>
-            <h1 th:text="${category}"></h1>
-            <p th:text="${#lists.size(problems) + (#lists.size(problems) == 1 ? ' problem' : ' problems')}"></p>
-        </header>
-        
-        <div class="problems-list">
-            <div th:each="problem : ${problems}" class="problem-card">
-                <a th:href="@{/problem/{name}(name=${problem.name})}">
-                    <h3 th:text="${problem.name}"></h3>
-                    <p th:text="${problem.shortDescription}"></p>
-                </a>
-            </div>
-        </div>
+<main class="page">
+    <div class="appbar">
+        <a href="/browse" class="icon-btn" aria-label="Back to all categories">←</a>
+        <h1 th:text="${category}">Category</h1>
     </div>
-    <script src="/js/app.js" th:src="@{/js/app.js}"></script>
-    <script src="/js/voice.js"></script>
+
+    <div class="search compact" th:if="${!#lists.isEmpty(problems)}">
+        <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M10 3a7 7 0 0 1 5.6 11.2l5.1 5.1-1.4 1.4-5.1-5.1A7 7 0 1 1 10 3zm0 2a5 5 0 1 0 0 10 5 5 0 0 0 0-10z"/></svg>
+        <input type="search" id="filterInput" th:placeholder="${'Search ' + category + '…'}" aria-label="Filter problems in this category" autocomplete="off">
+    </div>
+
+    <div class="progress-line" style="margin-top:12px" th:if="${!#lists.isEmpty(problems)}">
+        <span class="small muted" id="progressText" th:text="${#lists.size(problems) + (#lists.size(problems) == 1 ? ' problem' : ' problems')}"></span>
+        <span class="bar"><i id="progressBar"></i></span>
+    </div>
+
+    <div class="chips" style="margin-bottom:12px" role="group" aria-label="Filter" th:if="${!#lists.isEmpty(problems)}">
+        <button type="button" class="chip" data-filter="all" aria-pressed="true">All</button>
+        <button type="button" class="chip" data-filter="todo" aria-pressed="false">Not run yet</button>
+        <button type="button" class="chip" data-filter="ran" aria-pressed="false">Ran</button>
+        <button type="button" class="chip" data-filter="az" aria-pressed="false">A–Z</button>
+    </div>
+
+    <div class="list" id="problemList">
+        <a th:each="problem : ${problems}" class="row-link" th:href="@{/problem/{name}(name=${problem.name})}"
+           th:attr="data-name=${problem.name},data-search=${#strings.toLowerCase(problem.name + ' ' + problem.shortDescription)}">
+            <div class="grow">
+                <div class="t" th:text="${problem.name}">Problem</div>
+                <div class="st" th:text="${problem.shortDescription}">Short description</div>
+            </div>
+            <div class="end">
+                <span class="badge" th:text="${#lists.size(problem.methods) + (#lists.size(problem.methods) == 1 ? ' method' : ' methods')}">1 method</span>
+                <span class="ran" hidden>✓ Ran</span>
+            </div>
+        </a>
+    </div>
+    <div class="empty" id="noMatches" hidden><p class="t">No problems match</p><p>Try another word, or tap Ask.</p></div>
+    <div class="empty" th:if="${#lists.isEmpty(problems)}"><p class="t">No problems here</p><p><a href="/browse" class="link-btn">See all categories</a></p></div>
+</main>
+
+<nav th:replace="~{fragments/layout :: nav('browse')}"></nav>
+<th:block th:replace="~{fragments/layout :: scripts}"></th:block>
+<script>
+    (function() {
+        const list = document.getElementById('problemList');
+        const rows = Array.from(list.querySelectorAll('[data-name]'));
+        if (!rows.length) return;
+        const original = rows.slice();
+        const ran = Store.ran();
+        let filter = 'all';
+
+        rows.forEach(function(row) {
+            row.querySelector('.ran').hidden = ran.indexOf(row.dataset.name) === -1;
+        });
+        const done = rows.filter(function(r) { return ran.indexOf(r.dataset.name) !== -1; }).length;
+        document.getElementById('progressText').textContent =
+            rows.length + (rows.length === 1 ? ' problem' : ' problems') + ' · ' + done + ' ran';
+        document.getElementById('progressBar').style.width = Math.round(100 * done / rows.length) + '%';
+
+        function apply() {
+            const q = document.getElementById('filterInput').value.trim().toLowerCase();
+            const ordered = filter === 'az'
+                ? original.slice().sort(function(a, b) { return a.dataset.name.localeCompare(b.dataset.name); })
+                : original;
+            let shown = 0;
+            ordered.forEach(function(row) {
+                const hasRun = ran.indexOf(row.dataset.name) !== -1;
+                const ok = (!q || row.dataset.search.indexOf(q) !== -1)
+                    && (filter !== 'ran' || hasRun) && (filter !== 'todo' || !hasRun);
+                row.hidden = !ok;
+                if (ok) shown++;
+                list.appendChild(row);
+            });
+            document.getElementById('noMatches').hidden = shown > 0;
+        }
+
+        document.querySelectorAll('[data-filter]').forEach(function(chip) {
+            chip.addEventListener('click', function() {
+                filter = chip.dataset.filter;
+                document.querySelectorAll('[data-filter]').forEach(function(c) {
+                    c.setAttribute('aria-pressed', c === chip ? 'true' : 'false');
+                });
+                apply();
+            });
+        });
+        document.getElementById('filterInput').addEventListener('input', apply);
+    })();
+</script>
 </body>
 </html>
-

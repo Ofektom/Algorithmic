@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="com.algorithm.web.service.ProblemRegistryServiceTest" tests="11" skipped="0" failures="0" errors="0" timestamp="2026-11-03T23:30:14" hostname="macs-MacBook-Air-6.local" time="1.114">
+<testsuite name="com.algorithm.web.service.ProblemRegistryServiceTest" tests="11" skipped="0" failures="0" errors="0" timestamp="2026-11-04T10:26:31" hostname="macs-MacBook-Air-6.local" time="0.806">
   <properties/>
-  <testcase name="spokenCommandsResolveToProblems()" classname="com.algorithm.web.service.ProblemRegistryServiceTest" time="0.143"/>
-  <testcase name="problemsAreSearchableByAlias()" classname="com.algorithm.web.service.ProblemRegistryServiceTest" time="0.192"/>
-  <testcase name="spokenCategoriesResolveToCategories()" classname="com.algorithm.web.service.ProblemRegistryServiceTest" time="0.112"/>
-  <testcase name="everyMethodRunsWithItsExampleInput()" classname="com.algorithm.web.service.ProblemRegistryServiceTest" time="0.228"/>
-  <testcase name="unknownQuestionsFallBackToAi()" classname="com.algorithm.web.service.ProblemRegistryServiceTest" time="0.051"/>
-  <testcase name="readOutQuestionsResolveToProblems()" classname="com.algorithm.web.service.ProblemRegistryServiceTest" time="0.033"/>
-  <testcase name="longParametersAndResultsAreHandled()" classname="com.algorithm.web.service.ProblemRegistryServiceTest" time="0.025"/>
-  <testcase name="nearMissesSuggestTheSimilarProblemInsteadOfMatching()" classname="com.algorithm.web.service.ProblemRegistryServiceTest" time="0.029"/>
-  <testcase name="shortVariantsOfBuiltInProblemsFallBackToAi()" classname="com.algorithm.web.service.ProblemRegistryServiceTest" time="0.065"/>
-  <testcase name="phraseInsideSentenceNeedsMatchingDescription()" classname="com.algorithm.web.service.ProblemRegistryServiceTest" time="0.078"/>
-  <testcase name="problemsAreGroupedByAlgorithmTopic()" classname="com.algorithm.web.service.ProblemRegistryServiceTest" time="0.13"/>
+  <testcase name="spokenCommandsResolveToProblems()" classname="com.algorithm.web.service.ProblemRegistryServiceTest" time="0.097"/>
+  <testcase name="problemsAreSearchableByAlias()" classname="com.algorithm.web.service.ProblemRegistryServiceTest" time="0.154"/>
+  <testcase name="spokenCategoriesResolveToCategories()" classname="com.algorithm.web.service.ProblemRegistryServiceTest" time="0.035"/>
+  <testcase name="everyMethodRunsWithItsExampleInput()" classname="com.algorithm.web.service.ProblemRegistryServiceTest" time="0.225"/>
+  <testcase name="unknownQuestionsFallBackToAi()" classname="com.algorithm.web.service.ProblemRegistryServiceTest" time="0.039"/>
+  <testcase name="readOutQuestionsResolveToProblems()" classname="com.algorithm.web.service.ProblemRegistryServiceTest" time="0.074"/>
+  <testcase name="longParametersAndResultsAreHandled()" classname="com.algorithm.web.service.ProblemRegistryServiceTest" time="0.032"/>
+  <testcase name="nearMissesSuggestTheSimilarProblemInsteadOfMatching()" classname="com.algorithm.web.service.ProblemRegistryServiceTest" time="0.033"/>
+  <testcase name="shortVariantsOfBuiltInProblemsFallBackToAi()" classname="com.algorithm.web.service.ProblemRegistryServiceTest" time="0.028"/>
+  <testcase name="phraseInsideSentenceNeedsMatchingDescription()" classname="com.algorithm.web.service.ProblemRegistryServiceTest" time="0.017"/>
+  <testcase name="problemsAreGroupedByAlgorithmTopic()" classname="com.algorithm.web.service.ProblemRegistryServiceTest" time="0.031"/>
   <system-out><![CDATA[]]></system-out>
   <system-err><![CDATA[]]></system-err>
 </testsuite>

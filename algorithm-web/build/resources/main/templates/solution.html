@@ -1,134 +1,236 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-    <title>Solution</title>
-    <link rel="icon" type="image/x-icon" href="/favicon.ico" th:href="@{/favicon.ico}">
-    <link rel="manifest" href="/manifest.json" th:href="@{/manifest.json}">
-    <meta name="theme-color" content="#667eea">
-    <link rel="stylesheet" href="/css/style.css">
-</head>
+<head th:replace="~{fragments/layout :: head('Solution · Algorithmic')}"></head>
 <body>
-    <div class="container">
-        <header>
-            <a href="/" class="back-link">← Back</a>
-            <h1>Solution</h1>
-            <p class="description solution-question" id="question"></p>
-        </header>
-
-        <!-- Shown when a built-in problem is close but not a confident match -->
-        <div class="result-card solution-suggestion" id="suggestion" hidden>
-            Similar built-in problem: <a id="suggestionLink" href="#"></a>
-        </div>
-
-        <div class="result-card loading-card" id="loading" role="status">
-            <div class="loading-spinner"></div>
-            <p>Loading…</p>
-        </div>
-
-        <div class="result-card solution-error" id="error" hidden>
-            <h2 class="section-title">Couldn't get a solution</h2>
-            <p id="errorMessage"></p>
-            <button class="btn btn-primary" id="retry">Try again</button>
-        </div>
-
-        <div id="result" hidden>
-            <div class="result-card" id="explanationCard">
-                <h2 class="section-title">Explanation</h2>
-                <p class="solution-text" id="explanation"></p>
-            </div>
-            <div class="result-card" id="solutionCard">
-                <h2 class="section-title">Approach</h2>
-                <p class="solution-text" id="solution"></p>
-            </div>
-            <div class="result-card" id="codeCard">
-                <h2 class="section-title">Java Code</h2>
-                <div class="code-block">
-                    <pre class="algorithm-code"><code id="code"></code></pre>
-                </div>
-            </div>
-            <div class="result-card" id="complexityCard">
-                <h2 class="section-title">Complexity</h2>
-                <p class="solution-text" id="complexity"></p>
-            </div>
-        </div>
+<main class="page">
+    <div class="appbar">
+        <a href="/" class="icon-btn" id="backButton" aria-label="Back">←</a>
+        <h1 id="question">Solution</h1>
+    </div>
+    <div class="source-row">
+        <span class="source generated" title="Written by AI for this question. It hasn't been run or tested.">Generated solution · not tested</span>
     </div>
 
-    <script>
-        // The question arrives as ?q= (links) or via sessionStorage (search box and voice: avoids long URLs)
-        let stored = '';
-        try { stored = sessionStorage.getItem('solutionQuestion') || ''; } catch (e) { /* storage unavailable */ }
-        const question = new URLSearchParams(location.search).get('q') || stored;
-        const $ = id => document.getElementById(id);
+    <div class="tabs scroll" role="tablist" aria-label="Solution sections">
+        <button type="button" role="tab" data-tab="problem" aria-controls="panel-problem" aria-selected="false">Problem</button>
+        <button type="button" role="tab" data-tab="solution" aria-controls="panel-solution" aria-selected="true">Solution</button>
+        <button type="button" role="tab" data-tab="explanation" aria-controls="panel-explanation" aria-selected="false">Explanation</button>
+        <button type="button" role="tab" data-tab="approach" aria-controls="panel-approach" aria-selected="false">Approach</button>
+        <button type="button" role="tab" data-tab="complexity" aria-controls="panel-complexity" aria-selected="false">Complexity</button>
+    </div>
 
-        function show(id, visible) { $(id).hidden = !visible; }
+    <div id="loading" role="status" aria-label="Loading the solution">
+        <div class="skel" style="width:92%"></div><div class="skel" style="width:84%"></div>
+        <div class="skel" style="width:88%"></div><div class="skel" style="width:58%"></div>
+        <p class="small muted" style="margin-top:12px">Writing a solution… this can take a few seconds.</p>
+    </div>
 
-        function fill(cardId, textId, value) {
-            $(textId).textContent = value || '';
-            show(cardId, Boolean(value && value.trim()));
-        }
+    <div class="card" id="error" hidden>
+        <p class="t" style="font-weight:700;margin-bottom:4px">Couldn't get a solution</p>
+        <p class="muted" id="errorMessage"></p>
+        <button type="button" class="btn primary" id="retry" style="margin-top:12px">Try again</button>
+    </div>
 
-        async function loadSuggestion() {
-            try {
-                const res = await fetch('/api/resolve', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ query: question })
-                });
-                const data = await res.json();
-                // A confident match (e.g. a shared link) is offered too: the built-in solution is runnable
-                const target = data.type === 'problem' ? data : data.suggestion;
-                if (target) {
-                    $('suggestionLink').textContent = target.name;
-                    $('suggestionLink').href = target.url;
-                    show('suggestion', true);
+    <div id="answer" hidden>
+        <section class="panel" id="panel-problem" role="tabpanel">
+            <p class="small muted">Solved as</p>
+            <p class="prose" id="problemText" style="margin-top:4px"></p>
+            <p class="muted" id="problemMissing" hidden>The answer didn't restate the problem. Check the Explanation tab to see how your question was read.</p>
+            <section id="builtInMatches" hidden>
+                <h2 class="h2">Did you mean one of these?</h2>
+                <div class="list" id="matchList"></div>
+            </section>
+        </section>
+        <section class="panel on" id="panel-solution" role="tabpanel">
+            <pre class="code" id="code"></pre>
+            <p class="card soft muted" id="noCode" hidden>The answer had no code. See the Explanation and Approach tabs.</p>
+            <button type="button" class="btn secondary block" data-copy="code" id="copyCode" style="margin-top:12px">⧉ Copy code</button>
+        </section>
+        <section class="panel" id="panel-explanation" role="tabpanel"><p class="prose" id="explanation"></p></section>
+        <section class="panel" id="panel-approach" role="tabpanel"><p class="prose" id="approach"></p></section>
+        <section class="panel" id="panel-complexity" role="tabpanel"><p class="prose" id="complexity"></p></section>
+    </div>
+
+    <!-- Corrections for an answer that doesn't fit the problem as the user's platform states it -->
+    <details class="card refine" id="refine" hidden>
+        <summary>Not quite right? Fix the solution</summary>
+        <p class="small muted refine-applied" id="refineApplied" hidden>Showing the solution updated with your corrections.</p>
+        <div class="field">
+            <label for="refineLanguage">Language</label>
+            <select id="refineLanguage">
+                <option>Java</option><option>C</option><option>C++</option><option>C#</option>
+                <option>Python</option><option>JavaScript</option><option>TypeScript</option>
+                <option>Go</option><option>Kotlin</option><option>Swift</option>
+            </select>
+        </div>
+        <div class="field">
+            <label for="refineSignature">Required signature or starter code</label>
+            <textarea id="refineSignature" class="mono" spellcheck="false" autocapitalize="off"
+                      placeholder="char* solve(int arr_count, int* arr)"></textarea>
+            <p class="hint">Paste the function as the problem declares it. The answer will keep these exact parameter and return types.</p>
+        </div>
+        <div class="field">
+            <label for="refineInstructions">What should change?</label>
+            <textarea id="refineInstructions"
+                      placeholder="e.g. arr is an int* with its length passed separately, so index it instead of using for-each. Return a char* like &quot;YES&quot;/&quot;NO&quot;, not a boolean."></textarea>
+        </div>
+        <p class="form-error" id="refineError" hidden></p>
+        <button type="button" class="btn primary block" id="refineButton">Update solution</button>
+    </details>
+</main>
+
+<nav th:replace="~{fragments/layout :: nav('')}"></nav>
+<th:block th:replace="~{fragments/layout :: scripts}"></th:block>
+<script>
+(function() {
+    // The question arrives as ?q= (links) or via sessionStorage (search box and voice: avoids long URLs)
+    let stored = '';
+    try { stored = sessionStorage.getItem('solutionQuestion') || ''; } catch (e) { /* storage unavailable */ }
+    const params = new URLSearchParams(location.search);
+    const question = (params.get('q') || stored).trim();
+    const $ = function(id) { return document.getElementById(id); };
+    if (!question) { location.replace('/'); return; }
+
+    // Keep the question in the URL so refresh, share and History reopen the same answer
+    if (!params.get('q')) {
+        const url = new URL(location.href);
+        url.searchParams.set('q', question);
+        history.replaceState(null, '', url);
+    }
+    if (document.referrer && new URL(document.referrer).origin === location.origin) {
+        $('backButton').addEventListener('click', function(e) { e.preventDefault(); history.back(); });
+    }
+    const title = question.charAt(0).toUpperCase() + question.slice(1);
+    $('question').textContent = title;
+    document.title = title + ' · Algorithmic';
+
+    const tabsEl = document.querySelector('.tabs');
+    const selectTab = initTabs(tabsEl);
+
+    function fill(id, value, tab) {
+        const text = (value || '').trim();
+        $(id).textContent = text;
+        tabsEl.querySelector('[data-tab="' + tab + '"]').hidden = !text;
+        return Boolean(text);
+    }
+
+    // Built-in problems that look like the question: tested and runnable, so offered first
+    async function loadMatches() {
+        const found = [];
+        try {
+            const res = await fetch('/api/resolve', {
+                method: 'POST', headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ query: question })
+            });
+            const data = await res.json();
+            const target = data.type === 'problem' ? data : data.suggestion;
+            if (target) found.push({ name: target.name, url: target.url });
+        } catch (e) { /* optional */ }
+        try {
+            const res = await fetch('/api/search?q=' + encodeURIComponent(question));
+            const list = await res.json();
+            (Array.isArray(list) ? list : []).forEach(function(p) {
+                if (found.length < 3 && !found.some(function(f) { return f.name === p.name; })) {
+                    found.push({ name: p.name, url: '/problem/' + encodeURIComponent(p.name), category: p.category });
                 }
-            } catch (e) {
-                // Suggestions are optional
-            }
-        }
+            });
+        } catch (e) { /* optional */ }
+        const box = $('matchList');
+        box.innerHTML = '';
+        found.forEach(function(f) {
+            const a = document.createElement('a');
+            a.className = 'row-link';
+            a.href = f.url;
+            a.innerHTML = '<div class="grow"><div class="t"></div><div class="st"></div></div><span class="badge ok">Built-in · runnable</span>';
+            a.querySelector('.t').textContent = f.name;
+            a.querySelector('.st').textContent = f.category || 'Tested solution you can run';
+            box.appendChild(a);
+        });
+        $('builtInMatches').hidden = found.length === 0;
+    }
 
-        async function loadSolution() {
-            show('error', false);
-            show('result', false);
-            show('loading', true);
+    // The language sticks between questions: someone practising in C wants C next time too
+    const languages = Array.from($('refineLanguage').options).map(function(o) { return o.value; });
+    const savedLanguage = Store.setting('solutionLanguage', 'Java');
+    $('refineLanguage').value = languages.indexOf(savedLanguage) !== -1 ? savedLanguage : 'Java';
+    let lastCode = '';
+    // Corrections currently applied; Try again after a failed refinement resends them
+    let guidance = null;
 
-            try {
-                const res = await fetch('/api/ai/solution-with-inputs', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ problemStatement: question, language: 'Java' })
-                });
-                const data = await res.json().catch(() => ({}));
-                if (!res.ok || data.error) {
-                    throw new Error(data.error || "Couldn't load a solution right now.");
-                }
-                fill('explanationCard', 'explanation', data.explanation);
-                fill('solutionCard', 'solution', data.solution);
-                fill('codeCard', 'code', data.code);
-                fill('complexityCard', 'complexity', data.complexity);
-                show('result', true);
-            } catch (err) {
-                // fetch's own errors (offline etc.) are technical; show a plain message for those
-                $('errorMessage').textContent = err instanceof TypeError
-                    ? "Couldn't reach the server. Check your connection and try again." : err.message;
-                show('error', true);
-            } finally {
-                show('loading', false);
-            }
-        }
+    async function loadSolution() {
+        $('error').hidden = true;
+        $('answer').hidden = true;
+        $('refine').hidden = true;
+        tabsEl.hidden = false;
+        $('loading').hidden = false;
+        try {
+            const body = { problemStatement: question, language: $('refineLanguage').value };
+            if (guidance) Object.assign(body, guidance);
+            const res = await fetch('/api/ai/solution-with-inputs', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(body)
+            });
+            const data = await res.json().catch(function() { return {}; });
+            if (!res.ok || data.error) throw new Error(data.error || "Couldn't load a solution right now.");
 
-        if (!question.trim()) {
-            location.replace('/');
-        } else {
-            $('question').textContent = '“' + question + '”';
-            $('retry').addEventListener('click', loadSolution);
-            loadSuggestion();
-            loadSolution();
+            const hasCode = fill('code', data.code, 'solution');
+            tabsEl.querySelector('[data-tab="solution"]').hidden = false;
+            $('code').hidden = !hasCode;
+            $('copyCode').hidden = !hasCode;
+            $('noCode').hidden = hasCode;
+            fill('explanation', data.explanation, 'explanation');
+            fill('approach', data.solution, 'approach');
+            fill('complexity', data.complexity, 'complexity');
+            const hasProblem = Boolean((data.problem || '').trim());
+            $('problemText').textContent = (data.problem || '').trim();
+            $('problemText').hidden = !hasProblem;
+            $('problemMissing').hidden = hasProblem;
+
+            lastCode = (data.code || '').trim();
+            $('answer').hidden = false;
+            $('refine').hidden = false;
+            $('refineApplied').hidden = !guidance;
+            selectTab('solution', false);
+            Store.addHistory({ type: 'generated', title: title, url: '/solution?q=' + encodeURIComponent(question) });
+        } catch (err) {
+            tabsEl.hidden = true;
+            $('errorMessage').textContent = err instanceof TypeError
+                ? "Couldn't reach the server. Check your connection and try again." : err.message;
+            $('error').hidden = false;
+            // The corrections can still be changed after a failed attempt
+            $('refine').hidden = !guidance;
+        } finally {
+            $('loading').hidden = true;
         }
-    </script>
-    <script src="/js/app.js"></script>
-    <script src="/js/voice.js"></script>
+    }
+
+    function refine() {
+        const signature = $('refineSignature').value.trim();
+        const instructions = $('refineInstructions').value.trim();
+        const language = $('refineLanguage').value;
+        const languageChanged = language !== Store.setting('solutionLanguage', 'Java');
+        if (!signature && !instructions && !languageChanged) {
+            $('refineError').textContent = 'Add the required signature, describe what should change, or pick another language.';
+            $('refineError').hidden = false;
+            return;
+        }
+        $('refineError').hidden = true;
+        Store.setSetting('solutionLanguage', language);
+        // Send the code being corrected so the model fixes it instead of starting over.
+        // A language change alone just asks for a fresh answer in that language.
+        guidance = (signature || instructions)
+            ? { signature: signature, instructions: instructions, previousCode: lastCode }
+            : null;
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        loadSolution();
+    }
+
+    $('refineButton').addEventListener('click', refine);
+    $('retry').addEventListener('click', loadSolution);
+    loadMatches();
+    loadSolution();
+})();
+</script>
 </body>
 </html>

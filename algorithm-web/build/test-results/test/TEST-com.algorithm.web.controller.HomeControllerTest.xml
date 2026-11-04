@@ -1,19 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="com.algorithm.web.controller.HomeControllerTest" tests="11" skipped="0" failures="0" errors="0" timestamp="2026-11-03T23:29:48" hostname="macs-MacBook-Air-6.local" time="4.412">
+<testsuite name="com.algorithm.web.controller.HomeControllerTest" tests="16" skipped="0" failures="0" errors="0" timestamp="2026-11-04T10:26:06" hostname="macs-MacBook-Air-6.local" time="3.174">
   <properties/>
-  <testcase name="resolveUnknownQuestionHasNoSuggestion()" classname="com.algorithm.web.controller.HomeControllerTest" time="0.706"/>
-  <testcase name="searchLinksGoStraightToTheSolution()" classname="com.algorithm.web.controller.HomeControllerTest" time="0.073"/>
-  <testcase name="categoryWithoutNameRendersEmptyList()" classname="com.algorithm.web.controller.HomeControllerTest" time="2.866"/>
-  <testcase name="categoriesContainingSlashResolve()" classname="com.algorithm.web.controller.HomeControllerTest" time="0.127"/>
-  <testcase name="resolveReturnsProblemUrl()" classname="com.algorithm.web.controller.HomeControllerTest" time="0.026"/>
-  <testcase name="resolveFallsBackToAiWithSuggestion()" classname="com.algorithm.web.controller.HomeControllerTest" time="0.02"/>
-  <testcase name="solutionPageRenders()" classname="com.algorithm.web.controller.HomeControllerTest" time="0.056"/>
-  <testcase name="unknownCategoryRendersEmptyList()" classname="com.algorithm.web.controller.HomeControllerTest" time="0.048"/>
-  <testcase name="categoryWithoutSlashResolves()" classname="com.algorithm.web.controller.HomeControllerTest" time="0.059"/>
-  <testcase name="resolveReturnsCategoryUrlKeepingSlash()" classname="com.algorithm.web.controller.HomeControllerTest" time="0.027"/>
-  <testcase name="percentEncodedSegmentsAreDecoded()" classname="com.algorithm.web.controller.HomeControllerTest" time="0.224"/>
-  <system-out><![CDATA[00:29:28.656 [Test worker] INFO org.springframework.test.context.support.AnnotationConfigContextLoaderUtils -- Could not detect default configuration classes for test class [com.algorithm.web.controller.HomeControllerTest]: HomeControllerTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
-00:29:30.373 [Test worker] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper -- Found @SpringBootConfiguration com.algorithm.web.AlgorithmWebApplication for test class com.algorithm.web.controller.HomeControllerTest
+  <testcase name="resolveUnknownQuestionHasNoSuggestion()" classname="com.algorithm.web.controller.HomeControllerTest" time="0.611"/>
+  <testcase name="searchLinksGoStraightToTheSolution()" classname="com.algorithm.web.controller.HomeControllerTest" time="0.037"/>
+  <testcase name="categoryWithoutNameRendersEmptyList()" classname="com.algorithm.web.controller.HomeControllerTest" time="1.185"/>
+  <testcase name="categoriesContainingSlashResolve()" classname="com.algorithm.web.controller.HomeControllerTest" time="0.313"/>
+  <testcase name="resolveReturnsProblemUrl()" classname="com.algorithm.web.controller.HomeControllerTest" time="0.018"/>
+  <testcase name="resolveFallsBackToAiWithSuggestion()" classname="com.algorithm.web.controller.HomeControllerTest" time="0.115"/>
+  <testcase name="browseHistoryAndSettingsPagesRender()" classname="com.algorithm.web.controller.HomeControllerTest" time="0.285"/>
+  <testcase name="solutionPageRenders()" classname="com.algorithm.web.controller.HomeControllerTest" time="0.054"/>
+  <testcase name="problemPageHasReadableMethodNamesAndSourceIndicator()" classname="com.algorithm.web.controller.HomeControllerTest" time="0.174"/>
+  <testcase name="unknownCategoryRendersEmptyList()" classname="com.algorithm.web.controller.HomeControllerTest" time="0.024"/>
+  <testcase name="stylesheetAndScriptsAreLinkedWithAContentHash()" classname="com.algorithm.web.controller.HomeControllerTest" time="0.057"/>
+  <testcase name="categoryWithoutSlashResolves()" classname="com.algorithm.web.controller.HomeControllerTest" time="0.049"/>
+  <testcase name="homeRendersWithCategoryProblems()" classname="com.algorithm.web.controller.HomeControllerTest" time="0.058"/>
+  <testcase name="methodLabelsAreReadable()" classname="com.algorithm.web.controller.HomeControllerTest" time="0.019"/>
+  <testcase name="resolveReturnsCategoryUrlKeepingSlash()" classname="com.algorithm.web.controller.HomeControllerTest" time="0.011"/>
+  <testcase name="percentEncodedSegmentsAreDecoded()" classname="com.algorithm.web.controller.HomeControllerTest" time="0.032"/>
+  <system-out><![CDATA[11:25:57.702 [Test worker] INFO org.springframework.test.context.support.AnnotationConfigContextLoaderUtils -- Could not detect default configuration classes for test class [com.algorithm.web.controller.HomeControllerTest]: HomeControllerTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+11:25:58.057 [Test worker] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper -- Found @SpringBootConfiguration com.algorithm.web.AlgorithmWebApplication for test class com.algorithm.web.controller.HomeControllerTest
 
   .   ____          _            __ _ _
  /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
@@ -23,15 +28,15 @@
  =========|_|==============|___/=/_/_/_/
  :: Spring Boot ::                (v3.2.0)
 
-2026-11-04T00:29:34.210+01:00  INFO 80724 --- [algorithm-web] [    Test worker] c.a.web.controller.HomeControllerTest    : Starting HomeControllerTest using Java 21.0.10 with PID 80724 (started by decagon in /Users/decagon/IdeaProjects/algorithm/algorithm-web)
-2026-11-04T00:29:34.215+01:00 DEBUG 80724 --- [algorithm-web] [    Test worker] c.a.web.controller.HomeControllerTest    : Running with Spring Boot v3.2.0, Spring v6.1.1
-2026-11-04T00:29:34.219+01:00  INFO 80724 --- [algorithm-web] [    Test worker] c.a.web.controller.HomeControllerTest    : No active profile set, falling back to 1 default profile: "default"
-2026-11-04T00:29:46.599+01:00  INFO 80724 --- [algorithm-web] [    Test worker] o.s.b.a.w.s.WelcomePageHandlerMapping    : Adding welcome page template: index
-2026-11-04T00:29:47.989+01:00 DEBUG 80724 --- [algorithm-web] [    Test worker] c.a.web.security.AccessControlFilter     : Filter 'accessControlFilter' configured for use
-2026-11-04T00:29:48.005+01:00  INFO 80724 --- [algorithm-web] [    Test worker] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
-2026-11-04T00:29:48.006+01:00  INFO 80724 --- [algorithm-web] [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
-2026-11-04T00:29:48.014+01:00  INFO 80724 --- [algorithm-web] [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 4 ms
-2026-11-04T00:29:48.195+01:00  INFO 80724 --- [algorithm-web] [    Test worker] c.a.web.controller.HomeControllerTest    : Started HomeControllerTest in 17.386 seconds (process running for 26.014)
+2026-11-04T11:25:59.560+01:00  INFO 7739 --- [algorithm-web] [    Test worker] c.a.web.controller.HomeControllerTest    : Starting HomeControllerTest using Java 21.0.10 with PID 7739 (started by decagon in /Users/decagon/IdeaProjects/algorithm/algorithm-web)
+2026-11-04T11:25:59.563+01:00 DEBUG 7739 --- [algorithm-web] [    Test worker] c.a.web.controller.HomeControllerTest    : Running with Spring Boot v3.2.0, Spring v6.1.1
+2026-11-04T11:25:59.565+01:00  INFO 7739 --- [algorithm-web] [    Test worker] c.a.web.controller.HomeControllerTest    : No active profile set, falling back to 1 default profile: "default"
+2026-11-04T11:26:04.262+01:00  INFO 7739 --- [algorithm-web] [    Test worker] o.s.b.a.w.s.WelcomePageHandlerMapping    : Adding welcome page template: index
+2026-11-04T11:26:06.198+01:00 DEBUG 7739 --- [algorithm-web] [    Test worker] c.a.web.security.AccessControlFilter     : Filter 'accessControlFilter' configured for use
+2026-11-04T11:26:06.221+01:00  INFO 7739 --- [algorithm-web] [    Test worker] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2026-11-04T11:26:06.222+01:00  INFO 7739 --- [algorithm-web] [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2026-11-04T11:26:06.231+01:00  INFO 7739 --- [algorithm-web] [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 5 ms
+2026-11-04T11:26:06.348+01:00  INFO 7739 --- [algorithm-web] [    Test worker] c.a.web.controller.HomeControllerTest    : Started HomeControllerTest in 8.106 seconds (process running for 10.994)
 ]]></system-out>
   <system-err><![CDATA[WARNING: A Java agent has been loaded dynamically (/Users/decagon/.gradle/caches/modules-2/files-2.1/net.bytebuddy/byte-buddy-agent/1.14.10/90ed94ac044ea8953b224304c762316e91fd6b31/byte-buddy-agent-1.14.10.jar)
 WARNING: If a serviceability tool is in use, please run with -XX:+EnableDynamicAgentLoading to hide this warning

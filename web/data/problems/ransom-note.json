@@ -23,19 +23,19 @@
   "exampleInputs" : [ "aa", "aab" ],
   "related" : [ {
     "name" : "Valid Anagram",
-    "shortDescription" : "Check if two strings are anagrams",
-    "slug" : "valid-anagram"
+    "slug" : "valid-anagram",
+    "shortDescription" : "Check if two strings are anagrams"
   }, {
     "name" : "Group Anagrams",
-    "shortDescription" : "Group strings that are anagrams of each other",
-    "slug" : "group-anagrams"
+    "slug" : "group-anagrams",
+    "shortDescription" : "Group strings that are anagrams of each other"
   }, {
     "name" : "Isomorphic Strings",
-    "shortDescription" : "Check if two strings are isomorphic",
-    "slug" : "isomorphic-strings"
+    "slug" : "isomorphic-strings",
+    "shortDescription" : "Check if two strings are isomorphic"
   }, {
     "name" : "Word Pattern",
-    "shortDescription" : "Check if string follows word pattern",
-    "slug" : "word-pattern"
+    "slug" : "word-pattern",
+    "shortDescription" : "Check if string follows word pattern"
   } ]
 }

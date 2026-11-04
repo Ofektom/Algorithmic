@@ -23,19 +23,19 @@
   "exampleInputs" : [ [ 73, 74, 75, 71, 69, 72, 76, 73 ] ],
   "related" : [ {
     "name" : "Valid Parentheses",
-    "shortDescription" : "Check if parentheses/brackets are valid",
-    "slug" : "valid-parentheses"
+    "slug" : "valid-parentheses",
+    "shortDescription" : "Check if parentheses/brackets are valid"
   }, {
     "name" : "Largest Rectangle in Histogram",
-    "shortDescription" : "Find largest rectangle area in histogram",
-    "slug" : "largest-rectangle-in-histogram"
+    "slug" : "largest-rectangle-in-histogram",
+    "shortDescription" : "Find largest rectangle area in histogram"
   }, {
     "name" : "Evaluate Reverse Polish Notation",
-    "shortDescription" : "Evaluate RPN expression",
-    "slug" : "evaluate-reverse-polish-notation"
+    "slug" : "evaluate-reverse-polish-notation",
+    "shortDescription" : "Evaluate RPN expression"
   }, {
     "name" : "Generate Parentheses",
-    "shortDescription" : "Generate all valid parentheses combinations",
-    "slug" : "generate-parentheses"
+    "slug" : "generate-parentheses",
+    "shortDescription" : "Generate all valid parentheses combinations"
   } ]
 }

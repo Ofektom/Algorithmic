@@ -27,19 +27,19 @@
   "exampleInputs" : [ [ 3, 0, 1 ] ],
   "related" : [ {
     "name" : "Two Sum",
-    "shortDescription" : "Find two numbers that add up to target",
-    "slug" : "two-sum"
+    "slug" : "two-sum",
+    "shortDescription" : "Find two numbers that add up to target"
   }, {
     "name" : "Contains Duplicate",
-    "shortDescription" : "Check if array has duplicate values",
-    "slug" : "contains-duplicate"
+    "slug" : "contains-duplicate",
+    "shortDescription" : "Check if array has duplicate values"
   }, {
     "name" : "Single Number",
-    "shortDescription" : "Find the number that appears only once",
-    "slug" : "single-number"
+    "slug" : "single-number",
+    "shortDescription" : "Find the number that appears only once"
   }, {
     "name" : "Plus One",
-    "shortDescription" : "Increment a number represented as array by one",
-    "slug" : "plus-one"
+    "slug" : "plus-one",
+    "shortDescription" : "Increment a number represented as array by one"
   } ]
 }

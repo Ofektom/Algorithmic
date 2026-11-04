@@ -19,19 +19,19 @@
   "exampleInputs" : [ "ADOBECODEBANC", "ABC" ],
   "related" : [ {
     "name" : "Best Time to Buy and Sell Stock",
-    "shortDescription" : "Find maximum profit from buying and selling stock",
-    "slug" : "best-time-to-buy-and-sell-stock"
+    "slug" : "best-time-to-buy-and-sell-stock",
+    "shortDescription" : "Find maximum profit from buying and selling stock"
   }, {
     "name" : "Longest Substring Without Repeating",
-    "shortDescription" : "Find longest substring without repeating characters",
-    "slug" : "longest-substring-without-repeating"
+    "slug" : "longest-substring-without-repeating",
+    "shortDescription" : "Find longest substring without repeating characters"
   }, {
     "name" : "Longest Repeating Character Replacement",
-    "shortDescription" : "Find longest substring after replacing k characters",
-    "slug" : "longest-repeating-character-replacement"
+    "slug" : "longest-repeating-character-replacement",
+    "shortDescription" : "Find longest substring after replacing k characters"
   }, {
     "name" : "Minimum Size Subarray Sum",
-    "shortDescription" : "Find minimum length subarray with sum >= target",
-    "slug" : "minimum-size-subarray-sum"
+    "slug" : "minimum-size-subarray-sum",
+    "shortDescription" : "Find minimum length subarray with sum >= target"
   } ]
 }

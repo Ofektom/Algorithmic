@@ -23,19 +23,19 @@
   "exampleInputs" : [ [ 2, 7, 11, 15 ], 9 ],
   "related" : [ {
     "name" : "Valid Palindrome",
-    "shortDescription" : "Check if string is palindrome",
-    "slug" : "valid-palindrome"
+    "slug" : "valid-palindrome",
+    "shortDescription" : "Check if string is palindrome"
   }, {
     "name" : "Container With Most Water",
-    "shortDescription" : "Find container that holds most water",
-    "slug" : "container-with-most-water"
+    "slug" : "container-with-most-water",
+    "shortDescription" : "Find container that holds most water"
   }, {
     "name" : "3Sum",
-    "shortDescription" : "Find all triplets that sum to zero",
-    "slug" : "3sum"
+    "slug" : "3sum",
+    "shortDescription" : "Find all triplets that sum to zero"
   }, {
     "name" : "Trapping Rain Water",
-    "shortDescription" : "Calculate trapped rainwater",
-    "slug" : "trapping-rain-water"
+    "slug" : "trapping-rain-water",
+    "shortDescription" : "Calculate trapped rainwater"
   } ]
 }

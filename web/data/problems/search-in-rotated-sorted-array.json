@@ -23,19 +23,19 @@
   "exampleInputs" : [ [ 4, 5, 6, 7, 0, 1, 2 ], 0 ],
   "related" : [ {
     "name" : "Find Minimum in Rotated Sorted Array",
-    "shortDescription" : "Find minimum element in rotated sorted array",
-    "slug" : "find-minimum-in-rotated-sorted-array"
+    "slug" : "find-minimum-in-rotated-sorted-array",
+    "shortDescription" : "Find minimum element in rotated sorted array"
   }, {
     "name" : "Find Peak Element",
-    "shortDescription" : "Find peak element in array",
-    "slug" : "find-peak-element"
+    "slug" : "find-peak-element",
+    "shortDescription" : "Find peak element in array"
   }, {
     "name" : "Search a 2D Matrix",
-    "shortDescription" : "Search target in sorted 2D matrix",
-    "slug" : "search-a-2d-matrix"
+    "slug" : "search-a-2d-matrix",
+    "shortDescription" : "Search target in sorted 2D matrix"
   }, {
     "name" : "Binary Search",
-    "shortDescription" : "Search target in sorted array using binary search",
-    "slug" : "binary-search"
+    "slug" : "binary-search",
+    "shortDescription" : "Search target in sorted array using binary search"
   } ]
 }

@@ -23,19 +23,19 @@
   "exampleInputs" : [ [ 1, 2, 5 ], 11 ],
   "related" : [ {
     "name" : "Climbing Stairs",
-    "shortDescription" : "Find distinct ways to climb n steps (1 or 2 at a time)",
-    "slug" : "climbing-stairs"
+    "slug" : "climbing-stairs",
+    "shortDescription" : "Find distinct ways to climb n steps (1 or 2 at a time)"
   }, {
     "name" : "House Robber",
-    "shortDescription" : "Find maximum money robbing houses (no two adjacent)",
-    "slug" : "house-robber"
+    "slug" : "house-robber",
+    "shortDescription" : "Find maximum money robbing houses (no two adjacent)"
   }, {
     "name" : "Unique Paths",
-    "shortDescription" : "Count unique paths from top-left to bottom-right",
-    "slug" : "unique-paths"
+    "slug" : "unique-paths",
+    "shortDescription" : "Count unique paths from top-left to bottom-right"
   }, {
     "name" : "Word Break",
-    "shortDescription" : "Check if string can be segmented into dictionary words",
-    "slug" : "word-break"
+    "slug" : "word-break",
+    "shortDescription" : "Check if string can be segmented into dictionary words"
   } ]
 }

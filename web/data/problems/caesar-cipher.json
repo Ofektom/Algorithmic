@@ -19,19 +19,19 @@
   "exampleInputs" : [ "middle-Outz", 2 ],
   "related" : [ {
     "name" : "Valid Anagram",
-    "shortDescription" : "Check if two strings are anagrams",
-    "slug" : "valid-anagram"
+    "slug" : "valid-anagram",
+    "shortDescription" : "Check if two strings are anagrams"
   }, {
     "name" : "Group Anagrams",
-    "shortDescription" : "Group strings that are anagrams of each other",
-    "slug" : "group-anagrams"
+    "slug" : "group-anagrams",
+    "shortDescription" : "Group strings that are anagrams of each other"
   }, {
     "name" : "Ransom Note",
-    "shortDescription" : "Check if ransom note can be constructed from magazine",
-    "slug" : "ransom-note"
+    "slug" : "ransom-note",
+    "shortDescription" : "Check if ransom note can be constructed from magazine"
   }, {
     "name" : "Isomorphic Strings",
-    "shortDescription" : "Check if two strings are isomorphic",
-    "slug" : "isomorphic-strings"
+    "slug" : "isomorphic-strings",
+    "shortDescription" : "Check if two strings are isomorphic"
   } ]
 }

@@ -27,19 +27,19 @@
   "exampleInputs" : [ 5 ],
   "related" : [ {
     "name" : "House Robber",
-    "shortDescription" : "Find maximum money robbing houses (no two adjacent)",
-    "slug" : "house-robber"
+    "slug" : "house-robber",
+    "shortDescription" : "Find maximum money robbing houses (no two adjacent)"
   }, {
     "name" : "Coin Change",
-    "shortDescription" : "Find minimum coins to make amount",
-    "slug" : "coin-change"
+    "slug" : "coin-change",
+    "shortDescription" : "Find minimum coins to make amount"
   }, {
     "name" : "Unique Paths",
-    "shortDescription" : "Count unique paths from top-left to bottom-right",
-    "slug" : "unique-paths"
+    "slug" : "unique-paths",
+    "shortDescription" : "Count unique paths from top-left to bottom-right"
   }, {
     "name" : "Word Break",
-    "shortDescription" : "Check if string can be segmented into dictionary words",
-    "slug" : "word-break"
+    "slug" : "word-break",
+    "shortDescription" : "Check if string can be segmented into dictionary words"
   } ]
 }

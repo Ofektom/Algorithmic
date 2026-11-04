@@ -19,7 +19,7 @@
   "exampleInputs" : [ [ 0, 0, 1, 0, 0, 1, 0 ] ],
   "related" : [ {
     "name" : "Jump Game",
-    "shortDescription" : "Check if can reach last index by jumping",
-    "slug" : "jump-game"
+    "slug" : "jump-game",
+    "shortDescription" : "Check if can reach last index by jumping"
   } ]
 }

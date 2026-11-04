@@ -23,19 +23,19 @@
   "exampleInputs" : null,
   "related" : [ {
     "name" : "Maximum Depth of Binary Tree",
-    "shortDescription" : "Find the maximum depth of a binary tree",
-    "slug" : "maximum-depth-of-binary-tree"
+    "slug" : "maximum-depth-of-binary-tree",
+    "shortDescription" : "Find the maximum depth of a binary tree"
   }, {
     "name" : "Same Tree",
-    "shortDescription" : "Check if two binary trees are identical",
-    "slug" : "same-tree"
+    "slug" : "same-tree",
+    "shortDescription" : "Check if two binary trees are identical"
   }, {
     "name" : "Invert Binary Tree",
-    "shortDescription" : "Invert a binary tree",
-    "slug" : "invert-binary-tree"
+    "slug" : "invert-binary-tree",
+    "shortDescription" : "Invert a binary tree"
   }, {
     "name" : "Symmetric Tree",
-    "shortDescription" : "Check if a binary tree is symmetric",
-    "slug" : "symmetric-tree"
+    "slug" : "symmetric-tree",
+    "shortDescription" : "Check if a binary tree is symmetric"
   } ]
 }

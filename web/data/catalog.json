@@ -1,6 +1,7 @@
 {
   "problemCount" : 107,
   "categories" : [ {
+    "name" : "Arrays & Hashing",
     "problems" : [ {
       "name" : "Two Sum",
       "slug" : "two-sum",
@@ -127,9 +128,9 @@
       "methodCount" : 2,
       "aliases" : [ "SalesByMatch", "Sock Merchant", "Matching Socks" ],
       "keywords" : [ "array", "socks", "pairs", "matching", "color", "count", "hashset" ]
-    } ],
-    "name" : "Arrays & Hashing"
+    } ]
   }, {
+    "name" : "Strings",
     "problems" : [ {
       "name" : "Valid Anagram",
       "slug" : "valid-anagram",
@@ -277,9 +278,9 @@
       "methodCount" : 2,
       "aliases" : [ "CaesarCipher", "Caesar Shift", "Shift Cipher" ],
       "keywords" : [ "string", "cipher", "caesar", "shift", "rotate", "encrypt", "alphabet" ]
-    } ],
-    "name" : "Strings"
+    } ]
   }, {
+    "name" : "Trees",
     "problems" : [ {
       "name" : "Maximum Depth of Binary Tree",
       "slug" : "maximum-depth-of-binary-tree",
@@ -378,9 +379,9 @@
       "methodCount" : 3,
       "aliases" : [ "BinaryTreePreorderTraversal", "Preorder Traversal", "Preorder" ],
       "keywords" : [ "tree", "binary tree", "preorder", "traversal", "dfs" ]
-    } ],
-    "name" : "Trees"
+    } ]
   }, {
+    "name" : "Linked List",
     "problems" : [ {
       "name" : "Reverse Linked List",
       "slug" : "reverse-linked-list",
@@ -451,9 +452,9 @@
       "methodCount" : 3,
       "aliases" : [ "RemoveDuplicatesFromSortedList", "Remove Duplicates List", "Unique List" ],
       "keywords" : [ "linked list", "remove", "duplicates", "sorted", "unique" ]
-    } ],
-    "name" : "Linked List"
+    } ]
   }, {
+    "name" : "Two Pointers",
     "problems" : [ {
       "name" : "Valid Palindrome",
       "slug" : "valid-palindrome",
@@ -517,9 +518,9 @@
       "methodCount" : 3,
       "aliases" : [ "FourSum", "4Sum", "Four Sum" ],
       "keywords" : [ "array", "four", "sum", "quadruplets", "target", "two pointers", "unique" ]
-    } ],
-    "name" : "Two Pointers"
+    } ]
   }, {
+    "name" : "Sliding Window",
     "problems" : [ {
       "name" : "Best Time to Buy and Sell Stock",
       "slug" : "best-time-to-buy-and-sell-stock",
@@ -569,9 +570,9 @@
       "methodCount" : 2,
       "aliases" : [ "SubstringWithConcatenationOfAllWords", "Concatenation", "All Words" ],
       "keywords" : [ "string", "substring", "concatenation", "words", "indices", "sliding window", "hashmap" ]
-    } ],
-    "name" : "Sliding Window"
+    } ]
   }, {
+    "name" : "Stack",
     "problems" : [ {
       "name" : "Valid Parentheses",
       "slug" : "valid-parentheses",
@@ -614,9 +615,9 @@
       "methodCount" : 3,
       "aliases" : [ "CarFleet", "Fleet", "Cars" ],
       "keywords" : [ "cars", "fleet", "position", "speed", "target", "stack", "monotonic" ]
-    } ],
-    "name" : "Stack"
+    } ]
   }, {
+    "name" : "Search",
     "problems" : [ {
       "name" : "Search in Rotated Sorted Array",
       "slug" : "search-in-rotated-sorted-array",
@@ -666,9 +667,9 @@
       "methodCount" : 4,
       "aliases" : [ "Sqrt", "Square Root", "Root" ],
       "keywords" : [ "math", "sqrt", "square root", "binary search", "newton" ]
-    } ],
-    "name" : "Search"
+    } ]
   }, {
+    "name" : "Dynamic Programming",
     "problems" : [ {
       "name" : "Climbing Stairs",
       "slug" : "climbing-stairs",
@@ -711,9 +712,9 @@
       "methodCount" : 3,
       "aliases" : [ "LongestIncreasingSubsequence", "LIS", "Increasing Subsequence" ],
       "keywords" : [ "array", "subsequence", "increasing", "longest", "dp", "binary search" ]
-    } ],
-    "name" : "Dynamic Programming"
+    } ]
   }, {
+    "name" : "Graphs",
     "problems" : [ {
       "name" : "Number of Islands",
       "slug" : "number-of-islands",
@@ -721,9 +722,9 @@
       "methodCount" : 3,
       "aliases" : [ "NumberOfIslands", "Islands", "Grid Islands" ],
       "keywords" : [ "grid", "2d", "islands", "land", "water", "dfs", "bfs", "graph" ]
-    } ],
-    "name" : "Graphs"
+    } ]
   }, {
+    "name" : "Heap/Priority Queue",
     "problems" : [ {
       "name" : "Kth Largest Element in Array",
       "slug" : "kth-largest-element-in-array",
@@ -731,9 +732,9 @@
       "methodCount" : 4,
       "aliases" : [ "KthLargestElementInArray", "Kth Largest", "K Largest" ],
       "keywords" : [ "array", "kth", "largest", "element", "heap", "priority queue", "quickselect" ]
-    } ],
-    "name" : "Heap/Priority Queue"
+    } ]
   }, {
+    "name" : "Backtracking",
     "problems" : [ {
       "name" : "Subsets",
       "slug" : "subsets",
@@ -741,9 +742,9 @@
       "methodCount" : 3,
       "aliases" : [ "Subsets", "Power Set", "All Subsets" ],
       "keywords" : [ "array", "subsets", "power set", "combinations", "backtracking", "recursive" ]
-    } ],
-    "name" : "Backtracking"
+    } ]
   }, {
+    "name" : "Trie",
     "problems" : [ {
       "name" : "Implement Trie",
       "slug" : "implement-trie",
@@ -751,9 +752,9 @@
       "methodCount" : 3,
       "aliases" : [ "ImplementTrie", "Trie", "Prefix Tree" ],
       "keywords" : [ "trie", "prefix tree", "data structure", "insert", "search", "startsWith", "autocomplete" ]
-    } ],
-    "name" : "Trie"
+    } ]
   }, {
+    "name" : "Intervals",
     "problems" : [ {
       "name" : "Merge Intervals",
       "slug" : "merge-intervals",
@@ -761,9 +762,9 @@
       "methodCount" : 3,
       "aliases" : [ "MergeIntervals", "Merge", "Overlapping Intervals" ],
       "keywords" : [ "intervals", "merge", "overlapping", "array", "sort", "ranges" ]
-    } ],
-    "name" : "Intervals"
+    } ]
   }, {
+    "name" : "Math/Geometry",
     "problems" : [ {
       "name" : "Pow(x, n)",
       "slug" : "pow-x-n",
@@ -771,9 +772,9 @@
       "methodCount" : 3,
       "aliases" : [ "Pow", "Power", "Exponentiation" ],
       "keywords" : [ "math", "power", "exponent", "x^n", "fast power", "binary exponentiation" ]
-    } ],
-    "name" : "Math/Geometry"
+    } ]
   }, {
+    "name" : "Greedy",
     "problems" : [ {
       "name" : "Jump Game",
       "slug" : "jump-game",
@@ -788,9 +789,9 @@
       "methodCount" : 2,
       "aliases" : [ "JumpingOnTheClouds", "Cloud Jump" ],
       "keywords" : [ "array", "clouds", "jump", "minimum", "greedy", "dp", "thunderhead" ]
-    } ],
-    "name" : "Greedy"
+    } ]
   }, {
+    "name" : "Bit Manipulation",
     "problems" : [ {
       "name" : "Number of 1 Bits",
       "slug" : "number-of-1-bits",
@@ -798,7 +799,6 @@
       "methodCount" : 5,
       "aliases" : [ "NumberOf1Bits", "Hamming Weight", "Set Bits" ],
       "keywords" : [ "bit", "bits", "hamming weight", "count", "ones", "set bits", "bit manipulation" ]
-    } ],
-    "name" : "Bit Manipulation"
+    } ]
   } ]
 }

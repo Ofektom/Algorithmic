@@ -23,19 +23,19 @@
   "exampleInputs" : [ [ 1, 8, 6, 2, 5, 4, 8, 3, 7 ] ],
   "related" : [ {
     "name" : "Valid Palindrome",
-    "shortDescription" : "Check if string is palindrome",
-    "slug" : "valid-palindrome"
+    "slug" : "valid-palindrome",
+    "shortDescription" : "Check if string is palindrome"
   }, {
     "name" : "Two Sum II",
-    "shortDescription" : "Find two numbers that add to target in sorted array",
-    "slug" : "two-sum-ii"
+    "slug" : "two-sum-ii",
+    "shortDescription" : "Find two numbers that add to target in sorted array"
   }, {
     "name" : "3Sum",
-    "shortDescription" : "Find all triplets that sum to zero",
-    "slug" : "3sum"
+    "slug" : "3sum",
+    "shortDescription" : "Find all triplets that sum to zero"
   }, {
     "name" : "Trapping Rain Water",
-    "shortDescription" : "Calculate trapped rainwater",
-    "slug" : "trapping-rain-water"
+    "slug" : "trapping-rain-water",
+    "shortDescription" : "Calculate trapped rainwater"
   } ]
 }

@@ -23,7 +23,7 @@
   "exampleInputs" : [ [ 2, 3, 1, 1, 4 ] ],
   "related" : [ {
     "name" : "Jumping on the Clouds",
-    "shortDescription" : "Minimum jumps to reach the last safe cloud",
-    "slug" : "jumping-on-the-clouds"
+    "slug" : "jumping-on-the-clouds",
+    "shortDescription" : "Minimum jumps to reach the last safe cloud"
   } ]
 }

@@ -23,19 +23,19 @@
   "exampleInputs" : [ [ 3, 4, 5, 1, 2 ] ],
   "related" : [ {
     "name" : "Search in Rotated Sorted Array",
-    "shortDescription" : "Search target in rotated sorted array",
-    "slug" : "search-in-rotated-sorted-array"
+    "slug" : "search-in-rotated-sorted-array",
+    "shortDescription" : "Search target in rotated sorted array"
   }, {
     "name" : "Find Peak Element",
-    "shortDescription" : "Find peak element in array",
-    "slug" : "find-peak-element"
+    "slug" : "find-peak-element",
+    "shortDescription" : "Find peak element in array"
   }, {
     "name" : "Search a 2D Matrix",
-    "shortDescription" : "Search target in sorted 2D matrix",
-    "slug" : "search-a-2d-matrix"
+    "slug" : "search-a-2d-matrix",
+    "shortDescription" : "Search target in sorted 2D matrix"
   }, {
     "name" : "Binary Search",
-    "shortDescription" : "Search target in sorted array using binary search",
-    "slug" : "binary-search"
+    "slug" : "binary-search",
+    "shortDescription" : "Search target in sorted array using binary search"
   } ]
 }

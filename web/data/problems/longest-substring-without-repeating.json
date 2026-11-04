@@ -27,19 +27,19 @@
   "exampleInputs" : [ "abcabcbb" ],
   "related" : [ {
     "name" : "Best Time to Buy and Sell Stock",
-    "shortDescription" : "Find maximum profit from buying and selling stock",
-    "slug" : "best-time-to-buy-and-sell-stock"
+    "slug" : "best-time-to-buy-and-sell-stock",
+    "shortDescription" : "Find maximum profit from buying and selling stock"
   }, {
     "name" : "Longest Repeating Character Replacement",
-    "shortDescription" : "Find longest substring after replacing k characters",
-    "slug" : "longest-repeating-character-replacement"
+    "slug" : "longest-repeating-character-replacement",
+    "shortDescription" : "Find longest substring after replacing k characters"
   }, {
     "name" : "Minimum Window Substring",
-    "shortDescription" : "Find minimum window substring containing all characters of t",
-    "slug" : "minimum-window-substring"
+    "slug" : "minimum-window-substring",
+    "shortDescription" : "Find minimum window substring containing all characters of t"
   }, {
     "name" : "Minimum Size Subarray Sum",
-    "shortDescription" : "Find minimum length subarray with sum >= target",
-    "slug" : "minimum-size-subarray-sum"
+    "slug" : "minimum-size-subarray-sum",
+    "shortDescription" : "Find minimum length subarray with sum >= target"
   } ]
 }

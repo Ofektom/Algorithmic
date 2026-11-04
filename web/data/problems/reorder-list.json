@@ -19,19 +19,19 @@
   "exampleInputs" : null,
   "related" : [ {
     "name" : "Reverse Linked List",
-    "shortDescription" : "Reverse a singly linked list",
-    "slug" : "reverse-linked-list"
+    "slug" : "reverse-linked-list",
+    "shortDescription" : "Reverse a singly linked list"
   }, {
     "name" : "Merge Two Sorted Lists",
-    "shortDescription" : "Merge two sorted linked lists",
-    "slug" : "merge-two-sorted-lists"
+    "slug" : "merge-two-sorted-lists",
+    "shortDescription" : "Merge two sorted linked lists"
   }, {
     "name" : "Linked List Cycle",
-    "shortDescription" : "Detect if a linked list has a cycle",
-    "slug" : "linked-list-cycle"
+    "slug" : "linked-list-cycle",
+    "shortDescription" : "Detect if a linked list has a cycle"
   }, {
     "name" : "Add Two Numbers",
-    "shortDescription" : "Add two numbers represented by linked lists",
-    "slug" : "add-two-numbers"
+    "slug" : "add-two-numbers",
+    "shortDescription" : "Add two numbers represented by linked lists"
   } ]
 }

@@ -27,19 +27,19 @@
   "exampleInputs" : [ "anagram", "nagaram" ],
   "related" : [ {
     "name" : "Group Anagrams",
-    "shortDescription" : "Group strings that are anagrams of each other",
-    "slug" : "group-anagrams"
+    "slug" : "group-anagrams",
+    "shortDescription" : "Group strings that are anagrams of each other"
   }, {
     "name" : "Ransom Note",
-    "shortDescription" : "Check if ransom note can be constructed from magazine",
-    "slug" : "ransom-note"
+    "slug" : "ransom-note",
+    "shortDescription" : "Check if ransom note can be constructed from magazine"
   }, {
     "name" : "Isomorphic Strings",
-    "shortDescription" : "Check if two strings are isomorphic",
-    "slug" : "isomorphic-strings"
+    "slug" : "isomorphic-strings",
+    "shortDescription" : "Check if two strings are isomorphic"
   }, {
     "name" : "Word Pattern",
-    "shortDescription" : "Check if string follows word pattern",
-    "slug" : "word-pattern"
+    "slug" : "word-pattern",
+    "shortDescription" : "Check if string follows word pattern"
   } ]
 }

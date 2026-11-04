@@ -23,19 +23,19 @@
   "exampleInputs" : [ [ "2", "1", "+", "3", "*" ] ],
   "related" : [ {
     "name" : "Valid Parentheses",
-    "shortDescription" : "Check if parentheses/brackets are valid",
-    "slug" : "valid-parentheses"
+    "slug" : "valid-parentheses",
+    "shortDescription" : "Check if parentheses/brackets are valid"
   }, {
     "name" : "Daily Temperatures",
-    "shortDescription" : "Find days to wait for warmer temperature",
-    "slug" : "daily-temperatures"
+    "slug" : "daily-temperatures",
+    "shortDescription" : "Find days to wait for warmer temperature"
   }, {
     "name" : "Largest Rectangle in Histogram",
-    "shortDescription" : "Find largest rectangle area in histogram",
-    "slug" : "largest-rectangle-in-histogram"
+    "slug" : "largest-rectangle-in-histogram",
+    "shortDescription" : "Find largest rectangle area in histogram"
   }, {
     "name" : "Generate Parentheses",
-    "shortDescription" : "Generate all valid parentheses combinations",
-    "slug" : "generate-parentheses"
+    "slug" : "generate-parentheses",
+    "shortDescription" : "Generate all valid parentheses combinations"
   } ]
 }

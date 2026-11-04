@@ -23,19 +23,19 @@
   "exampleInputs" : [ "leetcode", [ "leet", "code" ] ],
   "related" : [ {
     "name" : "Climbing Stairs",
-    "shortDescription" : "Find distinct ways to climb n steps (1 or 2 at a time)",
-    "slug" : "climbing-stairs"
+    "slug" : "climbing-stairs",
+    "shortDescription" : "Find distinct ways to climb n steps (1 or 2 at a time)"
   }, {
     "name" : "House Robber",
-    "shortDescription" : "Find maximum money robbing houses (no two adjacent)",
-    "slug" : "house-robber"
+    "slug" : "house-robber",
+    "shortDescription" : "Find maximum money robbing houses (no two adjacent)"
   }, {
     "name" : "Coin Change",
-    "shortDescription" : "Find minimum coins to make amount",
-    "slug" : "coin-change"
+    "slug" : "coin-change",
+    "shortDescription" : "Find minimum coins to make amount"
   }, {
     "name" : "Unique Paths",
-    "shortDescription" : "Count unique paths from top-left to bottom-right",
-    "slug" : "unique-paths"
+    "slug" : "unique-paths",
+    "shortDescription" : "Count unique paths from top-left to bottom-right"
   } ]
 }

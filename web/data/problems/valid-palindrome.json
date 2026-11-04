@@ -23,19 +23,19 @@
   "exampleInputs" : [ "A man a plan a canal Panama" ],
   "related" : [ {
     "name" : "Two Sum II",
-    "shortDescription" : "Find two numbers that add to target in sorted array",
-    "slug" : "two-sum-ii"
+    "slug" : "two-sum-ii",
+    "shortDescription" : "Find two numbers that add to target in sorted array"
   }, {
     "name" : "Container With Most Water",
-    "shortDescription" : "Find container that holds most water",
-    "slug" : "container-with-most-water"
+    "slug" : "container-with-most-water",
+    "shortDescription" : "Find container that holds most water"
   }, {
     "name" : "3Sum",
-    "shortDescription" : "Find all triplets that sum to zero",
-    "slug" : "3sum"
+    "slug" : "3sum",
+    "shortDescription" : "Find all triplets that sum to zero"
   }, {
     "name" : "Trapping Rain Water",
-    "shortDescription" : "Calculate trapped rainwater",
-    "slug" : "trapping-rain-water"
+    "slug" : "trapping-rain-water",
+    "shortDescription" : "Calculate trapped rainwater"
   } ]
 }

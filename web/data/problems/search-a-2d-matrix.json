@@ -23,19 +23,19 @@
   "exampleInputs" : [ [ [ 1, 3, 5, 7 ], [ 10, 11, 16, 20 ], [ 23, 30, 34, 60 ] ], 3 ],
   "related" : [ {
     "name" : "Search in Rotated Sorted Array",
-    "shortDescription" : "Search target in rotated sorted array",
-    "slug" : "search-in-rotated-sorted-array"
+    "slug" : "search-in-rotated-sorted-array",
+    "shortDescription" : "Search target in rotated sorted array"
   }, {
     "name" : "Find Minimum in Rotated Sorted Array",
-    "shortDescription" : "Find minimum element in rotated sorted array",
-    "slug" : "find-minimum-in-rotated-sorted-array"
+    "slug" : "find-minimum-in-rotated-sorted-array",
+    "shortDescription" : "Find minimum element in rotated sorted array"
   }, {
     "name" : "Find Peak Element",
-    "shortDescription" : "Find peak element in array",
-    "slug" : "find-peak-element"
+    "slug" : "find-peak-element",
+    "shortDescription" : "Find peak element in array"
   }, {
     "name" : "Binary Search",
-    "shortDescription" : "Search target in sorted array using binary search",
-    "slug" : "binary-search"
+    "slug" : "binary-search",
+    "shortDescription" : "Search target in sorted array using binary search"
   } ]
 }

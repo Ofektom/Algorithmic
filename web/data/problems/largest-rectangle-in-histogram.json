@@ -23,19 +23,19 @@
   "exampleInputs" : [ [ 2, 1, 5, 6, 2, 3 ] ],
   "related" : [ {
     "name" : "Valid Parentheses",
-    "shortDescription" : "Check if parentheses/brackets are valid",
-    "slug" : "valid-parentheses"
+    "slug" : "valid-parentheses",
+    "shortDescription" : "Check if parentheses/brackets are valid"
   }, {
     "name" : "Daily Temperatures",
-    "shortDescription" : "Find days to wait for warmer temperature",
-    "slug" : "daily-temperatures"
+    "slug" : "daily-temperatures",
+    "shortDescription" : "Find days to wait for warmer temperature"
   }, {
     "name" : "Evaluate Reverse Polish Notation",
-    "shortDescription" : "Evaluate RPN expression",
-    "slug" : "evaluate-reverse-polish-notation"
+    "slug" : "evaluate-reverse-polish-notation",
+    "shortDescription" : "Evaluate RPN expression"
   }, {
     "name" : "Generate Parentheses",
-    "shortDescription" : "Generate all valid parentheses combinations",
-    "slug" : "generate-parentheses"
+    "slug" : "generate-parentheses",
+    "shortDescription" : "Generate all valid parentheses combinations"
   } ]
 }

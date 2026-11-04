@@ -432,3 +432,15 @@ table.compare tr.mismatch td { color: var(--err); }
 @media (max-width: 1023px) {
     .field input, .field select, .field textarea, .composer textarea, .search input { font-size: 16px; }
 }
+
+/* Long spoken questions: a chip or title wider than the phone made Android zoom the whole page
+   out (the bottom bar then looked like desktop). Shorten instead, and clip anything that still
+   spills, so one long line can't widen the page. clip, unlike hidden, keeps sticky working. */
+.page { overflow-x: clip; }
+.chip { max-width: 100%; min-width: 0; }
+.chip .label { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0; }
+.row-link .t, .row-link .st {
+    overflow-wrap: anywhere; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 3; overflow: hidden;
+}
+.row-link .st { -webkit-line-clamp: 2; }
+.appbar h1 { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 3; overflow: hidden; }

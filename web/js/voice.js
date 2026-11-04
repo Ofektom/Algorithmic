@@ -299,19 +299,27 @@ class VoiceNavigation {
     }
 }
 
-// Join final results. Android Chrome repeats the whole utterance so far in each new final result
-// ("given", "given an array", ...), so a segment that extends the text so far replaces it.
+// Join final results. Android Chrome resends the whole utterance so far in each new final result
+// ("given", "given an array", ...), often with a word or two changed ("selection" / "selection
+// salt"), so an exact prefix test let repeats through. A segment that starts with the same words
+// as the text so far is that text resent, and replaces it.
 function mergeSegments(segments) {
-    const norm = (t) => t.toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
+    const words = (t) => t.toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim().split(' ').filter(Boolean);
     let merged = '';
     segments.forEach((segment) => {
-        const soFar = norm(merged);
-        const next = norm(segment);
-        if (!soFar) {
+        const soFar = words(merged);
+        const next = words(segment);
+        if (!next.length) return;
+        if (!soFar.length) {
             merged = segment;
-        } else if (next.startsWith(soFar)) {
+            return;
+        }
+        let same = 0;
+        while (same < soFar.length && same < next.length && soFar[same] === next[same]) same++;
+        if (same === soFar.length || same >= Math.min(3, soFar.length, next.length) && next.length >= soFar.length * 0.6) {
+            // The same utterance resent (or extended): keep the newer wording
             merged = segment;
-        } else if (!(next.includes(' ') && soFar.endsWith(next))) {
+        } else if (!(next.length > 1 && soFar.slice(-next.length).join(' ') === next.join(' '))) {
             // A repeated multi-word tail is the same result resent; a single word ("the") may be real
             merged += ' ' + segment;
         }

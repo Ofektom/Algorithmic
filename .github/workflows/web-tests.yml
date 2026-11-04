@@ -1,0 +1,35 @@
+# Runs the web module's tests on GitHub's machines, so changes can be checked before merging
+# without building anything locally. Results: the Actions tab, or the check on a pull request.
+name: Web tests
+
+on:
+  push:
+    branches: [main, dev, ui-redesign]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - uses: gradle/actions/setup-gradle@v4
+
+      - name: Run algorithm-web tests
+        run: |
+          chmod +x gradlew
+          ./gradlew :algorithm-web:test --no-daemon --stacktrace
+
+      - name: Upload test report
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: web-test-report
+          path: algorithm-web/build/reports/tests/test

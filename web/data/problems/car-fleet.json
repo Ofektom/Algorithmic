@@ -1,0 +1,41 @@
+{
+  "name" : "Car Fleet",
+  "slug" : "car-fleet",
+  "category" : "Stack",
+  "description" : "There are n cars going to the same destination on a one-lane road. The destination is target miles away. You are given two integer array position and speed, both of length n, where position[i] is the position of the ith car and speed[i] is the speed of the ith car (in miles per hour). A car can never pass another car ahead of it, but it can catch up to it and drive bumper to bumper at the same speed. Return the number of car fleets that will arrive at the destination.",
+  "shortDescription" : "Count number of car fleets reaching destination",
+  "className" : "stack.CarFleet",
+  "methods" : [ {
+    "name" : "computeWithStack",
+    "label" : "Stack",
+    "code" : "public static int computeWithStack(int target, int[] position, int[] speed) {\n    int n = position.length;\n    double[][] cars = new double[n][2];\n\n    for (int i = 0; i < n; i++) {\n        cars[i][0] = position[i];\n        cars[i][1] = (double)(target - position[i]) / speed[i];\n    }\n\n    Arrays.sort(cars, (a, b) -> Double.compare(b[0], a[0]));\n\n    Stack<Double> stack = new Stack<>();\n    for (double[] car : cars) {\n        double time = car[1];\n        if (stack.isEmpty() || time > stack.peek()) {\n            stack.push(time);\n        }\n    }\n\n    return stack.size();\n}"
+  }, {
+    "name" : "computeWithArray",
+    "label" : "Array",
+    "code" : "public static int computeWithArray(int target, int[] position, int[] speed) {\n    int n = position.length;\n    double[][] cars = new double[n][2];\n\n    for (int i = 0; i < n; i++) {\n        cars[i][0] = position[i];\n        cars[i][1] = (double)(target - position[i]) / speed[i];\n    }\n\n    Arrays.sort(cars, (a, b) -> Double.compare(b[0], a[0]));\n\n    int fleets = 0;\n    double maxTime = 0;\n\n    for (double[] car : cars) {\n        if (car[1] > maxTime) {\n            maxTime = car[1];\n            fleets++;\n        }\n    }\n\n    return fleets;\n}"
+  }, {
+    "name" : "computeWithTreeMap",
+    "label" : "Tree map",
+    "code" : "public static int computeWithTreeMap(int target, int[] position, int[] speed) {\n    TreeMap<Integer, Double> map = new TreeMap<>(Collections.reverseOrder());\n\n    for (int i = 0; i < position.length; i++) {\n        double time = (double)(target - position[i]) / speed[i];\n        map.put(position[i], time);\n    }\n\n    int fleets = 0;\n    double maxTime = 0;\n\n    for (double time : map.values()) {\n        if (time > maxTime) {\n            maxTime = time;\n            fleets++;\n        }\n    }\n\n    return fleets;\n}"
+  } ],
+  "paramNames" : [ "target", "position", "speed" ],
+  "paramTypes" : [ "int", "int[]", "int[]" ],
+  "exampleInputs" : [ 12, [ 10, 8, 0, 5, 3 ], [ 2, 4, 1, 1, 3 ] ],
+  "related" : [ {
+    "name" : "Valid Parentheses",
+    "slug" : "valid-parentheses",
+    "shortDescription" : "Check if parentheses/brackets are valid"
+  }, {
+    "name" : "Daily Temperatures",
+    "slug" : "daily-temperatures",
+    "shortDescription" : "Find days to wait for warmer temperature"
+  }, {
+    "name" : "Largest Rectangle in Histogram",
+    "slug" : "largest-rectangle-in-histogram",
+    "shortDescription" : "Find largest rectangle area in histogram"
+  }, {
+    "name" : "Evaluate Reverse Polish Notation",
+    "slug" : "evaluate-reverse-polish-notation",
+    "shortDescription" : "Evaluate RPN expression"
+  } ]
+}

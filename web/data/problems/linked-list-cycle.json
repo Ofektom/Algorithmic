@@ -1,0 +1,37 @@
+{
+  "name" : "Linked List Cycle",
+  "slug" : "linked-list-cycle",
+  "category" : "Linked List",
+  "description" : "Given head, the head of a linked list, determine if the linked list has a cycle in it. There is a cycle in a linked list if there is some node in the list that can be reached again by continuously following the next pointer.",
+  "shortDescription" : "Detect if a linked list has a cycle",
+  "className" : "linkedlist.LinkedListCycle",
+  "methods" : [ {
+    "name" : "computeWithHashSet",
+    "label" : "Hash set",
+    "code" : "public static boolean computeWithHashSet(ListNode head) {\n    Set<ListNode> seen = new HashSet<>();\n    ListNode curr = head;\n\n    while (curr != null) {\n        if (seen.contains(curr)) {\n            return true;\n        }\n        seen.add(curr);\n        curr = curr.next;\n    }\n    return false;\n}"
+  }, {
+    "name" : "computeWithTwoPointers",
+    "label" : "Two pointers",
+    "code" : "public static boolean computeWithTwoPointers(ListNode head) {\n    if (head == null || head.next == null) {\n        return false;\n    }\n\n    ListNode slow = head;\n    ListNode fast = head.next;\n\n    while (fast != null && fast.next != null) {\n        if (slow == fast) {\n            return true;\n        }\n        slow = slow.next;\n        fast = fast.next.next;\n    }\n    return false;\n}"
+  } ],
+  "paramNames" : [ "head" ],
+  "paramTypes" : [ "ListNode" ],
+  "exampleInputs" : null,
+  "related" : [ {
+    "name" : "Reverse Linked List",
+    "slug" : "reverse-linked-list",
+    "shortDescription" : "Reverse a singly linked list"
+  }, {
+    "name" : "Merge Two Sorted Lists",
+    "slug" : "merge-two-sorted-lists",
+    "shortDescription" : "Merge two sorted linked lists"
+  }, {
+    "name" : "Add Two Numbers",
+    "slug" : "add-two-numbers",
+    "shortDescription" : "Add two numbers represented by linked lists"
+  }, {
+    "name" : "Remove Nth Node From End of List",
+    "slug" : "remove-nth-node-from-end-of-list",
+    "shortDescription" : "Remove the nth node from end of linked list"
+  } ]
+}

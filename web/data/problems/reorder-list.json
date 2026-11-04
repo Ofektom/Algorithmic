@@ -1,0 +1,37 @@
+{
+  "name" : "Reorder List",
+  "slug" : "reorder-list",
+  "category" : "Linked List",
+  "description" : "You are given the head of a singly linked-list. The list can be represented as: L0 → L1 → … → Ln - 1 → Ln. Reorder the list to be on the following form: L0 → Ln → L1 → Ln - 1 → L2 → Ln - 2 → …. You may not modify the values in the list's nodes. Only nodes themselves may be changed.",
+  "shortDescription" : "Reorder linked list: L0→Ln→L1→Ln-1...",
+  "className" : "linkedlist.ReorderList",
+  "methods" : [ {
+    "name" : "compute",
+    "label" : "Compute",
+    "code" : "public static void compute(ListNode head) {\n    if (head == null || head.next == null) return;\n\n    ListNode middle = findMiddle(head);\n    ListNode secondHalf = reverse(middle.next);\n    middle.next = null;\n\n    merge(head, secondHalf);\n}"
+  }, {
+    "name" : "computeWithStack",
+    "label" : "Stack",
+    "code" : "public static void computeWithStack(ListNode head) {\n    if (head == null || head.next == null) return;\n\n    java.util.Stack<ListNode> stack = new java.util.Stack<>();\n    ListNode current = head;\n    int count = 0;\n\n    while (current != null) {\n        stack.push(current);\n        current = current.next;\n        count++;\n    }\n\n    current = head;\n    for (int i = 0; i < count / 2; i++) {\n        ListNode next = current.next;\n        ListNode fromStack = stack.pop();\n        current.next = fromStack;\n        fromStack.next = next;\n        current = next;\n    }\n    current.next = null;\n}"
+  } ],
+  "paramNames" : [ "head" ],
+  "paramTypes" : [ "ListNode" ],
+  "exampleInputs" : null,
+  "related" : [ {
+    "name" : "Reverse Linked List",
+    "slug" : "reverse-linked-list",
+    "shortDescription" : "Reverse a singly linked list"
+  }, {
+    "name" : "Merge Two Sorted Lists",
+    "slug" : "merge-two-sorted-lists",
+    "shortDescription" : "Merge two sorted linked lists"
+  }, {
+    "name" : "Linked List Cycle",
+    "slug" : "linked-list-cycle",
+    "shortDescription" : "Detect if a linked list has a cycle"
+  }, {
+    "name" : "Add Two Numbers",
+    "slug" : "add-two-numbers",
+    "shortDescription" : "Add two numbers represented by linked lists"
+  } ]
+}

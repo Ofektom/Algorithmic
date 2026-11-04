@@ -1,0 +1,37 @@
+{
+  "name" : "Substring with Concatenation of All Words",
+  "slug" : "substring-with-concatenation-of-all-words",
+  "category" : "Sliding Window",
+  "description" : "You are given a string s and an array of strings words. All the strings of words are of the same length. A concatenated substring in s is a substring that contains all the strings of words concatenated in any order. Return the starting indices of all such concatenated substrings in s.",
+  "shortDescription" : "Find indices of substrings containing all words",
+  "className" : "window.SubstringWithConcatenationOfAllWords",
+  "methods" : [ {
+    "name" : "computeWithHashMap",
+    "label" : "Hash map",
+    "code" : "public static List<Integer> computeWithHashMap(String s, String[] words) {\n    List<Integer> result = new ArrayList<>();\n    if (s == null || s.length() == 0 || words == null || words.length == 0) {\n        return result;\n    }\n\n    int wordLen = words[0].length();\n    int totalLen = words.length * wordLen;\n    Map<String, Integer> wordCount = new HashMap<>();\n\n    for (String word : words) {\n        wordCount.put(word, wordCount.getOrDefault(word, 0) + 1);\n    }\n\n    for (int i = 0; i <= s.length() - totalLen; i++) {\n        Map<String, Integer> seen = new HashMap<>();\n        int j = 0;\n\n        while (j < words.length) {\n            int wordIndex = i + j * wordLen;\n            String word = s.substring(wordIndex, wordIndex + wordLen);\n\n            if (!wordCount.containsKey(word)) {\n                break;\n            }\n\n            seen.put(word, seen.getOrDefault(word, 0) + 1);\n\n            if (seen.get(word) > wordCount.get(word)) {\n                break;\n            }\n\n            j++;\n        }\n\n        if (j == words.length) {\n            result.add(i);\n        }\n    }\n\n    return result;\n}"
+  }, {
+    "name" : "computeWithSlidingWindow",
+    "label" : "Sliding window",
+    "code" : "public static List<Integer> computeWithSlidingWindow(String s, String[] words) {\n    List<Integer> result = new ArrayList<>();\n    if (s == null || s.length() == 0 || words == null || words.length == 0) {\n        return result;\n    }\n\n    int wordLen = words[0].length();\n    int totalLen = words.length * wordLen;\n    Map<String, Integer> wordCount = new HashMap<>();\n\n    for (String word : words) {\n        wordCount.put(word, wordCount.getOrDefault(word, 0) + 1);\n    }\n\n    for (int start = 0; start < wordLen; start++) {\n        Map<String, Integer> seen = new HashMap<>();\n        int left = start;\n        int count = 0;\n\n        for (int right = start; right <= s.length() - wordLen; right += wordLen) {\n            String word = s.substring(right, right + wordLen);\n\n            if (wordCount.containsKey(word)) {\n                seen.put(word, seen.getOrDefault(word, 0) + 1);\n                count++;\n\n                while (seen.get(word) > wordCount.get(word)) {\n                    String leftWord = s.substring(left, left + wordLen);\n                    seen.put(leftWord, seen.get(leftWord) - 1);\n                    count--;\n                    left += wordLen;\n                }\n\n                if (count == words.length) {\n                    result.add(left);\n                    String leftWord = s.substring(left, left + wordLen);\n                    seen.put(leftWord, seen.get(leftWord) - 1);\n                    count--;\n                    left += wordLen;\n                }\n            } else {\n                seen.clear();\n                count = 0;\n                left = right + wordLen;\n            }\n        }\n    }\n\n    return result;\n}"
+  } ],
+  "paramNames" : [ "s", "words" ],
+  "paramTypes" : [ "String", "String[]" ],
+  "exampleInputs" : [ "barfoothefoobarman", [ "foo", "bar" ] ],
+  "related" : [ {
+    "name" : "Best Time to Buy and Sell Stock",
+    "slug" : "best-time-to-buy-and-sell-stock",
+    "shortDescription" : "Find maximum profit from buying and selling stock"
+  }, {
+    "name" : "Longest Substring Without Repeating",
+    "slug" : "longest-substring-without-repeating",
+    "shortDescription" : "Find longest substring without repeating characters"
+  }, {
+    "name" : "Longest Repeating Character Replacement",
+    "slug" : "longest-repeating-character-replacement",
+    "shortDescription" : "Find longest substring after replacing k characters"
+  }, {
+    "name" : "Minimum Window Substring",
+    "slug" : "minimum-window-substring",
+    "shortDescription" : "Find minimum window substring containing all characters of t"
+  } ]
+}

@@ -1,0 +1,37 @@
+{
+  "name" : "Subtree of Another Tree",
+  "slug" : "subtree-of-another-tree",
+  "category" : "Trees",
+  "description" : "Given the roots of two binary trees root and subRoot, return true if there is a subtree of root with the same structure and node values of subRoot and false otherwise. A subtree of a binary tree tree is a tree that consists of a node in tree and all of this node's descendants. The tree tree could also be considered as a subtree of itself.",
+  "shortDescription" : "Check if subRoot is a subtree of root",
+  "className" : "trees.SubtreeOfAnotherTree",
+  "methods" : [ {
+    "name" : "computeRecursive",
+    "label" : "Recursive",
+    "code" : "public static boolean computeRecursive(TreeNode root, TreeNode subRoot) {\n    if (root == null) return false;\n    if (isSameTree(root, subRoot)) return true;\n    return computeRecursive(root.left, subRoot) || computeRecursive(root.right, subRoot);\n}"
+  }, {
+    "name" : "computeWithSerialization",
+    "label" : "Serialization",
+    "code" : "public static boolean computeWithSerialization(TreeNode root, TreeNode subRoot) {\n    StringBuilder rootStr = new StringBuilder();\n    StringBuilder subRootStr = new StringBuilder();\n    serialize(root, rootStr);\n    serialize(subRoot, subRootStr);\n    return rootStr.toString().contains(subRootStr.toString());\n}"
+  } ],
+  "paramNames" : [ "root", "subRoot" ],
+  "paramTypes" : [ "TreeNode", "TreeNode" ],
+  "exampleInputs" : null,
+  "related" : [ {
+    "name" : "Maximum Depth of Binary Tree",
+    "slug" : "maximum-depth-of-binary-tree",
+    "shortDescription" : "Find the maximum depth of a binary tree"
+  }, {
+    "name" : "Same Tree",
+    "slug" : "same-tree",
+    "shortDescription" : "Check if two binary trees are identical"
+  }, {
+    "name" : "Invert Binary Tree",
+    "slug" : "invert-binary-tree",
+    "shortDescription" : "Invert a binary tree"
+  }, {
+    "name" : "Symmetric Tree",
+    "slug" : "symmetric-tree",
+    "shortDescription" : "Check if a binary tree is symmetric"
+  } ]
+}

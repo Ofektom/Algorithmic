@@ -1,0 +1,41 @@
+{
+  "name" : "Maximum Depth of Binary Tree",
+  "slug" : "maximum-depth-of-binary-tree",
+  "category" : "Trees",
+  "description" : "Given the root of a binary tree, return its maximum depth. A binary tree's maximum depth is the number of nodes along the longest path from the root node down to the farthest leaf node.",
+  "shortDescription" : "Find the maximum depth of a binary tree",
+  "className" : "trees.MaximumDepthOfBinaryTree",
+  "methods" : [ {
+    "name" : "computeRecursive",
+    "label" : "Recursive",
+    "code" : "public static int computeRecursive(TreeNode root) {\n    if (root == null) {\n        return 0;\n    }\n    return 1 + Math.max(computeRecursive(root.left), computeRecursive(root.right));\n}"
+  }, {
+    "name" : "computeWithStack",
+    "label" : "Stack",
+    "code" : "public static int computeWithStack(TreeNode root) {\n    if (root == null) {\n        return 0;\n    }\n\n    java.util.Stack<TreeNode> nodeStack = new java.util.Stack<>();\n    java.util.Stack<Integer> depthStack = new java.util.Stack<>();\n    nodeStack.push(root);\n    depthStack.push(1);\n    int maxDepth = 0;\n\n    while (!nodeStack.isEmpty()) {\n        TreeNode node = nodeStack.pop();\n        int depth = depthStack.pop();\n        maxDepth = Math.max(maxDepth, depth);\n\n        if (node.right != null) {\n            nodeStack.push(node.right);\n            depthStack.push(depth + 1);\n        }\n        if (node.left != null) {\n            nodeStack.push(node.left);\n            depthStack.push(depth + 1);\n        }\n    }\n    return maxDepth;\n}"
+  }, {
+    "name" : "computeWithBFS",
+    "label" : "BFS",
+    "code" : "public static int computeWithBFS(TreeNode root) {\n    if (root == null) {\n        return 0;\n    }\n\n    java.util.Queue<TreeNode> queue = new java.util.LinkedList<>();\n    queue.offer(root);\n    int depth = 0;\n\n    while (!queue.isEmpty()) {\n        int size = queue.size();\n        depth++;\n\n        for (int i = 0; i < size; i++) {\n            TreeNode node = queue.poll();\n            if (node.left != null) {\n                queue.offer(node.left);\n            }\n            if (node.right != null) {\n                queue.offer(node.right);\n            }\n        }\n    }\n    return depth;\n}"
+  } ],
+  "paramNames" : [ "root" ],
+  "paramTypes" : [ "TreeNode" ],
+  "exampleInputs" : null,
+  "related" : [ {
+    "name" : "Same Tree",
+    "slug" : "same-tree",
+    "shortDescription" : "Check if two binary trees are identical"
+  }, {
+    "name" : "Invert Binary Tree",
+    "slug" : "invert-binary-tree",
+    "shortDescription" : "Invert a binary tree"
+  }, {
+    "name" : "Symmetric Tree",
+    "slug" : "symmetric-tree",
+    "shortDescription" : "Check if a binary tree is symmetric"
+  }, {
+    "name" : "Binary Tree Level Order Traversal",
+    "slug" : "binary-tree-level-order-traversal",
+    "shortDescription" : "Return level order traversal of binary tree"
+  } ]
+}

@@ -1,0 +1,41 @@
+{
+  "name" : "Longest Increasing Subsequence",
+  "slug" : "longest-increasing-subsequence",
+  "category" : "Dynamic Programming",
+  "description" : "Given an integer array nums, return the length of the longest strictly increasing subsequence.",
+  "shortDescription" : "Find length of longest increasing subsequence",
+  "className" : "dp.LongestIncreasingSubsequence",
+  "methods" : [ {
+    "name" : "computeWithDP",
+    "label" : "DP",
+    "code" : "public static int computeWithDP(int[] nums) {\n    int n = nums.length;\n    int[] dp = new int[n];\n    Arrays.fill(dp, 1);\n\n    for (int i = 1; i < n; i++) {\n        for (int j = 0; j < i; j++) {\n            if (nums[j] < nums[i]) {\n                dp[i] = Math.max(dp[i], dp[j] + 1);\n            }\n        }\n    }\n\n    int maxLen = 0;\n    for (int len : dp) {\n        maxLen = Math.max(maxLen, len);\n    }\n\n    return maxLen;\n}"
+  }, {
+    "name" : "computeWithBinarySearch",
+    "label" : "Binary search",
+    "code" : "public static int computeWithBinarySearch(int[] nums) {\n    int[] tails = new int[nums.length];\n    int size = 0;\n\n    for (int num : nums) {\n        int left = 0, right = size;\n        while (left < right) {\n            int mid = left + (right - left) / 2;\n            if (tails[mid] < num) {\n                left = mid + 1;\n            } else {\n                right = mid;\n            }\n        }\n        tails[left] = num;\n        if (left == size) size++;\n    }\n\n    return size;\n}"
+  }, {
+    "name" : "computeRecursive",
+    "label" : "Recursive",
+    "code" : "public static int computeRecursive(int[] nums) {\n    int[][] memo = new int[nums.length][nums.length + 1];\n    for (int[] row : memo) {\n        Arrays.fill(row, -1);\n    }\n    return lisRecursive(nums, 0, -1, memo);\n}"
+  } ],
+  "paramNames" : [ "nums" ],
+  "paramTypes" : [ "int[]" ],
+  "exampleInputs" : [ [ 10, 9, 2, 5, 3, 7, 101, 18 ] ],
+  "related" : [ {
+    "name" : "Climbing Stairs",
+    "slug" : "climbing-stairs",
+    "shortDescription" : "Find distinct ways to climb n steps (1 or 2 at a time)"
+  }, {
+    "name" : "House Robber",
+    "slug" : "house-robber",
+    "shortDescription" : "Find maximum money robbing houses (no two adjacent)"
+  }, {
+    "name" : "Coin Change",
+    "slug" : "coin-change",
+    "shortDescription" : "Find minimum coins to make amount"
+  }, {
+    "name" : "Unique Paths",
+    "slug" : "unique-paths",
+    "shortDescription" : "Count unique paths from top-left to bottom-right"
+  } ]
+}

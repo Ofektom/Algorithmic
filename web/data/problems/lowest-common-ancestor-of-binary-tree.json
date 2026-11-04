@@ -1,0 +1,37 @@
+{
+  "name" : "Lowest Common Ancestor of Binary Tree",
+  "slug" : "lowest-common-ancestor-of-binary-tree",
+  "category" : "Trees",
+  "description" : "Given a binary tree, find the lowest common ancestor (LCA) of two given nodes in the tree. According to the definition of LCA on Wikipedia: 'The lowest common ancestor is defined between two nodes p and q as the lowest node in T that has both p and q as descendants (where we allow a node to be a descendant of itself).'",
+  "shortDescription" : "Find lowest common ancestor of two nodes",
+  "className" : "trees.LowestCommonAncestorOfBinaryTree",
+  "methods" : [ {
+    "name" : "computeRecursive",
+    "label" : "Recursive",
+    "code" : "public static TreeNode computeRecursive(TreeNode root, TreeNode p, TreeNode q) {\n    if (root == null || root == p || root == q) {\n        return root;\n    }\n\n    TreeNode left = computeRecursive(root.left, p, q);\n    TreeNode right = computeRecursive(root.right, p, q);\n\n    if (left != null && right != null) {\n        return root;\n    }\n\n    return left != null ? left : right;\n}"
+  }, {
+    "name" : "computeWithPath",
+    "label" : "Path",
+    "code" : "public static TreeNode computeWithPath(TreeNode root, TreeNode p, TreeNode q) {\n    java.util.List<TreeNode> pathP = new java.util.ArrayList<>();\n    java.util.List<TreeNode> pathQ = new java.util.ArrayList<>();\n\n    findPath(root, p, pathP);\n    findPath(root, q, pathQ);\n\n    int i = 0;\n    while (i < pathP.size() && i < pathQ.size() && pathP.get(i) == pathQ.get(i)) {\n        i++;\n    }\n\n    return i > 0 ? pathP.get(i - 1) : null;\n}"
+  } ],
+  "paramNames" : [ "root", "p", "q" ],
+  "paramTypes" : [ "TreeNode", "TreeNode", "TreeNode" ],
+  "exampleInputs" : null,
+  "related" : [ {
+    "name" : "Maximum Depth of Binary Tree",
+    "slug" : "maximum-depth-of-binary-tree",
+    "shortDescription" : "Find the maximum depth of a binary tree"
+  }, {
+    "name" : "Same Tree",
+    "slug" : "same-tree",
+    "shortDescription" : "Check if two binary trees are identical"
+  }, {
+    "name" : "Invert Binary Tree",
+    "slug" : "invert-binary-tree",
+    "shortDescription" : "Invert a binary tree"
+  }, {
+    "name" : "Symmetric Tree",
+    "slug" : "symmetric-tree",
+    "shortDescription" : "Check if a binary tree is symmetric"
+  } ]
+}

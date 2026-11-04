@@ -1,0 +1,41 @@
+{
+  "name" : "Validate Binary Search Tree",
+  "slug" : "validate-binary-search-tree",
+  "category" : "Trees",
+  "description" : "Given the root of a binary tree, determine if it is a valid binary search tree (BST). A valid BST is defined as follows: The left subtree of a node contains only nodes with keys less than the node's key. The right subtree of a node contains only nodes with keys greater than the node's key. Both the left and right subtrees must also be binary search trees.",
+  "shortDescription" : "Check if binary tree is a valid BST",
+  "className" : "trees.ValidateBinarySearchTree",
+  "methods" : [ {
+    "name" : "computeRecursive",
+    "label" : "Recursive",
+    "code" : "public static boolean computeRecursive(TreeNode root) {\n    return validateBST(root, Long.MIN_VALUE, Long.MAX_VALUE);\n}"
+  }, {
+    "name" : "computeWithInorder",
+    "label" : "Inorder",
+    "code" : "public static boolean computeWithInorder(TreeNode root) {\n    List<Integer> list = new ArrayList<>();\n    inorderTraversal(root, list);\n    for (int i = 1; i < list.size(); i++) {\n        if (list.get(i) <= list.get(i - 1)) {\n            return false;\n        }\n    }\n    return true;\n}"
+  }, {
+    "name" : "computeWithStack",
+    "label" : "Stack",
+    "code" : "public static boolean computeWithStack(TreeNode root) {\n    Stack<TreeNode> stack = new Stack<>();\n    TreeNode prev = null;\n    TreeNode current = root;\n\n    while (!stack.isEmpty() || current != null) {\n        while (current != null) {\n            stack.push(current);\n            current = current.left;\n        }\n        current = stack.pop();\n        if (prev != null && current.val <= prev.val) {\n            return false;\n        }\n        prev = current;\n        current = current.right;\n    }\n    return true;\n}"
+  } ],
+  "paramNames" : [ "root" ],
+  "paramTypes" : [ "TreeNode" ],
+  "exampleInputs" : null,
+  "related" : [ {
+    "name" : "Maximum Depth of Binary Tree",
+    "slug" : "maximum-depth-of-binary-tree",
+    "shortDescription" : "Find the maximum depth of a binary tree"
+  }, {
+    "name" : "Same Tree",
+    "slug" : "same-tree",
+    "shortDescription" : "Check if two binary trees are identical"
+  }, {
+    "name" : "Invert Binary Tree",
+    "slug" : "invert-binary-tree",
+    "shortDescription" : "Invert a binary tree"
+  }, {
+    "name" : "Symmetric Tree",
+    "slug" : "symmetric-tree",
+    "shortDescription" : "Check if a binary tree is symmetric"
+  } ]
+}

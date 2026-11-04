@@ -1,0 +1,29 @@
+{
+  "name" : "Kth Largest Element in Array",
+  "slug" : "kth-largest-element-in-array",
+  "category" : "Heap/Priority Queue",
+  "description" : "Given an integer array nums and an integer k, return the kth largest element in the array.",
+  "shortDescription" : "Find kth largest element in array",
+  "className" : "heap.KthLargestElementInArray",
+  "methods" : [ {
+    "name" : "computeWithHeap",
+    "label" : "Heap",
+    "code" : "public static int computeWithHeap(int[] nums, int k) {\n    PriorityQueue<Integer> minHeap = new PriorityQueue<>();\n\n    for (int num : nums) {\n        minHeap.offer(num);\n        if (minHeap.size() > k) {\n            minHeap.poll();\n        }\n    }\n\n    return minHeap.peek();\n}"
+  }, {
+    "name" : "computeWithMaxHeap",
+    "label" : "Max heap",
+    "code" : "public static int computeWithMaxHeap(int[] nums, int k) {\n    PriorityQueue<Integer> maxHeap = new PriorityQueue<>((a, b) -> b - a);\n    for (int num : nums) {\n        maxHeap.offer(num);\n    }\n\n    for (int i = 0; i < k - 1; i++) {\n        maxHeap.poll();\n    }\n\n    return maxHeap.peek();\n}"
+  }, {
+    "name" : "computeWithQuickSelect",
+    "label" : "Quick select",
+    "code" : "public static int computeWithQuickSelect(int[] nums, int k) {\n    int left = 0;\n    int right = nums.length - 1;\n    int targetIndex = nums.length - k;\n\n    while (left <= right) {\n        int pivotIndex = partition(nums, left, right);\n        if (pivotIndex == targetIndex) {\n            return nums[pivotIndex];\n        } else if (pivotIndex < targetIndex) {\n            left = pivotIndex + 1;\n        } else {\n            right = pivotIndex - 1;\n        }\n    }\n\n    return -1;\n}"
+  }, {
+    "name" : "computeWithSorting",
+    "label" : "Sorting",
+    "code" : "public static int computeWithSorting(int[] nums, int k) {\n    java.util.Arrays.sort(nums);\n    return nums[nums.length - k];\n}"
+  } ],
+  "paramNames" : [ "nums", "k" ],
+  "paramTypes" : [ "int[]", "int" ],
+  "exampleInputs" : [ [ 3, 2, 1, 5, 6, 4 ], 2 ],
+  "related" : [ ]
+}

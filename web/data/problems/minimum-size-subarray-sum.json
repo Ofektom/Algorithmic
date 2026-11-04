@@ -1,0 +1,41 @@
+{
+  "name" : "Minimum Size Subarray Sum",
+  "slug" : "minimum-size-subarray-sum",
+  "category" : "Sliding Window",
+  "description" : "Given an array of positive integers nums and a positive integer target, return the minimal length of a contiguous subarray [numsl, numsl+1, ..., numsr-1, numsr] of which the sum is greater than or equal to target. If there is no such subarray, return 0 instead.",
+  "shortDescription" : "Find minimum length subarray with sum >= target",
+  "className" : "window.MinimumSizeSubarraySum",
+  "methods" : [ {
+    "name" : "computeWithSlidingWindow",
+    "label" : "Sliding window",
+    "code" : "public static int computeWithSlidingWindow(int target, int[] nums) {\n    int left = 0;\n    int sum = 0;\n    int minLength = Integer.MAX_VALUE;\n\n    for (int right = 0; right < nums.length; right++) {\n        sum += nums[right];\n\n        while (sum >= target) {\n            minLength = Math.min(minLength, right - left + 1);\n            sum -= nums[left];\n            left++;\n        }\n    }\n\n    return minLength == Integer.MAX_VALUE ? 0 : minLength;\n}"
+  }, {
+    "name" : "computeWithBinarySearch",
+    "label" : "Binary search",
+    "code" : "public static int computeWithBinarySearch(int target, int[] nums) {\n    int n = nums.length;\n    int[] prefixSum = new int[n + 1];\n    \n    for (int i = 0; i < n; i++) {\n        prefixSum[i + 1] = prefixSum[i] + nums[i];\n    }\n\n    int minLength = Integer.MAX_VALUE;\n\n    for (int i = 0; i < n; i++) {\n        int toFind = target + prefixSum[i];\n        int found = java.util.Arrays.binarySearch(prefixSum, toFind);\n        if (found < 0) {\n            found = -(found + 1);\n        }\n        if (found <= n) {\n            minLength = Math.min(minLength, found - i);\n        }\n    }\n\n    return minLength == Integer.MAX_VALUE ? 0 : minLength;\n}"
+  }, {
+    "name" : "computeWithBruteForce",
+    "label" : "Brute force",
+    "code" : "public static int computeWithBruteForce(int target, int[] nums) {\n    int minLength = Integer.MAX_VALUE;\n\n    for (int i = 0; i < nums.length; i++) {\n        int sum = 0;\n        for (int j = i; j < nums.length; j++) {\n            sum += nums[j];\n            if (sum >= target) {\n                minLength = Math.min(minLength, j - i + 1);\n                break;\n            }\n        }\n    }\n\n    return minLength == Integer.MAX_VALUE ? 0 : minLength;\n}"
+  } ],
+  "paramNames" : [ "target", "nums" ],
+  "paramTypes" : [ "int", "int[]" ],
+  "exampleInputs" : [ 7, [ 2, 3, 1, 2, 4, 3 ] ],
+  "related" : [ {
+    "name" : "Best Time to Buy and Sell Stock",
+    "slug" : "best-time-to-buy-and-sell-stock",
+    "shortDescription" : "Find maximum profit from buying and selling stock"
+  }, {
+    "name" : "Longest Substring Without Repeating",
+    "slug" : "longest-substring-without-repeating",
+    "shortDescription" : "Find longest substring without repeating characters"
+  }, {
+    "name" : "Longest Repeating Character Replacement",
+    "slug" : "longest-repeating-character-replacement",
+    "shortDescription" : "Find longest substring after replacing k characters"
+  }, {
+    "name" : "Minimum Window Substring",
+    "slug" : "minimum-window-substring",
+    "shortDescription" : "Find minimum window substring containing all characters of t"
+  } ]
+}

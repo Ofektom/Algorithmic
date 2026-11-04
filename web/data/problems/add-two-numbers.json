@@ -1,0 +1,37 @@
+{
+  "name" : "Add Two Numbers",
+  "slug" : "add-two-numbers",
+  "category" : "Linked List",
+  "description" : "You are given two non-empty linked lists representing two non-negative integers. The digits are stored in reverse order, and each of their nodes contains a single digit. Add the two numbers and return the sum as a linked list.",
+  "shortDescription" : "Add two numbers represented by linked lists",
+  "className" : "linkedlist.AddTwoNumbers",
+  "methods" : [ {
+    "name" : "computeIterative",
+    "label" : "Iterative",
+    "code" : "public static ListNode computeIterative(ListNode l1, ListNode l2) {\n    ListNode dummy = new ListNode(0);\n    ListNode curr = dummy;\n    int carry = 0;\n\n    while (l1 != null || l2 != null || carry != 0) {\n        int sum = carry;\n\n        if (l1 != null) {\n            sum += l1.val;\n            l1 = l1.next;\n        }\n        if (l2 != null) {\n            sum += l2.val;\n            l2 = l2.next;\n        }\n\n        carry = sum / 10;\n        curr.next = new ListNode(sum % 10);\n        curr = curr.next;\n    }\n\n    return dummy.next;\n}"
+  }, {
+    "name" : "computeRecursive",
+    "label" : "Recursive",
+    "code" : "public static ListNode computeRecursive(ListNode l1, ListNode l2) {\n    return addRecursive(l1, l2, 0);\n}"
+  } ],
+  "paramNames" : [ "l1", "l2" ],
+  "paramTypes" : [ "ListNode", "ListNode" ],
+  "exampleInputs" : null,
+  "related" : [ {
+    "name" : "Reverse Linked List",
+    "slug" : "reverse-linked-list",
+    "shortDescription" : "Reverse a singly linked list"
+  }, {
+    "name" : "Merge Two Sorted Lists",
+    "slug" : "merge-two-sorted-lists",
+    "shortDescription" : "Merge two sorted linked lists"
+  }, {
+    "name" : "Linked List Cycle",
+    "slug" : "linked-list-cycle",
+    "shortDescription" : "Detect if a linked list has a cycle"
+  }, {
+    "name" : "Remove Nth Node From End of List",
+    "slug" : "remove-nth-node-from-end-of-list",
+    "shortDescription" : "Remove the nth node from end of linked list"
+  } ]
+}

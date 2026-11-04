@@ -32,3 +32,13 @@ bootJar {
 test {
     useJUnitPlatform()
 }
+
+// Problem catalogue + solution code as JSON for the static site on Vercel (web/data)
+tasks.register('exportStaticData', JavaExec) {
+    description = 'Exports the problem catalogue and method source code to web/data for the static site'
+    group = 'build'
+    classpath = sourceSets.test.runtimeClasspath
+    mainClass = 'com.algorithm.web.export.StaticDataExport'
+    workingDir = rootProject.projectDir
+    args = [rootProject.file('web/data').absolutePath]
+}

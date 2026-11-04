@@ -1,0 +1,37 @@
+{
+  "name" : "Sales by Match",
+  "slug" : "sales-by-match",
+  "category" : "Arrays & Hashing",
+  "description" : "Given an array of integers representing the color of each sock, determine how many pairs of socks with matching colors there are.",
+  "shortDescription" : "Count pairs of matching socks",
+  "className" : "arrays.SalesByMatch",
+  "methods" : [ {
+    "name" : "computeWithHashSet",
+    "label" : "Hash set",
+    "code" : "public static int computeWithHashSet(int[] socks) {\n    Set<Integer> unmatched = new HashSet<>();\n    int pairs = 0;\n    for (int color : socks) {\n        if (!unmatched.add(color)) {\n            unmatched.remove(color);\n            pairs++;\n        }\n    }\n    return pairs;\n}"
+  }, {
+    "name" : "computeWithSort",
+    "label" : "Sort",
+    "code" : "public static int computeWithSort(int[] socks) {\n    int[] sorted = socks.clone();\n    Arrays.sort(sorted);\n    int pairs = 0;\n    for (int i = 0; i < sorted.length - 1; i++) {\n        if (sorted[i] == sorted[i + 1]) {\n            pairs++;\n            i++;\n        }\n    }\n    return pairs;\n}"
+  } ],
+  "paramNames" : [ "socks" ],
+  "paramTypes" : [ "int[]" ],
+  "exampleInputs" : [ [ 10, 20, 20, 10, 10, 30, 50, 10, 20 ] ],
+  "related" : [ {
+    "name" : "Two Sum",
+    "slug" : "two-sum",
+    "shortDescription" : "Find two numbers that add up to target"
+  }, {
+    "name" : "Contains Duplicate",
+    "slug" : "contains-duplicate",
+    "shortDescription" : "Check if array has duplicate values"
+  }, {
+    "name" : "Missing Number",
+    "slug" : "missing-number",
+    "shortDescription" : "Find the missing number in array [0, n]"
+  }, {
+    "name" : "Single Number",
+    "slug" : "single-number",
+    "shortDescription" : "Find the number that appears only once"
+  } ]
+}

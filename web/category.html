@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta name="description" content="Algorithmic: ask a coding problem by voice or text and see its Java solution">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="Algorithmic">
+    <title>Category · Algorithmic</title>
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="apple-touch-icon" href="/icon-192.png">
+    <meta name="theme-color" content="#4c5bd4">
+    <link rel="preconnect" href="https://algorithmicx.onrender.com" crossorigin>
+    <!-- Apply the saved theme before first paint so dark mode doesn't flash white -->
+    <script>
+        try {
+            var t = localStorage.getItem('algo.theme');
+            if (t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t);
+        } catch (e) { /* storage unavailable */ }
+    </script>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body data-nav="browse">
+<main class="page">
+    <div class="appbar">
+        <a href="/browse" class="icon-btn" aria-label="Back to all categories">←</a>
+        <h1 id="title">&nbsp;</h1>
+    </div>
+
+    <div id="tools" hidden>
+        <div class="search compact">
+            <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M10 3a7 7 0 0 1 5.6 11.2l5.1 5.1-1.4 1.4-5.1-5.1A7 7 0 1 1 10 3zm0 2a5 5 0 1 0 0 10 5 5 0 0 0 0-10z"/></svg>
+            <input type="search" id="filterInput" placeholder="Search this category…" aria-label="Filter problems in this category" autocomplete="off">
+        </div>
+        <div class="progress-line" style="margin-top:12px">
+            <span class="small muted" id="progressText"></span>
+            <span class="bar"><i id="progressBar"></i></span>
+        </div>
+        <div class="chips" style="margin-bottom:12px" role="group" aria-label="Filter">
+            <button type="button" class="chip" data-filter="all" aria-pressed="true">All</button>
+            <button type="button" class="chip" data-filter="todo" aria-pressed="false">Not run yet</button>
+            <button type="button" class="chip" data-filter="ran" aria-pressed="false">Ran</button>
+            <button type="button" class="chip" data-filter="az" aria-pressed="false">A–Z</button>
+        </div>
+    </div>
+
+    <div class="list" id="problemList">
+        <div class="skel" style="height:64px"></div><div class="skel" style="height:64px"></div><div class="skel" style="height:64px"></div>
+    </div>
+    <div class="empty" id="noMatches" hidden><p class="t">No problems match</p><p>Try another word, or tap Ask.</p></div>
+    <div class="empty" id="notFound" hidden><p class="t">No such category</p><p><a href="/browse" class="link-btn">See all categories</a></p></div>
+</main>
+
+<script src="/js/config.js"></script>
+<script src="/js/app.js"></script>
+<script src="/js/voice.js"></script>
+<script src="/js/pages/category.js"></script>
+</body>
+</html>

@@ -1,0 +1,25 @@
+{
+  "name" : "Implement Trie",
+  "slug" : "implement-trie",
+  "category" : "Trie",
+  "description" : "A trie (pronounced as 'try') or prefix tree is a tree data structure used to efficiently store and retrieve keys in a dataset of strings.",
+  "shortDescription" : "Implement Trie (Prefix Tree) data structure",
+  "className" : "trie.ImplementTrie",
+  "methods" : [ {
+    "name" : "insert",
+    "label" : "Insert",
+    "code" : "public void insert(String word) {\n    TrieNode current = root;\n    for (char c : word.toCharArray()) {\n        int index = c - 'a';\n        if (current.children[index] == null) {\n            current.children[index] = new TrieNode();\n        }\n        current = current.children[index];\n    }\n    current.isEndOfWord = true;\n}"
+  }, {
+    "name" : "search",
+    "label" : "Search",
+    "code" : "public boolean search(String word) {\n    TrieNode node = searchPrefix(word);\n    return node != null && node.isEndOfWord;\n}"
+  }, {
+    "name" : "startsWith",
+    "label" : "Starts with",
+    "code" : "public boolean startsWith(String prefix) {\n    return searchPrefix(prefix) != null;\n}"
+  } ],
+  "paramNames" : [ "trie", "word" ],
+  "paramTypes" : [ "ImplementTrie", "String" ],
+  "exampleInputs" : null,
+  "related" : [ ]
+}

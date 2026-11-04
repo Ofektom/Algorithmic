@@ -1,0 +1,41 @@
+{
+  "name" : "Word Pattern",
+  "slug" : "word-pattern",
+  "category" : "Strings",
+  "description" : "Given a pattern and a string s, find if s follows the same pattern. Here follow means a full match, such that there is a bijection between a letter in pattern and a non-empty word in s.",
+  "shortDescription" : "Check if string follows word pattern",
+  "className" : "strings.WordPattern",
+  "methods" : [ {
+    "name" : "computeWithHashMap",
+    "label" : "Hash map",
+    "code" : "public static boolean computeWithHashMap(String pattern, String s) {\n    String[] words = s.split(\" \");\n    if (pattern.length() != words.length) {\n        return false;\n    }\n\n    Map<Character, String> map = new HashMap<>();\n    Set<String> used = new HashSet<>();\n\n    for (int i = 0; i < pattern.length(); i++) {\n        char c = pattern.charAt(i);\n        String word = words[i];\n\n        if (map.containsKey(c)) {\n            if (!map.get(c).equals(word)) {\n                return false;\n            }\n        } else {\n            if (used.contains(word)) {\n                return false;\n            }\n            map.put(c, word);\n            used.add(word);\n        }\n    }\n    return true;\n}"
+  }, {
+    "name" : "computeWithTwoHashMaps",
+    "label" : "Two hash maps",
+    "code" : "public static boolean computeWithTwoHashMaps(String pattern, String s) {\n    String[] words = s.split(\" \");\n    if (pattern.length() != words.length) {\n        return false;\n    }\n\n    Map<Character, String> charToWord = new HashMap<>();\n    Map<String, Character> wordToChar = new HashMap<>();\n\n    for (int i = 0; i < pattern.length(); i++) {\n        char c = pattern.charAt(i);\n        String word = words[i];\n\n        if (charToWord.containsKey(c) && !charToWord.get(c).equals(word)) {\n            return false;\n        }\n        if (wordToChar.containsKey(word) && wordToChar.get(word) != c) {\n            return false;\n        }\n\n        charToWord.put(c, word);\n        wordToChar.put(word, c);\n    }\n    return true;\n}"
+  }, {
+    "name" : "computeWithStringBuilder",
+    "label" : "String builder",
+    "code" : "public static boolean computeWithStringBuilder(String pattern, String s) {\n    String[] words = s.split(\" \");\n    if (pattern.length() != words.length) {\n        return false;\n    }\n\n    Map<Character, String> map = new HashMap<>();\n    for (int i = 0; i < pattern.length(); i++) {\n        char c = pattern.charAt(i);\n        String word = words[i];\n\n        if (map.containsKey(c)) {\n            if (!map.get(c).equals(word)) {\n                return false;\n            }\n        } else {\n            StringBuilder sb = new StringBuilder();\n            for (String value : map.values()) {\n                sb.append(value).append(\",\");\n            }\n            if (sb.toString().contains(word)) {\n                return false;\n            }\n            map.put(c, word);\n        }\n    }\n    return true;\n}"
+  } ],
+  "paramNames" : [ "pattern", "s" ],
+  "paramTypes" : [ "String", "String" ],
+  "exampleInputs" : [ "abba", "dog cat cat dog" ],
+  "related" : [ {
+    "name" : "Valid Anagram",
+    "slug" : "valid-anagram",
+    "shortDescription" : "Check if two strings are anagrams"
+  }, {
+    "name" : "Group Anagrams",
+    "slug" : "group-anagrams",
+    "shortDescription" : "Group strings that are anagrams of each other"
+  }, {
+    "name" : "Ransom Note",
+    "slug" : "ransom-note",
+    "shortDescription" : "Check if ransom note can be constructed from magazine"
+  }, {
+    "name" : "Isomorphic Strings",
+    "slug" : "isomorphic-strings",
+    "shortDescription" : "Check if two strings are isomorphic"
+  } ]
+}

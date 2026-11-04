@@ -1,0 +1,41 @@
+{
+  "name" : "Two Sum II",
+  "slug" : "two-sum-ii",
+  "category" : "Two Pointers",
+  "description" : "Given a 1-indexed array of integers numbers that is already sorted in non-decreasing order, find two numbers such that they add up to a specific target number. Return the indices of the two numbers (1-indexed).",
+  "shortDescription" : "Find two numbers that add to target in sorted array",
+  "className" : "pointers.TwoSumII",
+  "methods" : [ {
+    "name" : "computeWithTwoPointers",
+    "label" : "Two pointers",
+    "code" : "public static int[] computeWithTwoPointers(int[] numbers, int target) {\n    int left = 0;\n    int right = numbers.length - 1;\n\n    while (left < right) {\n        int sum = numbers[left] + numbers[right];\n        if (sum == target) {\n            return new int[] { left + 1, right + 1 };\n        } else if (sum < target) {\n            left++;\n        } else {\n            right--;\n        }\n    }\n    return new int[] {};\n}"
+  }, {
+    "name" : "computeWithBinarySearch",
+    "label" : "Binary search",
+    "code" : "public static int[] computeWithBinarySearch(int[] numbers, int target) {\n    for (int i = 0; i < numbers.length; i++) {\n        int complement = target - numbers[i];\n        int index = binarySearch(numbers, i + 1, complement);\n        if (index != -1) {\n            return new int[] { i + 1, index + 1 };\n        }\n    }\n    return new int[] {};\n}"
+  }, {
+    "name" : "computeWithHashMap",
+    "label" : "Hash map",
+    "code" : "public static int[] computeWithHashMap(int[] numbers, int target) {\n    java.util.Map<Integer, Integer> map = new java.util.HashMap<>();\n    for (int i = 0; i < numbers.length; i++) {\n        int complement = target - numbers[i];\n        if (map.containsKey(complement)) {\n            return new int[] { map.get(complement) + 1, i + 1 };\n        }\n        map.put(numbers[i], i);\n    }\n    return new int[] {};\n}"
+  } ],
+  "paramNames" : [ "numbers", "target" ],
+  "paramTypes" : [ "int[]", "int" ],
+  "exampleInputs" : [ [ 2, 7, 11, 15 ], 9 ],
+  "related" : [ {
+    "name" : "Valid Palindrome",
+    "slug" : "valid-palindrome",
+    "shortDescription" : "Check if string is palindrome"
+  }, {
+    "name" : "Container With Most Water",
+    "slug" : "container-with-most-water",
+    "shortDescription" : "Find container that holds most water"
+  }, {
+    "name" : "3Sum",
+    "slug" : "3sum",
+    "shortDescription" : "Find all triplets that sum to zero"
+  }, {
+    "name" : "Trapping Rain Water",
+    "slug" : "trapping-rain-water",
+    "shortDescription" : "Calculate trapped rainwater"
+  } ]
+}

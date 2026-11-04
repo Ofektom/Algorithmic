@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta name="description" content="Algorithmic: ask a coding problem by voice or text and see its Java solution">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="Algorithmic">
+    <title>Solution · Algorithmic</title>
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="apple-touch-icon" href="/icon-192.png">
+    <meta name="theme-color" content="#4c5bd4">
+    <link rel="preconnect" href="https://algorithmicx.onrender.com" crossorigin>
+    <!-- Apply the saved theme before first paint so dark mode doesn't flash white -->
+    <script>
+        try {
+            var t = localStorage.getItem('algo.theme');
+            if (t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t);
+        } catch (e) { /* storage unavailable */ }
+    </script>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body data-nav="">
+<main class="page">
+    <div class="appbar">
+        <a href="/" class="icon-btn" id="backButton" aria-label="Back">←</a>
+        <h1 id="question">Solution</h1>
+    </div>
+    <div class="source-row">
+        <span class="source generated" title="Written by AI for this question. It hasn't been run or tested.">Generated solution · not tested</span>
+    </div>
+
+    <div class="tabs scroll" role="tablist" aria-label="Solution sections">
+        <button type="button" role="tab" data-tab="problem" aria-controls="panel-problem" aria-selected="false">Problem</button>
+        <button type="button" role="tab" data-tab="solution" aria-controls="panel-solution" aria-selected="true">Solution</button>
+        <button type="button" role="tab" data-tab="explanation" aria-controls="panel-explanation" aria-selected="false">Explanation</button>
+        <button type="button" role="tab" data-tab="approach" aria-controls="panel-approach" aria-selected="false">Approach</button>
+        <button type="button" role="tab" data-tab="complexity" aria-controls="panel-complexity" aria-selected="false">Complexity</button>
+    </div>
+
+    <div id="loading" role="status" aria-label="Loading the solution">
+        <div class="skel" style="width:92%"></div><div class="skel" style="width:84%"></div>
+        <div class="skel" style="width:88%"></div><div class="skel" style="width:58%"></div>
+        <p class="small muted" style="margin-top:12px" id="loadingText">Writing a solution… this can take a few seconds.</p>
+    </div>
+
+    <div class="card" id="error" hidden>
+        <p class="t" style="font-weight:700;margin-bottom:4px">Couldn't get a solution</p>
+        <p class="muted" id="errorMessage"></p>
+        <button type="button" class="btn primary" id="retry" style="margin-top:12px">Try again</button>
+    </div>
+
+    <div id="answer" hidden>
+        <section class="panel" id="panel-problem" role="tabpanel">
+            <p class="small muted">Solved as</p>
+            <p class="prose" id="problemText" style="margin-top:4px"></p>
+            <p class="muted" id="problemMissing" hidden>The answer didn't restate the problem. Check the Explanation tab to see how your question was read.</p>
+            <section id="builtInMatches" hidden>
+                <h2 class="h2">Did you mean one of these?</h2>
+                <div class="list" id="matchList"></div>
+            </section>
+        </section>
+        <section class="panel on" id="panel-solution" role="tabpanel">
+            <pre class="code" id="code"></pre>
+            <p class="card soft muted" id="noCode" hidden>The answer had no code. See the Explanation and Approach tabs.</p>
+            <button type="button" class="btn secondary block" data-copy="code" id="copyCode" style="margin-top:12px">⧉ Copy code</button>
+        </section>
+        <section class="panel" id="panel-explanation" role="tabpanel"><p class="prose" id="explanation"></p></section>
+        <section class="panel" id="panel-approach" role="tabpanel"><p class="prose" id="approach"></p></section>
+        <section class="panel" id="panel-complexity" role="tabpanel"><p class="prose" id="complexity"></p></section>
+    </div>
+
+    <!-- Corrections for an answer that doesn't fit the problem as the user's platform states it -->
+    <details class="card refine" id="refine" hidden>
+        <summary>Not quite right? Fix the solution</summary>
+        <p class="small muted refine-applied" id="refineApplied" hidden>Showing the solution updated with your corrections.</p>
+        <div class="field">
+            <label for="refineLanguage">Language</label>
+            <select id="refineLanguage">
+                <option>Java</option><option>C</option><option>C++</option><option>C#</option>
+                <option>Python</option><option>JavaScript</option><option>TypeScript</option>
+                <option>Go</option><option>Kotlin</option><option>Swift</option>
+            </select>
+        </div>
+        <div class="field">
+            <label for="refineSignature">Required signature or starter code</label>
+            <textarea id="refineSignature" class="mono" spellcheck="false" autocapitalize="off"
+                      placeholder="char* solve(int arr_count, int* arr)"></textarea>
+            <p class="hint">Paste the function as the problem declares it. The answer will keep these exact parameter and return types.</p>
+        </div>
+        <div class="field">
+            <label for="refineInstructions">What should change?</label>
+            <textarea id="refineInstructions"
+                      placeholder="e.g. arr is an int* with its length passed separately, so index it instead of using for-each. Return a char* like &quot;YES&quot;/&quot;NO&quot;, not a boolean."></textarea>
+        </div>
+        <p class="form-error" id="refineError" hidden></p>
+        <button type="button" class="btn primary block" id="refineButton">Update solution</button>
+    </details>
+</main>
+
+<script src="/js/config.js"></script>
+<script src="/js/app.js"></script>
+<script src="/js/voice.js"></script>
+<script src="/js/pages/solution.js"></script>
+</body>
+</html>

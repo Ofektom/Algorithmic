@@ -1,0 +1,41 @@
+{
+  "name" : "Container With Most Water",
+  "slug" : "container-with-most-water",
+  "category" : "Two Pointers",
+  "description" : "You are given an integer array height of length n. There are n vertical lines drawn such that the two endpoints of the ith line are (i, 0) and (i, height[i]). Find two lines that together with the x-axis form a container, such that the container contains the most water.",
+  "shortDescription" : "Find container that holds most water",
+  "className" : "pointers.ContainerWithMostWater",
+  "methods" : [ {
+    "name" : "computeWithTwoPointers",
+    "label" : "Two pointers",
+    "code" : "public static int computeWithTwoPointers(int[] height) {\n    int left = 0;\n    int right = height.length - 1;\n    int maxArea = 0;\n\n    while (left < right) {\n        int width = right - left;\n        int minHeight = Math.min(height[left], height[right]);\n        maxArea = Math.max(maxArea, width * minHeight);\n\n        if (height[left] < height[right]) {\n            left++;\n        } else {\n            right--;\n        }\n    }\n    return maxArea;\n}"
+  }, {
+    "name" : "computeWithBruteForce",
+    "label" : "Brute force",
+    "code" : "public static int computeWithBruteForce(int[] height) {\n    int maxArea = 0;\n    for (int i = 0; i < height.length; i++) {\n        for (int j = i + 1; j < height.length; j++) {\n            int width = j - i;\n            int minHeight = Math.min(height[i], height[j]);\n            maxArea = Math.max(maxArea, width * minHeight);\n        }\n    }\n    return maxArea;\n}"
+  }, {
+    "name" : "computeWithRecursion",
+    "label" : "Recursion",
+    "code" : "public static int computeWithRecursion(int[] height) {\n    return maxAreaRecursive(height, 0, height.length - 1, 0);\n}"
+  } ],
+  "paramNames" : [ "height" ],
+  "paramTypes" : [ "int[]" ],
+  "exampleInputs" : [ [ 1, 8, 6, 2, 5, 4, 8, 3, 7 ] ],
+  "related" : [ {
+    "name" : "Valid Palindrome",
+    "slug" : "valid-palindrome",
+    "shortDescription" : "Check if string is palindrome"
+  }, {
+    "name" : "Two Sum II",
+    "slug" : "two-sum-ii",
+    "shortDescription" : "Find two numbers that add to target in sorted array"
+  }, {
+    "name" : "3Sum",
+    "slug" : "3sum",
+    "shortDescription" : "Find all triplets that sum to zero"
+  }, {
+    "name" : "Trapping Rain Water",
+    "slug" : "trapping-rain-water",
+    "shortDescription" : "Calculate trapped rainwater"
+  } ]
+}

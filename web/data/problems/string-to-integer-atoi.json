@@ -1,0 +1,41 @@
+{
+  "name" : "String to Integer (atoi)",
+  "slug" : "string-to-integer-atoi",
+  "category" : "Strings",
+  "description" : "Implement the myAtoi(string s) function, which converts a string to a 32-bit signed integer (similar to C/C++'s atoi function).",
+  "shortDescription" : "Convert string to 32-bit signed integer",
+  "className" : "strings.StringToInteger",
+  "methods" : [ {
+    "name" : "computeIterative",
+    "label" : "Iterative",
+    "code" : "public static int computeIterative(String s) {\n    if (s == null || s.length() == 0) {\n        return 0;\n    }\n\n    int index = 0;\n    int n = s.length();\n\n    // Skip leading whitespace\n    while (index < n && s.charAt(index) == ' ') {\n        index++;\n    }\n\n    if (index == n) {\n        return 0;\n    }\n\n    // Check sign\n    int sign = 1;\n    if (s.charAt(index) == '+' || s.charAt(index) == '-') {\n        sign = s.charAt(index) == '-' ? -1 : 1;\n        index++;\n    }\n\n    // Convert digits\n    int result = 0;\n    while (index < n && Character.isDigit(s.charAt(index))) {\n        int digit = s.charAt(index) - '0';\n\n        // Check for overflow\n        if (result > Integer.MAX_VALUE / 10\n                || (result == Integer.MAX_VALUE / 10 && digit > Integer.MAX_VALUE % 10)) {\n            return sign == 1 ? Integer.MAX_VALUE : Integer.MIN_VALUE;\n        }\n\n        result = result * 10 + digit;\n        index++;\n    }\n\n    return sign * result;\n}"
+  }, {
+    "name" : "computeWithStringBuilder",
+    "label" : "String builder",
+    "code" : "public static int computeWithStringBuilder(String s) {\n    if (s == null || s.length() == 0) {\n        return 0;\n    }\n\n    s = s.trim();\n    if (s.length() == 0) {\n        return 0;\n    }\n\n    StringBuilder sb = new StringBuilder();\n    int sign = 1;\n    int start = 0;\n\n    if (s.charAt(0) == '+' || s.charAt(0) == '-') {\n        sign = s.charAt(0) == '-' ? -1 : 1;\n        start = 1;\n    }\n\n    for (int i = start; i < s.length() && Character.isDigit(s.charAt(i)); i++) {\n        sb.append(s.charAt(i));\n    }\n\n    if (sb.length() == 0) {\n        return 0;\n    }\n\n    try {\n        long value = Long.parseLong(sb.toString()) * sign;\n        if (value > Integer.MAX_VALUE) {\n            return Integer.MAX_VALUE;\n        }\n        if (value < Integer.MIN_VALUE) {\n            return Integer.MIN_VALUE;\n        }\n        return (int) value;\n    } catch (NumberFormatException e) {\n        return sign == 1 ? Integer.MAX_VALUE : Integer.MIN_VALUE;\n    }\n}"
+  }, {
+    "name" : "computeWithRecursion",
+    "label" : "Recursion",
+    "code" : "public static int computeWithRecursion(String s) {\n    s = s.trim();\n    if (s.length() == 0) {\n        return 0;\n    }\n\n    int[] index = { 0 };\n    int sign = parseSign(s, index);\n    return sign * parseDigits(s, index, 0);\n}"
+  } ],
+  "paramNames" : [ "s" ],
+  "paramTypes" : [ "String" ],
+  "exampleInputs" : [ "42" ],
+  "related" : [ {
+    "name" : "Valid Anagram",
+    "slug" : "valid-anagram",
+    "shortDescription" : "Check if two strings are anagrams"
+  }, {
+    "name" : "Group Anagrams",
+    "slug" : "group-anagrams",
+    "shortDescription" : "Group strings that are anagrams of each other"
+  }, {
+    "name" : "Ransom Note",
+    "slug" : "ransom-note",
+    "shortDescription" : "Check if ransom note can be constructed from magazine"
+  }, {
+    "name" : "Isomorphic Strings",
+    "slug" : "isomorphic-strings",
+    "shortDescription" : "Check if two strings are isomorphic"
+  } ]
+}

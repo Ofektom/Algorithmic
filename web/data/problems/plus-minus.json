@@ -1,0 +1,37 @@
+{
+  "name" : "Plus Minus",
+  "slug" : "plus-minus",
+  "category" : "Arrays & Hashing",
+  "description" : "Given an array of integers, calculate the ratios of its elements that are positive, negative, and zero. Return each ratio with 6 digits after the decimal point.",
+  "shortDescription" : "Ratios of positive, negative and zero elements",
+  "className" : "arrays.PlusMinus",
+  "methods" : [ {
+    "name" : "computeWithCounting",
+    "label" : "Counting",
+    "code" : "public static String computeWithCounting(int[] arr) {\n    int positive = 0, negative = 0, zero = 0;\n    for (int num : arr) {\n        if (num > 0) positive++;\n        else if (num < 0) negative++;\n        else zero++;\n    }\n    return format(positive, negative, zero, arr.length);\n}"
+  }, {
+    "name" : "computeWithStreams",
+    "label" : "Streams",
+    "code" : "public static String computeWithStreams(int[] arr) {\n    long positive = java.util.Arrays.stream(arr).filter(x -> x > 0).count();\n    long negative = java.util.Arrays.stream(arr).filter(x -> x < 0).count();\n    long zero = arr.length - positive - negative;\n    return format(positive, negative, zero, arr.length);\n}"
+  } ],
+  "paramNames" : [ "arr" ],
+  "paramTypes" : [ "int[]" ],
+  "exampleInputs" : [ [ -4, 3, -9, 0, 4, 1 ] ],
+  "related" : [ {
+    "name" : "Two Sum",
+    "slug" : "two-sum",
+    "shortDescription" : "Find two numbers that add up to target"
+  }, {
+    "name" : "Contains Duplicate",
+    "slug" : "contains-duplicate",
+    "shortDescription" : "Check if array has duplicate values"
+  }, {
+    "name" : "Missing Number",
+    "slug" : "missing-number",
+    "shortDescription" : "Find the missing number in array [0, n]"
+  }, {
+    "name" : "Single Number",
+    "slug" : "single-number",
+    "shortDescription" : "Find the number that appears only once"
+  } ]
+}

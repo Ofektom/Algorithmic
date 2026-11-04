@@ -1,0 +1,41 @@
+{
+  "name" : "Find All Anagrams in String",
+  "slug" : "find-all-anagrams-in-string",
+  "category" : "Strings",
+  "description" : "Given two strings s and p, return an array of all the start indices of p's anagrams in s. You may return the answer in any order.",
+  "shortDescription" : "Find all start indices of anagram substrings",
+  "className" : "strings.FindAllAnagramsInString",
+  "methods" : [ {
+    "name" : "computeWithHashMap",
+    "label" : "Hash map",
+    "code" : "public static List<Integer> computeWithHashMap(String s, String p) {\n    List<Integer> result = new ArrayList<>();\n    if (s.length() < p.length()) {\n        return result;\n    }\n\n    Map<Character, Integer> pMap = new HashMap<>();\n    for (char c : p.toCharArray()) {\n        pMap.put(c, pMap.getOrDefault(c, 0) + 1);\n    }\n\n    Map<Character, Integer> sMap = new HashMap<>();\n    int windowSize = p.length();\n\n    for (int i = 0; i < s.length(); i++) {\n        char c = s.charAt(i);\n        sMap.put(c, sMap.getOrDefault(c, 0) + 1);\n\n        if (i >= windowSize) {\n            char leftChar = s.charAt(i - windowSize);\n            sMap.put(leftChar, sMap.get(leftChar) - 1);\n            if (sMap.get(leftChar) == 0) {\n                sMap.remove(leftChar);\n            }\n        }\n\n        if (i >= windowSize - 1 && sMap.equals(pMap)) {\n            result.add(i - windowSize + 1);\n        }\n    }\n    return result;\n}"
+  }, {
+    "name" : "computeWithArray",
+    "label" : "Array",
+    "code" : "public static List<Integer> computeWithArray(String s, String p) {\n    List<Integer> result = new ArrayList<>();\n    if (s.length() < p.length()) {\n        return result;\n    }\n\n    int[] pCount = new int[26];\n    int[] sCount = new int[26];\n\n    for (int i = 0; i < p.length(); i++) {\n        pCount[p.charAt(i) - 'a']++;\n        sCount[s.charAt(i) - 'a']++;\n    }\n\n    if (matches(pCount, sCount)) {\n        result.add(0);\n    }\n\n    for (int i = p.length(); i < s.length(); i++) {\n        sCount[s.charAt(i) - 'a']++;\n        sCount[s.charAt(i - p.length()) - 'a']--;\n\n        if (matches(pCount, sCount)) {\n            result.add(i - p.length() + 1);\n        }\n    }\n    return result;\n}"
+  }, {
+    "name" : "computeWithStringBuilder",
+    "label" : "String builder",
+    "code" : "public static List<Integer> computeWithStringBuilder(String s, String p) {\n    List<Integer> result = new ArrayList<>();\n    if (s.length() < p.length()) {\n        return result;\n    }\n\n    char[] pChars = p.toCharArray();\n    java.util.Arrays.sort(pChars);\n    StringBuilder sortedP = new StringBuilder();\n    for (char c : pChars) {\n        sortedP.append(c);\n    }\n\n    for (int i = 0; i <= s.length() - p.length(); i++) {\n        String window = s.substring(i, i + p.length());\n        char[] windowChars = window.toCharArray();\n        java.util.Arrays.sort(windowChars);\n        StringBuilder sortedWindow = new StringBuilder();\n        for (char c : windowChars) {\n            sortedWindow.append(c);\n        }\n\n        if (sortedWindow.toString().equals(sortedP.toString())) {\n            result.add(i);\n        }\n    }\n    return result;\n}"
+  } ],
+  "paramNames" : [ "s", "p" ],
+  "paramTypes" : [ "String", "String" ],
+  "exampleInputs" : [ "cbaebabacd", "abc" ],
+  "related" : [ {
+    "name" : "Valid Anagram",
+    "slug" : "valid-anagram",
+    "shortDescription" : "Check if two strings are anagrams"
+  }, {
+    "name" : "Group Anagrams",
+    "slug" : "group-anagrams",
+    "shortDescription" : "Group strings that are anagrams of each other"
+  }, {
+    "name" : "Ransom Note",
+    "slug" : "ransom-note",
+    "shortDescription" : "Check if ransom note can be constructed from magazine"
+  }, {
+    "name" : "Isomorphic Strings",
+    "slug" : "isomorphic-strings",
+    "shortDescription" : "Check if two strings are isomorphic"
+  } ]
+}

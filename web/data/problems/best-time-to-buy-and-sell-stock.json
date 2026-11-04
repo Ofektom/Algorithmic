@@ -1,0 +1,41 @@
+{
+  "name" : "Best Time to Buy and Sell Stock",
+  "slug" : "best-time-to-buy-and-sell-stock",
+  "category" : "Sliding Window",
+  "description" : "You are given an array prices where prices[i] is the price of a given stock on the ith day. You want to maximize your profit by choosing a single day to buy one stock and choosing a different day in the future to sell that stock. Return the maximum profit you can achieve from this transaction.",
+  "shortDescription" : "Find maximum profit from buying and selling stock",
+  "className" : "window.BestTimeToBuySellStock",
+  "methods" : [ {
+    "name" : "computeWithOnePass",
+    "label" : "One pass",
+    "code" : "public static int computeWithOnePass(int[] prices) {\n    int minPrice = Integer.MAX_VALUE;\n    int maxProfit = 0;\n\n    for (int price : prices) {\n        if (price < minPrice) {\n            minPrice = price;\n        } else {\n            maxProfit = Math.max(maxProfit, price - minPrice);\n        }\n    }\n    return maxProfit;\n}"
+  }, {
+    "name" : "computeWithTwoPointers",
+    "label" : "Two pointers",
+    "code" : "public static int computeWithTwoPointers(int[] prices) {\n    int left = 0;\n    int maxProfit = 0;\n\n    for (int right = 1; right < prices.length; right++) {\n        if (prices[right] < prices[left]) {\n            left = right;\n        } else {\n            maxProfit = Math.max(maxProfit, prices[right] - prices[left]);\n        }\n    }\n    return maxProfit;\n}"
+  }, {
+    "name" : "computeWithBruteForce",
+    "label" : "Brute force",
+    "code" : "public static int computeWithBruteForce(int[] prices) {\n    int maxProfit = 0;\n    for (int i = 0; i < prices.length; i++) {\n        for (int j = i + 1; j < prices.length; j++) {\n            maxProfit = Math.max(maxProfit, prices[j] - prices[i]);\n        }\n    }\n    return maxProfit;\n}"
+  } ],
+  "paramNames" : [ "prices" ],
+  "paramTypes" : [ "int[]" ],
+  "exampleInputs" : [ [ 7, 1, 5, 3, 6, 4 ] ],
+  "related" : [ {
+    "name" : "Longest Substring Without Repeating",
+    "slug" : "longest-substring-without-repeating",
+    "shortDescription" : "Find longest substring without repeating characters"
+  }, {
+    "name" : "Longest Repeating Character Replacement",
+    "slug" : "longest-repeating-character-replacement",
+    "shortDescription" : "Find longest substring after replacing k characters"
+  }, {
+    "name" : "Minimum Window Substring",
+    "slug" : "minimum-window-substring",
+    "shortDescription" : "Find minimum window substring containing all characters of t"
+  }, {
+    "name" : "Minimum Size Subarray Sum",
+    "slug" : "minimum-size-subarray-sum",
+    "shortDescription" : "Find minimum length subarray with sum >= target"
+  } ]
+}

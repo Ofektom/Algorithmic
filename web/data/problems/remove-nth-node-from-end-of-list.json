@@ -1,0 +1,41 @@
+{
+  "name" : "Remove Nth Node From End of List",
+  "slug" : "remove-nth-node-from-end-of-list",
+  "category" : "Linked List",
+  "description" : "Given the head of a linked list, remove the nth node from the end of the list and return its head.",
+  "shortDescription" : "Remove the nth node from end of linked list",
+  "className" : "linkedlist.RemoveNthNodeFromEnd",
+  "methods" : [ {
+    "name" : "computeWithTwoPointers",
+    "label" : "Two pointers",
+    "code" : ""
+  }, {
+    "name" : "computeWithTwoPass",
+    "label" : "Two pass",
+    "code" : ""
+  }, {
+    "name" : "computeRecursive",
+    "label" : "Recursive",
+    "code" : "public static ListNode computeRecursive(ListNode head, int n) {\n    int[] index = { 0 };\n    return removeRecursive(head, n, index);\n}"
+  } ],
+  "paramNames" : [ "head", "n" ],
+  "paramTypes" : [ "ListNode", "int" ],
+  "exampleInputs" : null,
+  "related" : [ {
+    "name" : "Reverse Linked List",
+    "slug" : "reverse-linked-list",
+    "shortDescription" : "Reverse a singly linked list"
+  }, {
+    "name" : "Merge Two Sorted Lists",
+    "slug" : "merge-two-sorted-lists",
+    "shortDescription" : "Merge two sorted linked lists"
+  }, {
+    "name" : "Linked List Cycle",
+    "slug" : "linked-list-cycle",
+    "shortDescription" : "Detect if a linked list has a cycle"
+  }, {
+    "name" : "Add Two Numbers",
+    "slug" : "add-two-numbers",
+    "shortDescription" : "Add two numbers represented by linked lists"
+  } ]
+}

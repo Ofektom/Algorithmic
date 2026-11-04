@@ -1,0 +1,41 @@
+{
+  "name" : "Group Anagrams",
+  "slug" : "group-anagrams",
+  "category" : "Strings",
+  "description" : "Given an array of strings strs, group the anagrams together. You can return the answer in any order.",
+  "shortDescription" : "Group strings that are anagrams of each other",
+  "className" : "strings.GroupAnagrams",
+  "methods" : [ {
+    "name" : "computeWithSortedKey",
+    "label" : "Sorted key",
+    "code" : "public static List<List<String>> computeWithSortedKey(String[] strs) {\n    Map<String, List<String>> map = new HashMap<>();\n    for (String str : strs) {\n        char[] chars = str.toCharArray();\n        Arrays.sort(chars);\n        String key = new String(chars);\n        map.computeIfAbsent(key, k -> new ArrayList<>()).add(str);\n    }\n    return new ArrayList<>(map.values());\n}"
+  }, {
+    "name" : "computeWithStringBuilder",
+    "label" : "String builder",
+    "code" : "public static List<List<String>> computeWithStringBuilder(String[] strs) {\n    Map<String, List<String>> map = new HashMap<>();\n    for (String str : strs) {\n        char[] chars = str.toCharArray();\n        Arrays.sort(chars);\n        StringBuilder sb = new StringBuilder();\n        for (char c : chars) {\n            sb.append(c);\n        }\n        String key = sb.toString();\n        map.computeIfAbsent(key, k -> new ArrayList<>()).add(str);\n    }\n    return new ArrayList<>(map.values());\n}"
+  }, {
+    "name" : "computeWithCharCount",
+    "label" : "Char count",
+    "code" : "public static List<List<String>> computeWithCharCount(String[] strs) {\n    Map<String, List<String>> map = new HashMap<>();\n    for (String str : strs) {\n        int[] count = new int[26];\n        for (char c : str.toCharArray()) {\n            count[c - 'a']++;\n        }\n        StringBuilder sb = new StringBuilder();\n        for (int i = 0; i < 26; i++) {\n            sb.append('#');\n            sb.append(count[i]);\n        }\n        String key = sb.toString();\n        map.computeIfAbsent(key, k -> new ArrayList<>()).add(str);\n    }\n    return new ArrayList<>(map.values());\n}"
+  } ],
+  "paramNames" : [ "strs" ],
+  "paramTypes" : [ "String[]" ],
+  "exampleInputs" : [ [ "eat", "tea", "tan", "ate", "nat", "bat" ] ],
+  "related" : [ {
+    "name" : "Valid Anagram",
+    "slug" : "valid-anagram",
+    "shortDescription" : "Check if two strings are anagrams"
+  }, {
+    "name" : "Ransom Note",
+    "slug" : "ransom-note",
+    "shortDescription" : "Check if ransom note can be constructed from magazine"
+  }, {
+    "name" : "Isomorphic Strings",
+    "slug" : "isomorphic-strings",
+    "shortDescription" : "Check if two strings are isomorphic"
+  }, {
+    "name" : "Word Pattern",
+    "slug" : "word-pattern",
+    "shortDescription" : "Check if string follows word pattern"
+  } ]
+}

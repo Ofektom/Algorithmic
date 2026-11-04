@@ -1,0 +1,41 @@
+{
+  "name" : "Daily Temperatures",
+  "slug" : "daily-temperatures",
+  "category" : "Stack",
+  "description" : "Given an array of integers temperatures represents the daily temperatures, return an array answer such that answer[i] is the number of days you have to wait after the ith day to get a warmer temperature. If there is no future day for which this is possible, keep answer[i] == 0 instead.",
+  "shortDescription" : "Find days to wait for warmer temperature",
+  "className" : "stack.DailyTemperatures",
+  "methods" : [ {
+    "name" : "computeWithStack",
+    "label" : "Stack",
+    "code" : "public static int[] computeWithStack(int[] temperatures) {\n    int[] result = new int[temperatures.length];\n    Stack<Integer> stack = new Stack<>();\n\n    for (int i = 0; i < temperatures.length; i++) {\n        while (!stack.isEmpty() && temperatures[i] > temperatures[stack.peek()]) {\n            int index = stack.pop();\n            result[index] = i - index;\n        }\n        stack.push(i);\n    }\n    return result;\n}"
+  }, {
+    "name" : "computeWithArray",
+    "label" : "Array",
+    "code" : "public static int[] computeWithArray(int[] temperatures) {\n    int[] result = new int[temperatures.length];\n    int[] stack = new int[temperatures.length];\n    int top = -1;\n\n    for (int i = 0; i < temperatures.length; i++) {\n        while (top >= 0 && temperatures[i] > temperatures[stack[top]]) {\n            int index = stack[top--];\n            result[index] = i - index;\n        }\n        stack[++top] = i;\n    }\n    return result;\n}"
+  }, {
+    "name" : "computeWithBruteForce",
+    "label" : "Brute force",
+    "code" : "public static int[] computeWithBruteForce(int[] temperatures) {\n    int[] result = new int[temperatures.length];\n    for (int i = 0; i < temperatures.length; i++) {\n        for (int j = i + 1; j < temperatures.length; j++) {\n            if (temperatures[j] > temperatures[i]) {\n                result[i] = j - i;\n                break;\n            }\n        }\n    }\n    return result;\n}"
+  } ],
+  "paramNames" : [ "temperatures" ],
+  "paramTypes" : [ "int[]" ],
+  "exampleInputs" : [ [ 73, 74, 75, 71, 69, 72, 76, 73 ] ],
+  "related" : [ {
+    "name" : "Valid Parentheses",
+    "slug" : "valid-parentheses",
+    "shortDescription" : "Check if parentheses/brackets are valid"
+  }, {
+    "name" : "Largest Rectangle in Histogram",
+    "slug" : "largest-rectangle-in-histogram",
+    "shortDescription" : "Find largest rectangle area in histogram"
+  }, {
+    "name" : "Evaluate Reverse Polish Notation",
+    "slug" : "evaluate-reverse-polish-notation",
+    "shortDescription" : "Evaluate RPN expression"
+  }, {
+    "name" : "Generate Parentheses",
+    "slug" : "generate-parentheses",
+    "shortDescription" : "Generate all valid parentheses combinations"
+  } ]
+}

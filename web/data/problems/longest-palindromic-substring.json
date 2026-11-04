@@ -1,0 +1,41 @@
+{
+  "name" : "Longest Palindromic Substring",
+  "slug" : "longest-palindromic-substring",
+  "category" : "Strings",
+  "description" : "Given a string s, return the longest palindromic substring in s.",
+  "shortDescription" : "Find longest palindromic substring",
+  "className" : "strings.LongestPalindromicSubstring",
+  "methods" : [ {
+    "name" : "computeExpandAroundCenters",
+    "label" : "Expand around centers",
+    "code" : "public static String computeExpandAroundCenters(String s) {\n    if (s == null || s.length() < 1) {\n        return \"\";\n    }\n\n    int start = 0;\n    int end = 0;\n\n    for (int i = 0; i < s.length(); i++) {\n        int len1 = expandAroundCenter(s, i, i);\n        int len2 = expandAroundCenter(s, i, i + 1);\n        int len = Math.max(len1, len2);\n\n        if (len > end - start) {\n            start = i - (len - 1) / 2;\n            end = i + len / 2;\n        }\n    }\n    return s.substring(start, end + 1);\n}"
+  }, {
+    "name" : "computeWithStringBuilder",
+    "label" : "String builder",
+    "code" : "public static String computeWithStringBuilder(String s) {\n    if (s == null || s.length() < 1) {\n        return \"\";\n    }\n\n    String longest = \"\";\n\n    for (int i = 0; i < s.length(); i++) {\n        // Odd length palindromes\n        StringBuilder sb1 = new StringBuilder();\n        expandPalindrome(s, i, i, sb1);\n        if (sb1.length() > longest.length()) {\n            longest = sb1.toString();\n        }\n\n        // Even length palindromes\n        StringBuilder sb2 = new StringBuilder();\n        expandPalindrome(s, i, i + 1, sb2);\n        if (sb2.length() > longest.length()) {\n            longest = sb2.toString();\n        }\n    }\n    return longest;\n}"
+  }, {
+    "name" : "computeWithDP",
+    "label" : "DP",
+    "code" : "public static String computeWithDP(String s) {\n    int n = s.length();\n    boolean[][] dp = new boolean[n][n];\n    int start = 0;\n    int maxLen = 1;\n\n    // Every single character is a palindrome\n    for (int i = 0; i < n; i++) {\n        dp[i][i] = true;\n    }\n\n    // Check for palindromes of length 2\n    for (int i = 0; i < n - 1; i++) {\n        if (s.charAt(i) == s.charAt(i + 1)) {\n            dp[i][i + 1] = true;\n            start = i;\n            maxLen = 2;\n        }\n    }\n\n    // Check for palindromes of length 3 or more\n    for (int len = 3; len <= n; len++) {\n        for (int i = 0; i < n - len + 1; i++) {\n            int j = i + len - 1;\n            if (s.charAt(i) == s.charAt(j) && dp[i + 1][j - 1]) {\n                dp[i][j] = true;\n                start = i;\n                maxLen = len;\n            }\n        }\n    }\n    return s.substring(start, start + maxLen);\n}"
+  } ],
+  "paramNames" : [ "s" ],
+  "paramTypes" : [ "String" ],
+  "exampleInputs" : [ "babad" ],
+  "related" : [ {
+    "name" : "Valid Anagram",
+    "slug" : "valid-anagram",
+    "shortDescription" : "Check if two strings are anagrams"
+  }, {
+    "name" : "Group Anagrams",
+    "slug" : "group-anagrams",
+    "shortDescription" : "Group strings that are anagrams of each other"
+  }, {
+    "name" : "Ransom Note",
+    "slug" : "ransom-note",
+    "shortDescription" : "Check if ransom note can be constructed from magazine"
+  }, {
+    "name" : "Isomorphic Strings",
+    "slug" : "isomorphic-strings",
+    "shortDescription" : "Check if two strings are isomorphic"
+  } ]
+}

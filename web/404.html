@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta name="description" content="Algorithmic: ask a coding problem by voice or text and see its Java solution">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="Algorithmic">
+    <title>Not found · Algorithmic</title>
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="apple-touch-icon" href="/icon-192.png">
+    <meta name="theme-color" content="#4c5bd4">
+    <link rel="preconnect" href="https://algorithmicx.onrender.com" crossorigin>
+    <!-- Apply the saved theme before first paint so dark mode doesn't flash white -->
+    <script>
+        try {
+            var t = localStorage.getItem('algo.theme');
+            if (t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t);
+        } catch (e) { /* storage unavailable */ }
+    </script>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body data-nav="">
+<main class="page">
+    <div class="empty" style="padding-top:80px">
+        <p class="t">This page doesn't exist</p>
+        <p>Tap Ask and say a problem, or <a href="/browse" class="link-btn">browse all problems</a>.</p>
+    </div>
+</main>
+
+<script src="/js/config.js"></script>
+<script src="/js/app.js"></script>
+<script src="/js/voice.js"></script>
+</body>
+</html>

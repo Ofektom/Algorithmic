@@ -1,0 +1,41 @@
+{
+  "name" : "Contains Duplicate II",
+  "slug" : "contains-duplicate-ii",
+  "category" : "Arrays & Hashing",
+  "description" : "Given an integer array nums and an integer k, return true if there are two distinct indices i and j in the array such that nums[i] == nums[j] and abs(i - j) <= k.",
+  "shortDescription" : "Check if duplicate exists within k distance",
+  "className" : "arrays.ContainsDuplicateII",
+  "methods" : [ {
+    "name" : "computeWithHashMap",
+    "label" : "Hash map",
+    "code" : "public static boolean computeWithHashMap(int[] nums, int k) {\n    Map<Integer, Integer> map = new HashMap<>();\n    for (int i = 0; i < nums.length; i++) {\n        if (map.containsKey(nums[i]) && Math.abs(i - map.get(nums[i])) <= k) {\n            return true;\n        }\n        map.put(nums[i], i);\n    }\n    return false;\n}"
+  }, {
+    "name" : "computeWithHashSet",
+    "label" : "Hash set",
+    "code" : "public static boolean computeWithHashSet(int[] nums, int k) {\n    Set<Integer> set = new HashSet<>();\n    for (int i = 0; i < nums.length; i++) {\n        if (set.contains(nums[i])) {\n            return true;\n        }\n        set.add(nums[i]);\n        if (set.size() > k) {\n            set.remove(nums[i - k]);\n        }\n    }\n    return false;\n}"
+  }, {
+    "name" : "computeWithBruteForce",
+    "label" : "Brute force",
+    "code" : "public static boolean computeWithBruteForce(int[] nums, int k) {\n    for (int i = 0; i < nums.length; i++) {\n        for (int j = i + 1; j <= Math.min(i + k, nums.length - 1); j++) {\n            if (nums[i] == nums[j]) {\n                return true;\n            }\n        }\n    }\n    return false;\n}"
+  } ],
+  "paramNames" : [ "nums", "k" ],
+  "paramTypes" : [ "int[]", "int" ],
+  "exampleInputs" : [ [ 1, 2, 3, 1 ], 3 ],
+  "related" : [ {
+    "name" : "Two Sum",
+    "slug" : "two-sum",
+    "shortDescription" : "Find two numbers that add up to target"
+  }, {
+    "name" : "Contains Duplicate",
+    "slug" : "contains-duplicate",
+    "shortDescription" : "Check if array has duplicate values"
+  }, {
+    "name" : "Missing Number",
+    "slug" : "missing-number",
+    "shortDescription" : "Find the missing number in array [0, n]"
+  }, {
+    "name" : "Single Number",
+    "slug" : "single-number",
+    "shortDescription" : "Find the number that appears only once"
+  } ]
+}

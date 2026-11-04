@@ -1,0 +1,41 @@
+{
+  "name" : "Path Sum",
+  "slug" : "path-sum",
+  "category" : "Trees",
+  "description" : "Given the root of a binary tree and an integer targetSum, return true if the tree has a root-to-leaf path such that adding up all the values along the path equals targetSum. A leaf is a node with no children.",
+  "shortDescription" : "Check if tree has path with given sum",
+  "className" : "trees.PathSum",
+  "methods" : [ {
+    "name" : "computeRecursive",
+    "label" : "Recursive",
+    "code" : "public static boolean computeRecursive(TreeNode root, int targetSum) {\n    if (root == null) return false;\n    if (root.left == null && root.right == null) {\n        return root.val == targetSum;\n    }\n    return computeRecursive(root.left, targetSum - root.val) ||\n           computeRecursive(root.right, targetSum - root.val);\n}"
+  }, {
+    "name" : "computeWithStack",
+    "label" : "Stack",
+    "code" : "public static boolean computeWithStack(TreeNode root, int targetSum) {\n    if (root == null) return false;\n\n    java.util.Stack<Pair> stack = new java.util.Stack<>();\n    stack.push(new Pair(root, targetSum - root.val));\n\n    while (!stack.isEmpty()) {\n        Pair pair = stack.pop();\n        TreeNode node = pair.node;\n        int remainingSum = pair.sum;\n\n        if (node.left == null && node.right == null && remainingSum == 0) {\n            return true;\n        }\n\n        if (node.right != null) {\n            stack.push(new Pair(node.right, remainingSum - node.right.val));\n        }\n        if (node.left != null) {\n            stack.push(new Pair(node.left, remainingSum - node.left.val));\n        }\n    }\n    return false;\n}"
+  }, {
+    "name" : "computeWithBFS",
+    "label" : "BFS",
+    "code" : "public static boolean computeWithBFS(TreeNode root, int targetSum) {\n    if (root == null) return false;\n\n    java.util.Queue<Pair> queue = new java.util.LinkedList<>();\n    queue.offer(new Pair(root, targetSum - root.val));\n\n    while (!queue.isEmpty()) {\n        Pair pair = queue.poll();\n        TreeNode node = pair.node;\n        int remainingSum = pair.sum;\n\n        if (node.left == null && node.right == null && remainingSum == 0) {\n            return true;\n        }\n\n        if (node.left != null) {\n            queue.offer(new Pair(node.left, remainingSum - node.left.val));\n        }\n        if (node.right != null) {\n            queue.offer(new Pair(node.right, remainingSum - node.right.val));\n        }\n    }\n    return false;\n}"
+  } ],
+  "paramNames" : [ "root", "targetSum" ],
+  "paramTypes" : [ "TreeNode", "int" ],
+  "exampleInputs" : null,
+  "related" : [ {
+    "name" : "Maximum Depth of Binary Tree",
+    "slug" : "maximum-depth-of-binary-tree",
+    "shortDescription" : "Find the maximum depth of a binary tree"
+  }, {
+    "name" : "Same Tree",
+    "slug" : "same-tree",
+    "shortDescription" : "Check if two binary trees are identical"
+  }, {
+    "name" : "Invert Binary Tree",
+    "slug" : "invert-binary-tree",
+    "shortDescription" : "Invert a binary tree"
+  }, {
+    "name" : "Symmetric Tree",
+    "slug" : "symmetric-tree",
+    "shortDescription" : "Check if a binary tree is symmetric"
+  } ]
+}

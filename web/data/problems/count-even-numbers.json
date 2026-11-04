@@ -1,0 +1,45 @@
+{
+  "name" : "Count Even Numbers",
+  "slug" : "count-even-numbers",
+  "category" : "Arrays & Hashing",
+  "description" : "Given an array of integers, count how many numbers are even.",
+  "shortDescription" : "Count even numbers in array",
+  "className" : "arrays.CountEven",
+  "methods" : [ {
+    "name" : "compute",
+    "label" : "Compute",
+    "code" : "public static int compute(int[] nums) {\n    int count = 0;\n    for (int num : nums) {\n        if (num % 2 == 0) {\n            count += 1;\n        }\n    }\n    return count;\n}"
+  }, {
+    "name" : "computeWithStream",
+    "label" : "Stream",
+    "code" : "public static int computeWithStream(int[] nums) {\n    return (int) Arrays.stream(nums)\n            .filter(num -> num % 2 == 0)\n            .count();\n}"
+  }, {
+    "name" : "computeWithRecursion",
+    "label" : "Recursion",
+    "code" : "public static int computeWithRecursion(int[] nums) {\n    return countEvenRecursive(nums, 0, 0);\n}"
+  }, {
+    "name" : "computeWithWhile",
+    "label" : "While",
+    "code" : "public static int computeWithWhile(int[] nums) {\n    int count = 0;\n    int i = 0;\n    while (i < nums.length) {\n        if (nums[i] % 2 == 0) {\n            count++;\n        }\n        i++;\n    }\n    return count;\n}"
+  } ],
+  "paramNames" : [ "nums" ],
+  "paramTypes" : [ "int[]" ],
+  "exampleInputs" : [ [ 1, 2, 3, 4, 5, 6 ] ],
+  "related" : [ {
+    "name" : "Two Sum",
+    "slug" : "two-sum",
+    "shortDescription" : "Find two numbers that add up to target"
+  }, {
+    "name" : "Contains Duplicate",
+    "slug" : "contains-duplicate",
+    "shortDescription" : "Check if array has duplicate values"
+  }, {
+    "name" : "Missing Number",
+    "slug" : "missing-number",
+    "shortDescription" : "Find the missing number in array [0, n]"
+  }, {
+    "name" : "Single Number",
+    "slug" : "single-number",
+    "shortDescription" : "Find the number that appears only once"
+  } ]
+}

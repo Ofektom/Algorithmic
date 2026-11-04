@@ -1,0 +1,45 @@
+{
+  "name" : "Climbing Stairs",
+  "slug" : "climbing-stairs",
+  "category" : "Dynamic Programming",
+  "description" : "You are climbing a staircase. It takes n steps to reach the top. Each time you can either climb 1 or 2 steps. In how many distinct ways can you climb to the top?",
+  "shortDescription" : "Find distinct ways to climb n steps (1 or 2 at a time)",
+  "className" : "dp.ClimbingStairs",
+  "methods" : [ {
+    "name" : "computeWithDP",
+    "label" : "DP",
+    "code" : "public static int computeWithDP(int n) {\n    if (n <= 2) return n;\n    int[] dp = new int[n + 1];\n    dp[1] = 1;\n    dp[2] = 2;\n    for (int i = 3; i <= n; i++) {\n        dp[i] = dp[i - 1] + dp[i - 2];\n    }\n    return dp[n];\n}"
+  }, {
+    "name" : "computeWithOptimizedSpace",
+    "label" : "Optimized space",
+    "code" : "public static int computeWithOptimizedSpace(int n) {\n    if (n <= 2) return n;\n    int prev2 = 1;\n    int prev1 = 2;\n    for (int i = 3; i <= n; i++) {\n        int current = prev1 + prev2;\n        prev2 = prev1;\n        prev1 = current;\n    }\n    return prev1;\n}"
+  }, {
+    "name" : "computeWithRecursion",
+    "label" : "Recursion",
+    "code" : "public static int computeWithRecursion(int n) {\n    Map<Integer, Integer> memo = new HashMap<>();\n    return climbStairsRecursive(n, memo);\n}"
+  }, {
+    "name" : "computeWithPureRecursion",
+    "label" : "Pure recursion",
+    "code" : "public static int computeWithPureRecursion(int n) {\n    if (n <= 2) return n;\n    return computeWithPureRecursion(n - 1) + computeWithPureRecursion(n - 2);\n}"
+  } ],
+  "paramNames" : [ "n" ],
+  "paramTypes" : [ "int" ],
+  "exampleInputs" : [ 5 ],
+  "related" : [ {
+    "name" : "House Robber",
+    "slug" : "house-robber",
+    "shortDescription" : "Find maximum money robbing houses (no two adjacent)"
+  }, {
+    "name" : "Coin Change",
+    "slug" : "coin-change",
+    "shortDescription" : "Find minimum coins to make amount"
+  }, {
+    "name" : "Unique Paths",
+    "slug" : "unique-paths",
+    "shortDescription" : "Count unique paths from top-left to bottom-right"
+  }, {
+    "name" : "Word Break",
+    "slug" : "word-break",
+    "shortDescription" : "Check if string can be segmented into dictionary words"
+  } ]
+}

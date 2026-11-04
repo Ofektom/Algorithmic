@@ -1,0 +1,45 @@
+{
+  "name" : "Missing Number",
+  "slug" : "missing-number",
+  "category" : "Arrays & Hashing",
+  "description" : "Given an array nums containing n distinct numbers in the range [0, n], return the only number in the range that is missing from the array.",
+  "shortDescription" : "Find the missing number in array [0, n]",
+  "className" : "arrays.MissingNumber",
+  "methods" : [ {
+    "name" : "computeWithHashSet",
+    "label" : "Hash set",
+    "code" : "public static int computeWithHashSet(int[] nums) {\n    Set<Integer> set = new HashSet<>();\n    for (int num : nums) {\n        set.add(num);\n    }\n\n    for (int i = 0; i <= nums.length; i++) {\n        if (!set.contains(i)) {\n            return i;\n        }\n    }\n    return -1;\n}"
+  }, {
+    "name" : "computeWithMath",
+    "label" : "Math",
+    "code" : "public static int computeWithMath(int[] nums) {\n    int n = nums.length;\n    int expectedSum = n * (n + 1) / 2;\n    int actualSum = 0;\n\n    for (int num : nums) {\n        actualSum += num;\n    }\n\n    return expectedSum - actualSum;\n}"
+  }, {
+    "name" : "computeWithXOR",
+    "label" : "XOR",
+    "code" : "public static int computeWithXOR(int[] nums) {\n    int xor = 0;\n    for (int i = 0; i < nums.length; i++) {\n        xor ^= (i + 1) ^ nums[i];\n    }\n    return xor;\n}"
+  }, {
+    "name" : "computeWithSorting",
+    "label" : "Sorting",
+    "code" : "public static int computeWithSorting(int[] nums) {\n    Arrays.sort(nums);\n\n    for (int i = 0; i < nums.length; i++) {\n        if (nums[i] != i) {\n            return i;\n        }\n    }\n    return nums.length;\n}"
+  } ],
+  "paramNames" : [ "nums" ],
+  "paramTypes" : [ "int[]" ],
+  "exampleInputs" : [ [ 3, 0, 1 ] ],
+  "related" : [ {
+    "name" : "Two Sum",
+    "slug" : "two-sum",
+    "shortDescription" : "Find two numbers that add up to target"
+  }, {
+    "name" : "Contains Duplicate",
+    "slug" : "contains-duplicate",
+    "shortDescription" : "Check if array has duplicate values"
+  }, {
+    "name" : "Single Number",
+    "slug" : "single-number",
+    "shortDescription" : "Find the number that appears only once"
+  }, {
+    "name" : "Plus One",
+    "slug" : "plus-one",
+    "shortDescription" : "Increment a number represented as array by one"
+  } ]
+}

@@ -1,0 +1,41 @@
+{
+  "name" : "Longest Repeating Character Replacement",
+  "slug" : "longest-repeating-character-replacement",
+  "category" : "Sliding Window",
+  "description" : "You are given a string s and an integer k. You can choose any character of the string and change it to any other uppercase English letter. You can perform this operation at most k times. Return the length of the longest substring containing the same letter you can get after performing the above operations.",
+  "shortDescription" : "Find longest substring after replacing k characters",
+  "className" : "window.LongestRepeatingCharacterReplacement",
+  "methods" : [ {
+    "name" : "computeWithHashMap",
+    "label" : "Hash map",
+    "code" : "public static int computeWithHashMap(String s, int k) {\n    Map<Character, Integer> count = new HashMap<>();\n    int left = 0;\n    int maxLength = 0;\n    int maxCount = 0;\n\n    for (int right = 0; right < s.length(); right++) {\n        char c = s.charAt(right);\n        count.put(c, count.getOrDefault(c, 0) + 1);\n        maxCount = Math.max(maxCount, count.get(c));\n\n        if (right - left + 1 - maxCount > k) {\n            count.put(s.charAt(left), count.get(s.charAt(left)) - 1);\n            left++;\n        }\n\n        maxLength = Math.max(maxLength, right - left + 1);\n    }\n    return maxLength;\n}"
+  }, {
+    "name" : "computeWithArray",
+    "label" : "Array",
+    "code" : "public static int computeWithArray(String s, int k) {\n    int[] count = new int[26];\n    int left = 0;\n    int maxLength = 0;\n    int maxCount = 0;\n\n    for (int right = 0; right < s.length(); right++) {\n        count[s.charAt(right) - 'A']++;\n        maxCount = Math.max(maxCount, count[s.charAt(right) - 'A']);\n\n        if (right - left + 1 - maxCount > k) {\n            count[s.charAt(left) - 'A']--;\n            left++;\n        }\n\n        maxLength = Math.max(maxLength, right - left + 1);\n    }\n    return maxLength;\n}"
+  }, {
+    "name" : "computeWithStringBuilder",
+    "label" : "String builder",
+    "code" : "public static int computeWithStringBuilder(String s, int k) {\n    StringBuilder window = new StringBuilder();\n    int maxLength = 0;\n    Map<Character, Integer> count = new HashMap<>();\n\n    for (int i = 0; i < s.length(); i++) {\n        char c = s.charAt(i);\n        window.append(c);\n        count.put(c, count.getOrDefault(c, 0) + 1);\n\n        int maxCount = 0;\n        for (int val : count.values()) {\n            maxCount = Math.max(maxCount, val);\n        }\n\n        while (window.length() - maxCount > k) {\n            char leftChar = window.charAt(0);\n            window.deleteCharAt(0);\n            count.put(leftChar, count.get(leftChar) - 1);\n            if (count.get(leftChar) == 0)\n                count.remove(leftChar);\n            maxCount = 0;\n            for (int val : count.values()) {\n                maxCount = Math.max(maxCount, val);\n            }\n        }\n\n        maxLength = Math.max(maxLength, window.length());\n    }\n    return maxLength;\n}"
+  } ],
+  "paramNames" : [ "s", "k" ],
+  "paramTypes" : [ "String", "int" ],
+  "exampleInputs" : [ "AABABBA", 1 ],
+  "related" : [ {
+    "name" : "Best Time to Buy and Sell Stock",
+    "slug" : "best-time-to-buy-and-sell-stock",
+    "shortDescription" : "Find maximum profit from buying and selling stock"
+  }, {
+    "name" : "Longest Substring Without Repeating",
+    "slug" : "longest-substring-without-repeating",
+    "shortDescription" : "Find longest substring without repeating characters"
+  }, {
+    "name" : "Minimum Window Substring",
+    "slug" : "minimum-window-substring",
+    "shortDescription" : "Find minimum window substring containing all characters of t"
+  }, {
+    "name" : "Minimum Size Subarray Sum",
+    "slug" : "minimum-size-subarray-sum",
+    "shortDescription" : "Find minimum length subarray with sum >= target"
+  } ]
+}

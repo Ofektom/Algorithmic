@@ -1,0 +1,41 @@
+{
+  "name" : "Decode String",
+  "slug" : "decode-string",
+  "category" : "Strings",
+  "description" : "Given an encoded string, return its decoded string. The encoding rule is: k[encoded_string], where the encoded_string inside the square brackets is being repeated exactly k times.",
+  "shortDescription" : "Decode string with number-bracket pattern",
+  "className" : "strings.DecodeString",
+  "methods" : [ {
+    "name" : "computeWithStack",
+    "label" : "Stack",
+    "code" : "public static String computeWithStack(String s) {\n    Stack<Integer> countStack = new Stack<>();\n    Stack<StringBuilder> stringStack = new Stack<>();\n    StringBuilder currentString = new StringBuilder();\n    int k = 0;\n\n    for (char c : s.toCharArray()) {\n        if (Character.isDigit(c)) {\n            k = k * 10 + (c - '0');\n        } else if (c == '[') {\n            countStack.push(k);\n            stringStack.push(currentString);\n            currentString = new StringBuilder();\n            k = 0;\n        } else if (c == ']') {\n            StringBuilder decodedString = stringStack.pop();\n            int count = countStack.pop();\n            for (int i = 0; i < count; i++) {\n                decodedString.append(currentString);\n            }\n            currentString = decodedString;\n        } else {\n            currentString.append(c);\n        }\n    }\n    return currentString.toString();\n}"
+  }, {
+    "name" : "computeWithRecursion",
+    "label" : "Recursion",
+    "code" : "public static String computeWithRecursion(String s) {\n    int[] index = { 0 };\n    return decodeRecursive(s, index);\n}"
+  }, {
+    "name" : "computeWithStringBuilder",
+    "label" : "String builder",
+    "code" : "public static String computeWithStringBuilder(String s) {\n    StringBuilder result = new StringBuilder();\n    int i = 0;\n\n    while (i < s.length()) {\n        if (Character.isLetter(s.charAt(i))) {\n            result.append(s.charAt(i));\n            i++;\n        } else if (Character.isDigit(s.charAt(i))) {\n            int k = 0;\n            while (Character.isDigit(s.charAt(i))) {\n                k = k * 10 + (s.charAt(i) - '0');\n                i++;\n            }\n\n            i++; // skip '['\n            int start = i;\n            int bracketCount = 1;\n\n            while (bracketCount > 0) {\n                if (s.charAt(i) == '[') {\n                    bracketCount++;\n                } else if (s.charAt(i) == ']') {\n                    bracketCount--;\n                }\n                i++;\n            }\n\n            String inner = computeWithStringBuilder(s.substring(start, i - 1));\n            for (int j = 0; j < k; j++) {\n                result.append(inner);\n            }\n        } else {\n            i++;\n        }\n    }\n    return result.toString();\n}"
+  } ],
+  "paramNames" : [ "s" ],
+  "paramTypes" : [ "String" ],
+  "exampleInputs" : [ "3[a]2[bc]" ],
+  "related" : [ {
+    "name" : "Valid Anagram",
+    "slug" : "valid-anagram",
+    "shortDescription" : "Check if two strings are anagrams"
+  }, {
+    "name" : "Group Anagrams",
+    "slug" : "group-anagrams",
+    "shortDescription" : "Group strings that are anagrams of each other"
+  }, {
+    "name" : "Ransom Note",
+    "slug" : "ransom-note",
+    "shortDescription" : "Check if ransom note can be constructed from magazine"
+  }, {
+    "name" : "Isomorphic Strings",
+    "slug" : "isomorphic-strings",
+    "shortDescription" : "Check if two strings are isomorphic"
+  } ]
+}

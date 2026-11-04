@@ -225,7 +225,7 @@ public class HomeController {
     }
 
     /** "computeWithHashMapTwoPass" -> "Hash map two pass"; acronyms such as BFS, DP and XOR stay upper case. */
-    static String methodLabel(String method) {
+    public static String methodLabel(String method) {
         if (method == null || method.isEmpty()) {
             return "";
         }

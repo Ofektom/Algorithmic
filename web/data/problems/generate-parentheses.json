@@ -1,0 +1,41 @@
+{
+  "name" : "Generate Parentheses",
+  "slug" : "generate-parentheses",
+  "category" : "Stack",
+  "description" : "Given n pairs of parentheses, write a function to generate all combinations of well-formed parentheses.",
+  "shortDescription" : "Generate all valid parentheses combinations",
+  "className" : "stack.GenerateParentheses",
+  "methods" : [ {
+    "name" : "computeRecursive",
+    "label" : "Recursive",
+    "code" : "public static List<String> computeRecursive(int n) {\n    List<String> result = new ArrayList<>();\n    backtrack(result, new StringBuilder(), 0, 0, n);\n    return result;\n}"
+  }, {
+    "name" : "computeWithRecursion",
+    "label" : "Recursion",
+    "code" : "public static List<String> computeWithRecursion(int n) {\n    List<String> result = new ArrayList<>();\n    generate(result, \"\", 0, 0, n);\n    return result;\n}"
+  }, {
+    "name" : "computeWithStack",
+    "label" : "Stack",
+    "code" : "public static List<String> computeWithStack(int n) {\n    List<String> result = new ArrayList<>();\n    java.util.Stack<State> stack = new java.util.Stack<>();\n    stack.push(new State(\"\", 0, 0));\n\n    while (!stack.isEmpty()) {\n        State state = stack.pop();\n        if (state.current.length() == n * 2) {\n            result.add(state.current);\n        } else {\n            if (state.open < n) {\n                stack.push(new State(state.current + \"(\", state.open + 1, state.close));\n            }\n            if (state.close < state.open) {\n                stack.push(new State(state.current + \")\", state.open, state.close + 1));\n            }\n        }\n    }\n\n    return result;\n}"
+  } ],
+  "paramNames" : [ "n" ],
+  "paramTypes" : [ "int" ],
+  "exampleInputs" : [ 3 ],
+  "related" : [ {
+    "name" : "Valid Parentheses",
+    "slug" : "valid-parentheses",
+    "shortDescription" : "Check if parentheses/brackets are valid"
+  }, {
+    "name" : "Daily Temperatures",
+    "slug" : "daily-temperatures",
+    "shortDescription" : "Find days to wait for warmer temperature"
+  }, {
+    "name" : "Largest Rectangle in Histogram",
+    "slug" : "largest-rectangle-in-histogram",
+    "shortDescription" : "Find largest rectangle area in histogram"
+  }, {
+    "name" : "Evaluate Reverse Polish Notation",
+    "slug" : "evaluate-reverse-polish-notation",
+    "shortDescription" : "Evaluate RPN expression"
+  } ]
+}

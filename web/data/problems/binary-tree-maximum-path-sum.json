@@ -1,0 +1,37 @@
+{
+  "name" : "Binary Tree Maximum Path Sum",
+  "slug" : "binary-tree-maximum-path-sum",
+  "category" : "Trees",
+  "description" : "A path in a binary tree is a sequence of nodes where each pair of adjacent nodes in the sequence has an edge connecting them. A node can only appear in the sequence at most once. Note that the path does not need to pass through the root. The path sum of a path is the sum of the node's values in the path. Given the root of a binary tree, return the maximum path sum of any non-empty path.",
+  "shortDescription" : "Find maximum path sum in binary tree",
+  "className" : "trees.BinaryTreeMaximumPathSum",
+  "methods" : [ {
+    "name" : "computeRecursive",
+    "label" : "Recursive",
+    "code" : "public static int computeRecursive(TreeNode root) {\n    maxSum = Integer.MIN_VALUE;\n    maxPathSumHelper(root);\n    return maxSum;\n}"
+  }, {
+    "name" : "computeWithArray",
+    "label" : "Array",
+    "code" : "public static int computeWithArray(TreeNode root) {\n    int[] result = new int[]{Integer.MIN_VALUE};\n    maxPathSumHelper(root, result);\n    return result[0];\n}"
+  } ],
+  "paramNames" : [ "root" ],
+  "paramTypes" : [ "TreeNode" ],
+  "exampleInputs" : null,
+  "related" : [ {
+    "name" : "Maximum Depth of Binary Tree",
+    "slug" : "maximum-depth-of-binary-tree",
+    "shortDescription" : "Find the maximum depth of a binary tree"
+  }, {
+    "name" : "Same Tree",
+    "slug" : "same-tree",
+    "shortDescription" : "Check if two binary trees are identical"
+  }, {
+    "name" : "Invert Binary Tree",
+    "slug" : "invert-binary-tree",
+    "shortDescription" : "Invert a binary tree"
+  }, {
+    "name" : "Symmetric Tree",
+    "slug" : "symmetric-tree",
+    "shortDescription" : "Check if a binary tree is symmetric"
+  } ]
+}

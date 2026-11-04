@@ -1,0 +1,37 @@
+{
+  "name" : "Birthday Cake Candles",
+  "slug" : "birthday-cake-candles",
+  "category" : "Arrays & Hashing",
+  "description" : "You are given the heights of the candles on a birthday cake. A child can only blow out the tallest candles. Count how many candles are the tallest.",
+  "shortDescription" : "Count how many candles are the tallest",
+  "className" : "arrays.BirthdayCakeCandles",
+  "methods" : [ {
+    "name" : "computeWithSinglePass",
+    "label" : "Single pass",
+    "code" : "public static int computeWithSinglePass(int[] candles) {\n    int tallest = Integer.MIN_VALUE;\n    int count = 0;\n    for (int height : candles) {\n        if (height > tallest) {\n            tallest = height;\n            count = 1;\n        } else if (height == tallest) {\n            count++;\n        }\n    }\n    return count;\n}"
+  }, {
+    "name" : "computeWithSort",
+    "label" : "Sort",
+    "code" : "public static int computeWithSort(int[] candles) {\n    int[] sorted = candles.clone();\n    Arrays.sort(sorted);\n    int count = 0;\n    for (int i = sorted.length - 1; i >= 0 && sorted[i] == sorted[sorted.length - 1]; i--) {\n        count++;\n    }\n    return count;\n}"
+  } ],
+  "paramNames" : [ "candles" ],
+  "paramTypes" : [ "int[]" ],
+  "exampleInputs" : [ [ 3, 2, 1, 3 ] ],
+  "related" : [ {
+    "name" : "Two Sum",
+    "slug" : "two-sum",
+    "shortDescription" : "Find two numbers that add up to target"
+  }, {
+    "name" : "Contains Duplicate",
+    "slug" : "contains-duplicate",
+    "shortDescription" : "Check if array has duplicate values"
+  }, {
+    "name" : "Missing Number",
+    "slug" : "missing-number",
+    "shortDescription" : "Find the missing number in array [0, n]"
+  }, {
+    "name" : "Single Number",
+    "slug" : "single-number",
+    "shortDescription" : "Find the number that appears only once"
+  } ]
+}

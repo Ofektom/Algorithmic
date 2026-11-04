@@ -1,0 +1,41 @@
+{
+  "name" : "4Sum",
+  "slug" : "4sum",
+  "category" : "Two Pointers",
+  "description" : "Given an array nums of n integers, return an array of all the unique quadruplets [nums[a], nums[b], nums[c], nums[d]] such that: 0 <= a, b, c, d < n, a, b, c, and d are distinct, nums[a] + nums[b] + nums[c] + nums[d] == target. You may return the answer in any order.",
+  "shortDescription" : "Find all unique quadruplets that sum to target",
+  "className" : "pointers.FourSum",
+  "methods" : [ {
+    "name" : "computeWithTwoPointers",
+    "label" : "Two pointers",
+    "code" : "public static List<List<Integer>> computeWithTwoPointers(int[] nums, int target) {\n    List<List<Integer>> result = new ArrayList<>();\n    Arrays.sort(nums);\n    int n = nums.length;\n\n    for (int i = 0; i < n - 3; i++) {\n        if (i > 0 && nums[i] == nums[i - 1]) continue;\n\n        for (int j = i + 1; j < n - 2; j++) {\n            if (j > i + 1 && nums[j] == nums[j - 1]) continue;\n\n            int left = j + 1;\n            int right = n - 1;\n\n            while (left < right) {\n                long sum = (long) nums[i] + nums[j] + nums[left] + nums[right];\n\n                if (sum == target) {\n                    result.add(Arrays.asList(nums[i], nums[j], nums[left], nums[right]));\n\n                    while (left < right && nums[left] == nums[left + 1]) left++;\n                    while (left < right && nums[right] == nums[right - 1]) right--;\n\n                    left++;\n                    right--;\n                } else if (sum < target) {\n                    left++;\n                } else {\n                    right--;\n                }\n            }\n        }\n    }\n\n    return result;\n}"
+  }, {
+    "name" : "computeWithHashSet",
+    "label" : "Hash set",
+    "code" : "public static List<List<Integer>> computeWithHashSet(int[] nums, int target) {\n    List<List<Integer>> result = new ArrayList<>();\n    Arrays.sort(nums);\n    int n = nums.length;\n\n    for (int i = 0; i < n - 3; i++) {\n        if (i > 0 && nums[i] == nums[i - 1]) continue;\n\n        for (int j = i + 1; j < n - 2; j++) {\n            if (j > i + 1 && nums[j] == nums[j - 1]) continue;\n\n            java.util.Set<Integer> seen = new java.util.HashSet<>();\n            for (int k = j + 1; k < n; k++) {\n                int complement = target - nums[i] - nums[j] - nums[k];\n                if (seen.contains(complement)) {\n                    result.add(Arrays.asList(nums[i], nums[j], complement, nums[k]));\n                    while (k + 1 < n && nums[k] == nums[k + 1]) k++;\n                }\n                seen.add(nums[k]);\n            }\n        }\n    }\n\n    return result;\n}"
+  }, {
+    "name" : "computeWithBruteForce",
+    "label" : "Brute force",
+    "code" : "public static List<List<Integer>> computeWithBruteForce(int[] nums, int target) {\n    List<List<Integer>> result = new ArrayList<>();\n    Arrays.sort(nums);\n    int n = nums.length;\n\n    for (int i = 0; i < n - 3; i++) {\n        for (int j = i + 1; j < n - 2; j++) {\n            for (int k = j + 1; k < n - 1; k++) {\n                for (int l = k + 1; l < n; l++) {\n                    if (nums[i] + nums[j] + nums[k] + nums[l] == target) {\n                        List<Integer> quad = Arrays.asList(nums[i], nums[j], nums[k], nums[l]);\n                        if (!result.contains(quad)) {\n                            result.add(quad);\n                        }\n                    }\n                }\n            }\n        }\n    }\n\n    return result;\n}"
+  } ],
+  "paramNames" : [ "nums", "target" ],
+  "paramTypes" : [ "int[]", "int" ],
+  "exampleInputs" : [ [ 1, 0, -1, 0, -2, 2 ], 0 ],
+  "related" : [ {
+    "name" : "Valid Palindrome",
+    "slug" : "valid-palindrome",
+    "shortDescription" : "Check if string is palindrome"
+  }, {
+    "name" : "Two Sum II",
+    "slug" : "two-sum-ii",
+    "shortDescription" : "Find two numbers that add to target in sorted array"
+  }, {
+    "name" : "Container With Most Water",
+    "slug" : "container-with-most-water",
+    "shortDescription" : "Find container that holds most water"
+  }, {
+    "name" : "3Sum",
+    "slug" : "3sum",
+    "shortDescription" : "Find all triplets that sum to zero"
+  } ]
+}

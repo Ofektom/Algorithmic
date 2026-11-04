@@ -1,0 +1,41 @@
+{
+  "name" : "Valid Palindrome",
+  "slug" : "valid-palindrome",
+  "category" : "Two Pointers",
+  "description" : "A phrase is a palindrome if, after converting all uppercase letters into lowercase letters and removing all non-alphanumeric characters, it reads the same forward and backward.",
+  "shortDescription" : "Check if string is palindrome",
+  "className" : "pointers.ValidPalindrome",
+  "methods" : [ {
+    "name" : "computeWithTwoPointers",
+    "label" : "Two pointers",
+    "code" : "public static boolean computeWithTwoPointers(String s) {\n    int left = 0;\n    int right = s.length() - 1;\n\n    while (left < right) {\n        while (left < right && !Character.isLetterOrDigit(s.charAt(left))) {\n            left++;\n        }\n        while (left < right && !Character.isLetterOrDigit(s.charAt(right))) {\n            right--;\n        }\n\n        if (Character.toLowerCase(s.charAt(left)) != Character.toLowerCase(s.charAt(right))) {\n            return false;\n        }\n        left++;\n        right--;\n    }\n    return true;\n}"
+  }, {
+    "name" : "computeWithStringBuilder",
+    "label" : "String builder",
+    "code" : "public static boolean computeWithStringBuilder(String s) {\n    StringBuilder cleaned = new StringBuilder();\n    for (char c : s.toCharArray()) {\n        if (Character.isLetterOrDigit(c)) {\n            cleaned.append(Character.toLowerCase(c));\n        }\n    }\n\n    StringBuilder reversed = new StringBuilder(cleaned);\n    reversed.reverse();\n\n    return cleaned.toString().equals(reversed.toString());\n}"
+  }, {
+    "name" : "computeWithRecursion",
+    "label" : "Recursion",
+    "code" : "public static boolean computeWithRecursion(String s) {\n    String cleaned = s.replaceAll(\"[^a-zA-Z0-9]\", \"\").toLowerCase();\n    return isPalindromeRecursive(cleaned, 0, cleaned.length() - 1);\n}"
+  } ],
+  "paramNames" : [ "s" ],
+  "paramTypes" : [ "String" ],
+  "exampleInputs" : [ "A man a plan a canal Panama" ],
+  "related" : [ {
+    "name" : "Two Sum II",
+    "slug" : "two-sum-ii",
+    "shortDescription" : "Find two numbers that add to target in sorted array"
+  }, {
+    "name" : "Container With Most Water",
+    "slug" : "container-with-most-water",
+    "shortDescription" : "Find container that holds most water"
+  }, {
+    "name" : "3Sum",
+    "slug" : "3sum",
+    "shortDescription" : "Find all triplets that sum to zero"
+  }, {
+    "name" : "Trapping Rain Water",
+    "slug" : "trapping-rain-water",
+    "shortDescription" : "Calculate trapped rainwater"
+  } ]
+}

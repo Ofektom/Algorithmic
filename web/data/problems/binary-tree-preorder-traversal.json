@@ -1,0 +1,41 @@
+{
+  "name" : "Binary Tree Preorder Traversal",
+  "slug" : "binary-tree-preorder-traversal",
+  "category" : "Trees",
+  "description" : "Given the root of a binary tree, return the preorder traversal of its nodes' values.",
+  "shortDescription" : "Return preorder traversal of binary tree",
+  "className" : "trees.BinaryTreePreorderTraversal",
+  "methods" : [ {
+    "name" : "computeRecursive",
+    "label" : "Recursive",
+    "code" : "public static List<Integer> computeRecursive(TreeNode root) {\n    List<Integer> result = new ArrayList<>();\n    preorderRecursive(root, result);\n    return result;\n}"
+  }, {
+    "name" : "computeWithStack",
+    "label" : "Stack",
+    "code" : "public static List<Integer> computeWithStack(TreeNode root) {\n    List<Integer> result = new ArrayList<>();\n    if (root == null) return result;\n\n    Stack<TreeNode> stack = new Stack<>();\n    stack.push(root);\n\n    while (!stack.isEmpty()) {\n        TreeNode node = stack.pop();\n        result.add(node.val);\n\n        if (node.right != null) {\n            stack.push(node.right);\n        }\n        if (node.left != null) {\n            stack.push(node.left);\n        }\n    }\n\n    return result;\n}"
+  }, {
+    "name" : "computeMorris",
+    "label" : "Morris",
+    "code" : "public static List<Integer> computeMorris(TreeNode root) {\n    List<Integer> result = new ArrayList<>();\n    TreeNode current = root;\n\n    while (current != null) {\n        if (current.left == null) {\n            result.add(current.val);\n            current = current.right;\n        } else {\n            TreeNode predecessor = current.left;\n            while (predecessor.right != null && predecessor.right != current) {\n                predecessor = predecessor.right;\n            }\n\n            if (predecessor.right == null) {\n                result.add(current.val);\n                predecessor.right = current;\n                current = current.left;\n            } else {\n                predecessor.right = null;\n                current = current.right;\n            }\n        }\n    }\n\n    return result;\n}"
+  } ],
+  "paramNames" : [ "root" ],
+  "paramTypes" : [ "TreeNode" ],
+  "exampleInputs" : null,
+  "related" : [ {
+    "name" : "Maximum Depth of Binary Tree",
+    "slug" : "maximum-depth-of-binary-tree",
+    "shortDescription" : "Find the maximum depth of a binary tree"
+  }, {
+    "name" : "Same Tree",
+    "slug" : "same-tree",
+    "shortDescription" : "Check if two binary trees are identical"
+  }, {
+    "name" : "Invert Binary Tree",
+    "slug" : "invert-binary-tree",
+    "shortDescription" : "Invert a binary tree"
+  }, {
+    "name" : "Symmetric Tree",
+    "slug" : "symmetric-tree",
+    "shortDescription" : "Check if a binary tree is symmetric"
+  } ]
+}

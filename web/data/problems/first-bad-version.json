@@ -1,0 +1,41 @@
+{
+  "name" : "First Bad Version",
+  "slug" : "first-bad-version",
+  "category" : "Search",
+  "description" : "You are a product manager and currently leading a team to develop a new product. Unfortunately, the latest version of your product fails the quality check. Since each version is developed based on the previous version, all the versions after a bad version are also bad. Suppose you have n versions [1, 2, ..., n] and you want to find out the first bad one, which causes all the following ones to be bad. You are given an API bool isBadVersion(version) which returns whether version is bad. Implement a function to find the first bad version. You should minimize the number of calls to the API.",
+  "shortDescription" : "Find first bad version using binary search",
+  "className" : "search.FirstBadVersion",
+  "methods" : [ {
+    "name" : "computeWithBinarySearch",
+    "label" : "Binary search",
+    "code" : "public static int computeWithBinarySearch(int n) {\n    int left = 1;\n    int right = n;\n\n    while (left < right) {\n        int mid = left + (right - left) / 2;\n        if (isBadVersion(mid)) {\n            right = mid;\n        } else {\n            left = mid + 1;\n        }\n    }\n\n    return left;\n}"
+  }, {
+    "name" : "computeRecursive",
+    "label" : "Recursive",
+    "code" : "public static int computeRecursive(int n) {\n    return findFirstBadVersion(1, n);\n}"
+  }, {
+    "name" : "computeWithLinearSearch",
+    "label" : "Linear search",
+    "code" : "public static int computeWithLinearSearch(int n) {\n    for (int i = 1; i <= n; i++) {\n        if (isBadVersion(i)) {\n            return i;\n        }\n    }\n    return -1;\n}"
+  } ],
+  "paramNames" : [ "n" ],
+  "paramTypes" : [ "int" ],
+  "exampleInputs" : [ 5 ],
+  "related" : [ {
+    "name" : "Search in Rotated Sorted Array",
+    "slug" : "search-in-rotated-sorted-array",
+    "shortDescription" : "Search target in rotated sorted array"
+  }, {
+    "name" : "Find Minimum in Rotated Sorted Array",
+    "slug" : "find-minimum-in-rotated-sorted-array",
+    "shortDescription" : "Find minimum element in rotated sorted array"
+  }, {
+    "name" : "Find Peak Element",
+    "slug" : "find-peak-element",
+    "shortDescription" : "Find peak element in array"
+  }, {
+    "name" : "Search a 2D Matrix",
+    "slug" : "search-a-2d-matrix",
+    "shortDescription" : "Search target in sorted 2D matrix"
+  } ]
+}

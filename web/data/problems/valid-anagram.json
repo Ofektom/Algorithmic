@@ -1,0 +1,45 @@
+{
+  "name" : "Valid Anagram",
+  "slug" : "valid-anagram",
+  "category" : "Strings",
+  "description" : "Given two strings s and t, return true if t is an anagram of s, and false otherwise. An Anagram is a word or phrase formed by rearranging the letters of a different word or phrase.",
+  "shortDescription" : "Check if two strings are anagrams",
+  "className" : "strings.IsAnagram",
+  "methods" : [ {
+    "name" : "computeWithSorting",
+    "label" : "Sorting",
+    "code" : "public static boolean computeWithSorting(String s, String t) {\n    if (s.length() != t.length()) {\n        return false;\n    }\n    char[] sArray = s.toCharArray();\n    char[] tArray = t.toCharArray();\n    Arrays.sort(sArray);\n    Arrays.sort(tArray);\n    return Arrays.equals(sArray, tArray);\n}"
+  }, {
+    "name" : "computeWithHashMap",
+    "label" : "Hash map",
+    "code" : "public static boolean computeWithHashMap(String s, String t) {\n    if (s.length() != t.length()) {\n        return false;\n    }\n\n    Map<Character, Integer> countS = new HashMap<>();\n    Map<Character, Integer> countT = new HashMap<>();\n\n    for (int i = 0; i < s.length(); i++) {\n        countS.put(s.charAt(i), countS.getOrDefault(s.charAt(i), 0) + 1);\n        countT.put(t.charAt(i), countT.getOrDefault(t.charAt(i), 0) + 1);\n    }\n\n    for (char c : countS.keySet()) {\n        if (!countS.get(c).equals(countT.getOrDefault(c, 0))) {\n            return false;\n        }\n    }\n    return true;\n}"
+  }, {
+    "name" : "computeWithArrayCounter",
+    "label" : "Array counter",
+    "code" : "public static boolean computeWithArrayCounter(String s, String t) {\n    if (s.length() != t.length()) {\n        return false;\n    }\n\n    int[] count = new int[26]; // For lowercase 'a' to 'z'\n\n    for (int i = 0; i < s.length(); i++) {\n        count[s.charAt(i) - 'a']++;\n        count[t.charAt(i) - 'a']--;\n    }\n\n    for (int c : count) {\n        if (c != 0) {\n            return false;\n        }\n    }\n    return true;\n}"
+  }, {
+    "name" : "computeWithStringBuilder",
+    "label" : "String builder",
+    "code" : "public static boolean computeWithStringBuilder(String s, String t) {\n    if (s.length() != t.length()) {\n        return false;\n    }\n\n    // Convert to char arrays, sort, then use StringBuilder to build sorted strings\n    char[] sChars = s.toCharArray();\n    char[] tChars = t.toCharArray();\n    Arrays.sort(sChars);\n    Arrays.sort(tChars);\n\n    StringBuilder sb1 = new StringBuilder();\n    StringBuilder sb2 = new StringBuilder();\n\n    for (char c : sChars) {\n        sb1.append(c);\n    }\n\n    for (char c : tChars) {\n        sb2.append(c);\n    }\n\n    return sb1.toString().equals(sb2.toString());\n}"
+  } ],
+  "paramNames" : [ "s", "t" ],
+  "paramTypes" : [ "String", "String" ],
+  "exampleInputs" : [ "anagram", "nagaram" ],
+  "related" : [ {
+    "name" : "Group Anagrams",
+    "slug" : "group-anagrams",
+    "shortDescription" : "Group strings that are anagrams of each other"
+  }, {
+    "name" : "Ransom Note",
+    "slug" : "ransom-note",
+    "shortDescription" : "Check if ransom note can be constructed from magazine"
+  }, {
+    "name" : "Isomorphic Strings",
+    "slug" : "isomorphic-strings",
+    "shortDescription" : "Check if two strings are isomorphic"
+  }, {
+    "name" : "Word Pattern",
+    "slug" : "word-pattern",
+    "shortDescription" : "Check if string follows word pattern"
+  } ]
+}

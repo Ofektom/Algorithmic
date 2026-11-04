@@ -1,0 +1,37 @@
+{
+  "name" : "Construct Binary Tree from Preorder and Inorder",
+  "slug" : "construct-binary-tree-from-preorder-and-inorder",
+  "category" : "Trees",
+  "description" : "Given two integer arrays preorder and inorder where preorder is the preorder traversal of a binary tree and inorder is the inorder traversal of the same tree, construct and return the binary tree.",
+  "shortDescription" : "Construct binary tree from preorder and inorder",
+  "className" : "trees.ConstructBinaryTreeFromPreorderAndInorder",
+  "methods" : [ {
+    "name" : "computeRecursive",
+    "label" : "Recursive",
+    "code" : "public static TreeNode computeRecursive(int[] preorder, int[] inorder) {\n    Map<Integer, Integer> inMap = new HashMap<>();\n    for (int i = 0; i < inorder.length; i++) {\n        inMap.put(inorder[i], i);\n    }\n    return buildTree(preorder, 0, preorder.length - 1, inorder, 0, inorder.length - 1, inMap);\n}"
+  }, {
+    "name" : "computeRecursiveLinear",
+    "label" : "Recursive linear",
+    "code" : "public static TreeNode computeRecursiveLinear(int[] preorder, int[] inorder) {\n    return buildTreeLinear(preorder, 0, preorder.length - 1, inorder, 0, inorder.length - 1);\n}"
+  } ],
+  "paramNames" : [ "preorder", "inorder" ],
+  "paramTypes" : [ "int[]", "int[]" ],
+  "exampleInputs" : [ [ 3, 9, 20, 15, 7 ], [ 9, 3, 15, 20, 7 ] ],
+  "related" : [ {
+    "name" : "Maximum Depth of Binary Tree",
+    "slug" : "maximum-depth-of-binary-tree",
+    "shortDescription" : "Find the maximum depth of a binary tree"
+  }, {
+    "name" : "Same Tree",
+    "slug" : "same-tree",
+    "shortDescription" : "Check if two binary trees are identical"
+  }, {
+    "name" : "Invert Binary Tree",
+    "slug" : "invert-binary-tree",
+    "shortDescription" : "Invert a binary tree"
+  }, {
+    "name" : "Symmetric Tree",
+    "slug" : "symmetric-tree",
+    "shortDescription" : "Check if a binary tree is symmetric"
+  } ]
+}

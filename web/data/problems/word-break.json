@@ -1,0 +1,41 @@
+{
+  "name" : "Word Break",
+  "slug" : "word-break",
+  "category" : "Dynamic Programming",
+  "description" : "Given a string s and a dictionary of strings wordDict, return true if s can be segmented into a space-separated sequence of one or more dictionary words. Note that the same word in the dictionary may be reused multiple times in the segmentation.",
+  "shortDescription" : "Check if string can be segmented into dictionary words",
+  "className" : "dp.WordBreak",
+  "methods" : [ {
+    "name" : "computeWithDP",
+    "label" : "DP",
+    "code" : "public static boolean computeWithDP(String s, List<String> wordDict) {\n    Set<String> wordSet = new HashSet<>(wordDict);\n    boolean[] dp = new boolean[s.length() + 1];\n    dp[0] = true;\n\n    for (int i = 1; i <= s.length(); i++) {\n        for (int j = 0; j < i; j++) {\n            if (dp[j] && wordSet.contains(s.substring(j, i))) {\n                dp[i] = true;\n                break;\n            }\n        }\n    }\n\n    return dp[s.length()];\n}"
+  }, {
+    "name" : "computeWithRecursion",
+    "label" : "Recursion",
+    "code" : "public static boolean computeWithRecursion(String s, List<String> wordDict) {\n    Set<String> wordSet = new HashSet<>(wordDict);\n    Map<String, Boolean> memo = new HashMap<>();\n    return wordBreakRecursive(s, wordSet, memo);\n}"
+  }, {
+    "name" : "computeWithBFS",
+    "label" : "BFS",
+    "code" : "public static boolean computeWithBFS(String s, List<String> wordDict) {\n    Set<String> wordSet = new HashSet<>(wordDict);\n    Queue<Integer> queue = new LinkedList<>();\n    boolean[] visited = new boolean[s.length()];\n\n    queue.offer(0);\n\n    while (!queue.isEmpty()) {\n        int start = queue.poll();\n\n        if (start == s.length()) {\n            return true;\n        }\n\n        if (visited[start]) {\n            continue;\n        }\n\n        visited[start] = true;\n\n        for (int end = start + 1; end <= s.length(); end++) {\n            if (wordSet.contains(s.substring(start, end))) {\n                queue.offer(end);\n            }\n        }\n    }\n\n    return false;\n}"
+  } ],
+  "paramNames" : [ "s", "wordDict" ],
+  "paramTypes" : [ "String", "List<String>" ],
+  "exampleInputs" : [ "leetcode", [ "leet", "code" ] ],
+  "related" : [ {
+    "name" : "Climbing Stairs",
+    "slug" : "climbing-stairs",
+    "shortDescription" : "Find distinct ways to climb n steps (1 or 2 at a time)"
+  }, {
+    "name" : "House Robber",
+    "slug" : "house-robber",
+    "shortDescription" : "Find maximum money robbing houses (no two adjacent)"
+  }, {
+    "name" : "Coin Change",
+    "slug" : "coin-change",
+    "shortDescription" : "Find minimum coins to make amount"
+  }, {
+    "name" : "Unique Paths",
+    "slug" : "unique-paths",
+    "shortDescription" : "Count unique paths from top-left to bottom-right"
+  } ]
+}

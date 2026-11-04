@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta name="description" content="Algorithmic: ask a coding problem by voice or text and see its Java solution">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="Algorithmic">
+    <title>Settings · Algorithmic</title>
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="apple-touch-icon" href="/icon-192.png">
+    <meta name="theme-color" content="#4c5bd4">
+    <link rel="preconnect" href="https://algorithmicx.onrender.com" crossorigin>
+    <!-- Apply the saved theme before first paint so dark mode doesn't flash white -->
+    <script>
+        try {
+            var t = localStorage.getItem('algo.theme');
+            if (t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t);
+        } catch (e) { /* storage unavailable */ }
+    </script>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body data-nav="settings">
+<main class="page">
+    <div class="appbar"><h1>Settings</h1></div>
+
+    <h2 class="h2">Appearance</h2>
+    <div class="card" style="padding:0">
+        <div class="setting">
+            <div><div class="t">Theme</div><div class="st">System follows your phone or computer</div></div>
+            <select id="theme" aria-label="Theme">
+                <option value="system">System</option>
+                <option value="light">Light</option>
+                <option value="dark">Dark</option>
+            </select>
+        </div>
+    </div>
+
+    <h2 class="h2">Voice</h2>
+    <div class="card" style="padding:0">
+        <div class="setting">
+            <div><div class="t">Send when I pause</div><div class="st">Off: tap “Show solution” when you've finished</div></div>
+            <input type="checkbox" class="switch" id="autoSend" aria-label="Send when I pause">
+        </div>
+        <div class="setting">
+            <div><div class="t">Accent</div><div class="st">Helps speech recognition hear you</div></div>
+            <select id="voiceLang" aria-label="Voice accent">
+                <option value="en-US">English (US)</option>
+                <option value="en-GB">English (UK)</option>
+                <option value="en-NG">English (Nigeria)</option>
+                <option value="en-IN">English (India)</option>
+            </select>
+        </div>
+    </div>
+
+    <h2 class="h2">Your data</h2>
+    <div class="card" style="padding:0">
+        <div class="setting">
+            <div><div class="t">History and progress</div><div class="st">Saved in this browser only</div></div>
+            <button type="button" class="chip" id="resetData">Reset</button>
+        </div>
+    </div>
+    <p class="small muted" id="savedNote" style="margin-top:10px" aria-live="polite"></p>
+</main>
+
+<script src="/js/config.js"></script>
+<script src="/js/app.js"></script>
+<script src="/js/voice.js"></script>
+<script src="/js/pages/settings.js"></script>
+</body>
+</html>

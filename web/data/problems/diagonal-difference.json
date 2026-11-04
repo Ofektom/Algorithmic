@@ -1,0 +1,37 @@
+{
+  "name" : "Diagonal Difference",
+  "slug" : "diagonal-difference",
+  "category" : "Arrays & Hashing",
+  "description" : "Given a square matrix, calculate the absolute difference between the sum of its primary diagonal (top-left to bottom-right) and the sum of its secondary diagonal (top-right to bottom-left).",
+  "shortDescription" : "Absolute difference between the two diagonal sums",
+  "className" : "arrays.DiagonalDifference",
+  "methods" : [ {
+    "name" : "computeWithSinglePass",
+    "label" : "Single pass",
+    "code" : "public static int computeWithSinglePass(int[][] matrix) {\n    int n = matrix.length;\n    int primary = 0;\n    int secondary = 0;\n    for (int i = 0; i < n; i++) {\n        primary += matrix[i][i];\n        secondary += matrix[i][n - 1 - i];\n    }\n    return Math.abs(primary - secondary);\n}"
+  }, {
+    "name" : "computeWithFullScan",
+    "label" : "Full scan",
+    "code" : "public static int computeWithFullScan(int[][] matrix) {\n    int n = matrix.length;\n    int difference = 0;\n    for (int i = 0; i < n; i++) {\n        for (int j = 0; j < n; j++) {\n            if (i == j) difference += matrix[i][j];\n            if (i + j == n - 1) difference -= matrix[i][j];\n        }\n    }\n    return Math.abs(difference);\n}"
+  } ],
+  "paramNames" : [ "matrix" ],
+  "paramTypes" : [ "int[][]" ],
+  "exampleInputs" : [ [ [ 11, 2, 4 ], [ 4, 5, 6 ], [ 10, 8, -12 ] ] ],
+  "related" : [ {
+    "name" : "Two Sum",
+    "slug" : "two-sum",
+    "shortDescription" : "Find two numbers that add up to target"
+  }, {
+    "name" : "Contains Duplicate",
+    "slug" : "contains-duplicate",
+    "shortDescription" : "Check if array has duplicate values"
+  }, {
+    "name" : "Missing Number",
+    "slug" : "missing-number",
+    "shortDescription" : "Find the missing number in array [0, n]"
+  }, {
+    "name" : "Single Number",
+    "slug" : "single-number",
+    "shortDescription" : "Find the number that appears only once"
+  } ]
+}

@@ -1,0 +1,37 @@
+{
+  "name" : "Mini-Max Sum",
+  "slug" : "mini-max-sum",
+  "category" : "Arrays & Hashing",
+  "description" : "Given five positive integers, find the minimum and maximum values that can be calculated by summing exactly four of the five integers.",
+  "shortDescription" : "Min and max sum of four out of five integers",
+  "className" : "arrays.MiniMaxSum",
+  "methods" : [ {
+    "name" : "computeWithSinglePass",
+    "label" : "Single pass",
+    "code" : "public static long[] computeWithSinglePass(int[] arr) {\n    long total = 0;\n    int min = Integer.MAX_VALUE;\n    int max = Integer.MIN_VALUE;\n    for (int num : arr) {\n        total += num;\n        min = Math.min(min, num);\n        max = Math.max(max, num);\n    }\n    return new long[] { total - max, total - min };\n}"
+  }, {
+    "name" : "computeWithSort",
+    "label" : "Sort",
+    "code" : "public static long[] computeWithSort(int[] arr) {\n    int[] sorted = arr.clone();\n    Arrays.sort(sorted);\n    long minSum = 0, maxSum = 0;\n    for (int i = 0; i < sorted.length - 1; i++) {\n        minSum += sorted[i];\n        maxSum += sorted[i + 1];\n    }\n    return new long[] { minSum, maxSum };\n}"
+  } ],
+  "paramNames" : [ "arr" ],
+  "paramTypes" : [ "int[]" ],
+  "exampleInputs" : [ [ 1, 2, 3, 4, 5 ] ],
+  "related" : [ {
+    "name" : "Two Sum",
+    "slug" : "two-sum",
+    "shortDescription" : "Find two numbers that add up to target"
+  }, {
+    "name" : "Contains Duplicate",
+    "slug" : "contains-duplicate",
+    "shortDescription" : "Check if array has duplicate values"
+  }, {
+    "name" : "Missing Number",
+    "slug" : "missing-number",
+    "shortDescription" : "Find the missing number in array [0, n]"
+  }, {
+    "name" : "Single Number",
+    "slug" : "single-number",
+    "shortDescription" : "Find the number that appears only once"
+  } ]
+}

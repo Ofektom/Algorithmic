@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="com.algorithm.web.service.ClaudeCodeServiceTest" tests="9" skipped="0" failures="0" errors="0" timestamp="2026-11-03T23:29:55" hostname="macs-MacBook-Air-6.local" time="18.313">
+<testsuite name="com.algorithm.web.service.ClaudeCodeServiceTest" tests="9" skipped="0" failures="0" errors="0" timestamp="2026-11-04T10:26:14" hostname="macs-MacBook-Air-6.local" time="17.212">
   <properties/>
-  <testcase name="askTimesOut()" classname="com.algorithm.web.service.ClaudeCodeServiceTest" time="1.31"/>
-  <testcase name="unavailableWhenCliMissing()" classname="com.algorithm.web.service.ClaudeCodeServiceTest" time="0.045"/>
-  <testcase name="unavailableWhenSignedInWithApiKey()" classname="com.algorithm.web.service.ClaudeCodeServiceTest" time="5.553"/>
-  <testcase name="availableWhenSignedInWithSubscription()" classname="com.algorithm.web.service.ClaudeCodeServiceTest" time="1.953"/>
-  <testcase name="askFailsOnErrorResult()" classname="com.algorithm.web.service.ClaudeCodeServiceTest" time="1.719"/>
-  <testcase name="askFailsOnNonZeroExit()" classname="com.algorithm.web.service.ClaudeCodeServiceTest" time="1.402"/>
-  <testcase name="askSendsPromptOnStdinWithToolsDisabled()" classname="com.algorithm.web.service.ClaudeCodeServiceTest" time="1.23"/>
-  <testcase name="unavailableWhenDisabled()" classname="com.algorithm.web.service.ClaudeCodeServiceTest" time="0.038"/>
-  <testcase name="unavailableWhenSignedOut()" classname="com.algorithm.web.service.ClaudeCodeServiceTest" time="5.043"/>
-  <system-out><![CDATA[2026-11-04T00:29:57.220+01:00 DEBUG 80724 --- [algorithm-web] [    Test worker] c.a.web.service.ClaudeCodeService        : Claude Code status check failed
+  <testcase name="askTimesOut()" classname="com.algorithm.web.service.ClaudeCodeServiceTest" time="1.061"/>
+  <testcase name="unavailableWhenCliMissing()" classname="com.algorithm.web.service.ClaudeCodeServiceTest" time="0.068"/>
+  <testcase name="unavailableWhenSignedInWithApiKey()" classname="com.algorithm.web.service.ClaudeCodeServiceTest" time="7.579"/>
+  <testcase name="availableWhenSignedInWithSubscription()" classname="com.algorithm.web.service.ClaudeCodeServiceTest" time="2.193"/>
+  <testcase name="askFailsOnErrorResult()" classname="com.algorithm.web.service.ClaudeCodeServiceTest" time="1.369"/>
+  <testcase name="askFailsOnNonZeroExit()" classname="com.algorithm.web.service.ClaudeCodeServiceTest" time="1.008"/>
+  <testcase name="askSendsPromptOnStdinWithToolsDisabled()" classname="com.algorithm.web.service.ClaudeCodeServiceTest" time="3.077"/>
+  <testcase name="unavailableWhenDisabled()" classname="com.algorithm.web.service.ClaudeCodeServiceTest" time="0.005"/>
+  <testcase name="unavailableWhenSignedOut()" classname="com.algorithm.web.service.ClaudeCodeServiceTest" time="0.834"/>
+  <system-out><![CDATA[2026-11-04T11:26:15.227+01:00 DEBUG 7739 --- [algorithm-web] [    Test worker] c.a.web.service.ClaudeCodeService        : Claude Code status check failed
 
-java.io.IOException: Cannot run program "/var/folders/4x/rbyngcmd3wd817wc322_fdkh0000gp/T/junit12522957662654643233/missing": Exec failed, error: 2 (No such file or directory) 
+java.io.IOException: Cannot run program "/var/folders/4x/rbyngcmd3wd817wc322_fdkh0000gp/T/junit11373213391677304750/missing": Exec failed, error: 2 (No such file or directory) 
 	at java.base/java.lang.ProcessBuilder.start(ProcessBuilder.java:1170) ~[na:na]
 	at java.base/java.lang.ProcessBuilder.start(ProcessBuilder.java:1089) ~[na:na]
 	at com.algorithm.web.service.ClaudeCodeService.run(ClaudeCodeService.java:133) ~[main/:na]
@@ -106,10 +106,10 @@ Caused by: java.io.IOException: Exec failed, error: 2 (No such file or directory
 	at java.base/java.lang.ProcessBuilder.start(ProcessBuilder.java:1126) ~[na:na]
 	... 85 common frames omitted
 
-2026-11-04T00:29:57.235+01:00  INFO 80724 --- [algorithm-web] [    Test worker] c.a.web.service.ClaudeCodeService        : Claude Code engine not available
-2026-11-04T00:30:02.792+01:00  INFO 80724 --- [algorithm-web] [    Test worker] c.a.web.service.ClaudeCodeService        : Claude Code engine not available
-2026-11-04T00:30:04.746+01:00  INFO 80724 --- [algorithm-web] [    Test worker] c.a.web.service.ClaudeCodeService        : Claude Code engine available
-2026-11-04T00:30:14.189+01:00  INFO 80724 --- [algorithm-web] [    Test worker] c.a.web.service.ClaudeCodeService        : Claude Code engine not available
+2026-11-04T11:26:15.273+01:00  INFO 7739 --- [algorithm-web] [    Test worker] c.a.web.service.ClaudeCodeService        : Claude Code engine not available
+2026-11-04T11:26:22.865+01:00  INFO 7739 --- [algorithm-web] [    Test worker] c.a.web.service.ClaudeCodeService        : Claude Code engine not available
+2026-11-04T11:26:25.058+01:00  INFO 7739 --- [algorithm-web] [    Test worker] c.a.web.service.ClaudeCodeService        : Claude Code engine available
+2026-11-04T11:26:31.358+01:00  INFO 7739 --- [algorithm-web] [    Test worker] c.a.web.service.ClaudeCodeService        : Claude Code engine not available
 ]]></system-out>
   <system-err><![CDATA[]]></system-err>
 </testsuite>

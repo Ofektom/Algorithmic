@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Settings · Algorithmic')}"></head>
+<body>
+<main class="page">
+    <div class="appbar"><h1>Settings</h1></div>
+
+    <h2 class="h2">Appearance</h2>
+    <div class="card" style="padding:0">
+        <div class="setting">
+            <div><div class="t">Theme</div><div class="st">System follows your phone or computer</div></div>
+            <select id="theme" aria-label="Theme">
+                <option value="system">System</option>
+                <option value="light">Light</option>
+                <option value="dark">Dark</option>
+            </select>
+        </div>
+    </div>
+
+    <h2 class="h2">Voice</h2>
+    <div class="card" style="padding:0">
+        <div class="setting">
+            <div><div class="t">Send when I pause</div><div class="st">Off: tap “Show solution” when you've finished</div></div>
+            <input type="checkbox" class="switch" id="autoSend" aria-label="Send when I pause">
+        </div>
+        <div class="setting">
+            <div><div class="t">Accent</div><div class="st">Helps speech recognition hear you</div></div>
+            <select id="voiceLang" aria-label="Voice accent">
+                <option value="en-US">English (US)</option>
+                <option value="en-GB">English (UK)</option>
+                <option value="en-NG">English (Nigeria)</option>
+                <option value="en-IN">English (India)</option>
+            </select>
+        </div>
+    </div>
+
+    <h2 class="h2">Your data</h2>
+    <div class="card" style="padding:0">
+        <div class="setting">
+            <div><div class="t">History and progress</div><div class="st">Saved in this browser only</div></div>
+            <button type="button" class="chip" id="resetData">Reset</button>
+        </div>
+    </div>
+    <p class="small muted" id="savedNote" style="margin-top:10px" aria-live="polite"></p>
+</main>
+
+<nav th:replace="~{fragments/layout :: nav('settings')}"></nav>
+<th:block th:replace="~{fragments/layout :: scripts}"></th:block>
+<script>
+(function() {
+    const $ = function(id) { return document.getElementById(id); };
+    function saved(text) { $('savedNote').textContent = text || 'Saved'; }
+
+    let theme = 'system';
+    try { theme = localStorage.getItem('algo.theme') || 'system'; } catch (e) { /* storage unavailable */ }
+    $('theme').value = theme;
+    $('theme').addEventListener('change', function() {
+        const value = this.value;
+        try {
+            if (value === 'system') localStorage.removeItem('algo.theme');
+            else localStorage.setItem('algo.theme', value);
+        } catch (e) { /* storage unavailable */ }
+        if (value === 'system') document.documentElement.removeAttribute('data-theme');
+        else document.documentElement.setAttribute('data-theme', value);
+        saved();
+    });
+
+    $('autoSend').checked = Store.setting('autoSend', true);
+    $('autoSend').addEventListener('change', function() {
+        Store.setSetting('autoSend', this.checked);
+        saved();
+    });
+
+    $('voiceLang').value = Store.setting('voiceLang', 'en-US');
+    $('voiceLang').addEventListener('change', function() {
+        Store.setSetting('voiceLang', this.value);
+        if (window.voiceNav && window.voiceNav.recognition) window.voiceNav.recognition.lang = this.value;
+        saved();
+    });
+
+    $('resetData').addEventListener('click', function() {
+        Store.set('algo.history', []);
+        Store.set('algo.ran', []);
+        saved('History and progress cleared');
+    });
+})();
+</script>
+</body>
+</html>

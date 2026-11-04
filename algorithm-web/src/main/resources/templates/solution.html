@@ -50,6 +50,33 @@
         <section class="panel" id="panel-approach" role="tabpanel"><p class="prose" id="approach"></p></section>
         <section class="panel" id="panel-complexity" role="tabpanel"><p class="prose" id="complexity"></p></section>
     </div>
+
+    <!-- Corrections for an answer that doesn't fit the problem as the user's platform states it -->
+    <details class="card refine" id="refine" hidden>
+        <summary>Not quite right? Fix the solution</summary>
+        <p class="small muted refine-applied" id="refineApplied" hidden>Showing the solution updated with your corrections.</p>
+        <div class="field">
+            <label for="refineLanguage">Language</label>
+            <select id="refineLanguage">
+                <option>Java</option><option>C</option><option>C++</option><option>C#</option>
+                <option>Python</option><option>JavaScript</option><option>TypeScript</option>
+                <option>Go</option><option>Kotlin</option><option>Swift</option>
+            </select>
+        </div>
+        <div class="field">
+            <label for="refineSignature">Required signature or starter code</label>
+            <textarea id="refineSignature" class="mono" spellcheck="false" autocapitalize="off"
+                      placeholder="char* solve(int arr_count, int* arr)"></textarea>
+            <p class="hint">Paste the function as the problem declares it. The answer will keep these exact parameter and return types.</p>
+        </div>
+        <div class="field">
+            <label for="refineInstructions">What should change?</label>
+            <textarea id="refineInstructions"
+                      placeholder="e.g. arr is an int* with its length passed separately, so index it instead of using for-each. Return a char* like &quot;YES&quot;/&quot;NO&quot;, not a boolean."></textarea>
+        </div>
+        <p class="form-error" id="refineError" hidden></p>
+        <button type="button" class="btn primary block" id="refineButton">Update solution</button>
+    </details>
 </main>
 
 <nav th:replace="~{fragments/layout :: nav('')}"></nav>
@@ -122,16 +149,27 @@
         $('builtInMatches').hidden = found.length === 0;
     }
 
+    // The language sticks between questions: someone practising in C wants C next time too
+    const languages = Array.from($('refineLanguage').options).map(function(o) { return o.value; });
+    const savedLanguage = Store.setting('solutionLanguage', 'Java');
+    $('refineLanguage').value = languages.indexOf(savedLanguage) !== -1 ? savedLanguage : 'Java';
+    let lastCode = '';
+    // Corrections currently applied; Try again after a failed refinement resends them
+    let guidance = null;
+
     async function loadSolution() {
         $('error').hidden = true;
         $('answer').hidden = true;
+        $('refine').hidden = true;
         tabsEl.hidden = false;
         $('loading').hidden = false;
         try {
+            const body = { problemStatement: question, language: $('refineLanguage').value };
+            if (guidance) Object.assign(body, guidance);
             const res = await fetch('/api/ai/solution-with-inputs', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ problemStatement: question, language: 'Java' })
+                body: JSON.stringify(body)
             });
             const data = await res.json().catch(function() { return {}; });
             if (!res.ok || data.error) throw new Error(data.error || "Couldn't load a solution right now.");
@@ -149,7 +187,10 @@
             $('problemText').hidden = !hasProblem;
             $('problemMissing').hidden = hasProblem;
 
+            lastCode = (data.code || '').trim();
             $('answer').hidden = false;
+            $('refine').hidden = false;
+            $('refineApplied').hidden = !guidance;
             selectTab('solution', false);
             Store.addHistory({ type: 'generated', title: title, url: '/solution?q=' + encodeURIComponent(question) });
         } catch (err) {
@@ -157,11 +198,35 @@
             $('errorMessage').textContent = err instanceof TypeError
                 ? "Couldn't reach the server. Check your connection and try again." : err.message;
             $('error').hidden = false;
+            // The corrections can still be changed after a failed attempt
+            $('refine').hidden = !guidance;
         } finally {
             $('loading').hidden = true;
         }
     }
 
+    function refine() {
+        const signature = $('refineSignature').value.trim();
+        const instructions = $('refineInstructions').value.trim();
+        const language = $('refineLanguage').value;
+        const languageChanged = language !== Store.setting('solutionLanguage', 'Java');
+        if (!signature && !instructions && !languageChanged) {
+            $('refineError').textContent = 'Add the required signature, describe what should change, or pick another language.';
+            $('refineError').hidden = false;
+            return;
+        }
+        $('refineError').hidden = true;
+        Store.setSetting('solutionLanguage', language);
+        // Send the code being corrected so the model fixes it instead of starting over.
+        // A language change alone just asks for a fresh answer in that language.
+        guidance = (signature || instructions)
+            ? { signature: signature, instructions: instructions, previousCode: lastCode }
+            : null;
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        loadSolution();
+    }
+
+    $('refineButton').addEventListener('click', refine);
     $('retry').addEventListener('click', loadSolution);
     loadMatches();
     loadSolution();

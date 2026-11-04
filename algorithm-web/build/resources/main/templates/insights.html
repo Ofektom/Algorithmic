@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Insights · Algorithmic')}"></head>
+<body>
+<main class="page">
+    <div class="appbar"><h1>Questions with no built-in answer</h1></div>
+    <p class="small muted" style="margin-bottom:14px">
+        <span th:text="${total + (total == 1 ? ' question' : ' questions')}">0 questions</span>
+        since the server started <span data-ts th:attr="data-ts=${since}"></span>.
+        This list resets when the server restarts; the log keeps each one as “Unmatched question”.
+    </p>
+
+    <div class="card" style="padding:4px 14px" th:if="${!#lists.isEmpty(misses)}">
+        <table class="compare">
+            <thead><tr><th>Question</th><th style="width:64px">Times</th><th style="width:110px">Last asked</th></tr></thead>
+            <tbody>
+                <tr th:each="miss : ${misses}">
+                    <td>
+                        <span style="font-weight:600" th:text="${miss.question()}">question</span>
+                    </td>
+                    <td th:text="${miss.count()}">1</td>
+                    <td class="muted" th:attr="data-ts=${miss.lastAsked()}"></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="empty" th:if="${#lists.isEmpty(misses)}">
+        <p class="t">Nothing yet</p>
+        <p>Every question so far matched a built-in problem, or the server restarted recently.</p>
+    </div>
+</main>
+
+<nav th:replace="~{fragments/layout :: nav('')}"></nav>
+<th:block th:replace="~{fragments/layout :: scripts}"></th:block>
+<script>
+    document.querySelectorAll('[data-ts]').forEach(function(el) {
+        const ts = Date.parse(el.dataset.ts);
+        if (!isNaN(ts)) {
+            el.textContent = timeAgo(ts);
+            el.title = new Date(ts).toLocaleString();
+        }
+    });
+</script>
+</body>
+</html>

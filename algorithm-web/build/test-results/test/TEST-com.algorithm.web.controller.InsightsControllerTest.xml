@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.algorithm.web.controller.InsightsControllerTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2026-11-04T10:26:12" hostname="macs-MacBook-Air-6.local" time="0.131">
+  <properties/>
+  <testcase name="showsMissedQuestionsWithTheRightKey()" classname="com.algorithm.web.controller.InsightsControllerTest" time="0.119"/>
+  <testcase name="hiddenWithoutOrWithWrongKey()" classname="com.algorithm.web.controller.InsightsControllerTest" time="0.009"/>
+  <system-out><![CDATA[2026-11-04T11:26:11.238+01:00  INFO 7739 --- [algorithm-web] [    Test worker] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [com.algorithm.web.controller.InsightsControllerTest]: InsightsControllerTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2026-11-04T11:26:11.277+01:00  INFO 7739 --- [algorithm-web] [    Test worker] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration com.algorithm.web.AlgorithmWebApplication for test class com.algorithm.web.controller.InsightsControllerTest
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+ :: Spring Boot ::                (v3.2.0)
+
+2026-11-04T11:26:11.368+01:00  INFO 7739 --- [algorithm-web] [    Test worker] c.a.w.controller.InsightsControllerTest  : Starting InsightsControllerTest using Java 21.0.10 with PID 7739 (started by decagon in /Users/decagon/IdeaProjects/algorithm/algorithm-web)
+2026-11-04T11:26:11.369+01:00 DEBUG 7739 --- [algorithm-web] [    Test worker] c.a.w.controller.InsightsControllerTest  : Running with Spring Boot v3.2.0, Spring v6.1.1
+2026-11-04T11:26:11.369+01:00  INFO 7739 --- [algorithm-web] [    Test worker] c.a.w.controller.InsightsControllerTest  : No active profile set, falling back to 1 default profile: "default"
+2026-11-04T11:26:11.907+01:00  INFO 7739 --- [algorithm-web] [    Test worker] o.s.b.a.w.s.WelcomePageHandlerMapping    : Adding welcome page template: index
+2026-11-04T11:26:12.093+01:00 DEBUG 7739 --- [algorithm-web] [    Test worker] c.a.web.security.AccessControlFilter     : Filter 'accessControlFilter' configured for use
+2026-11-04T11:26:12.093+01:00  INFO 7739 --- [algorithm-web] [    Test worker] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2026-11-04T11:26:12.094+01:00  INFO 7739 --- [algorithm-web] [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2026-11-04T11:26:12.096+01:00  INFO 7739 --- [algorithm-web] [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 2 ms
+2026-11-04T11:26:12.122+01:00  INFO 7739 --- [algorithm-web] [    Test worker] c.a.w.controller.InsightsControllerTest  : Started InsightsControllerTest in 0.817 seconds (process running for 16.769)
+2026-11-04T11:26:12.145+01:00  INFO 7739 --- [algorithm-web] [    Test worker] c.a.web.service.MissedQuestionService    : Unmatched question (asked 1 time): design a parking lot
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

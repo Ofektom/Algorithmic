@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<!-- Shared pieces for every page: <head>, the bottom bar (a left rail on desktop) and scripts -->
+<head th:fragment="head(title)">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta name="description" content="Algorithmic: ask a coding problem by voice or text and see its Java solution">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="Algorithmic">
+    <title th:text="${title}">Algorithmic</title>
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="apple-touch-icon" href="/icon-192.png">
+    <meta name="theme-color" content="#4c5bd4">
+    <!-- Apply the saved theme before first paint so dark mode doesn't flash white -->
+    <script>
+        try {
+            var t = localStorage.getItem('algo.theme');
+            if (t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t);
+        } catch (e) { /* storage unavailable */ }
+    </script>
+    <link rel="stylesheet" href="/css/style.css" th:href="@{/css/style.css}">
+</head>
+<body>
+
+<nav th:fragment="nav(active)" class="tabbar" aria-label="Main">
+    <a href="/" class="rail-brand" aria-label="Algorithmic home"><span class="logo">A</span><span>Algorithmic</span></a>
+    <a href="/" class="tab" th:classappend="${active == 'home'} ? 'on'" th:attr="aria-current=${active == 'home'} ? 'page'">
+        <svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg>
+        <span>Home</span>
+    </a>
+    <a href="/browse" class="tab" th:classappend="${active == 'browse'} ? 'on'" th:attr="aria-current=${active == 'browse'} ? 'page'">
+        <svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true"><path d="M4 4h7v7H4zM13 4h7v7h-7zM4 13h7v7H4zM13 13h7v7h-7z"/></svg>
+        <span>Browse</span>
+    </a>
+    <button type="button" id="voiceButton" class="ask" aria-label="Ask by voice">
+        <span class="ask-circle">
+            <svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true"><path d="M12 15a3 3 0 0 0 3-3V6a3 3 0 0 0-6 0v6a3 3 0 0 0 3 3zm5-3a5 5 0 0 1-10 0H5a7 7 0 0 0 6 6.93V21h2v-2.07A7 7 0 0 0 19 12z"/></svg>
+        </span>
+        <span class="ask-label">Ask</span>
+        <kbd class="ask-kbd">Space</kbd>
+    </button>
+    <a href="/history" class="tab" th:classappend="${active == 'history'} ? 'on'" th:attr="aria-current=${active == 'history'} ? 'page'">
+        <svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true"><path d="M12 3a9 9 0 1 1-8.5 6H6a7 7 0 1 0 1.4-2.6L10 9H3V2l2.4 2.4A9 9 0 0 1 12 3zm-1 4h2v5.2l3.5 2.1-1 1.7L11 13.3z"/></svg>
+        <span>History</span>
+    </a>
+    <a href="/settings" class="tab" th:classappend="${active == 'settings'} ? 'on'" th:attr="aria-current=${active == 'settings'} ? 'page'">
+        <svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true"><path d="M19.4 13a7.6 7.6 0 0 0 0-2l2-1.6-2-3.4-2.4 1a7.4 7.4 0 0 0-1.7-1L15 3.5h-4l-.4 2.5a7.4 7.4 0 0 0-1.7 1l-2.4-1-2 3.4L6.6 11a7.6 7.6 0 0 0 0 2l-2 1.6 2 3.4 2.4-1a7.4 7.4 0 0 0 1.7 1l.4 2.5h4l.4-2.5a7.4 7.4 0 0 0 1.7-1l2.4 1 2-3.4zM13 15.5A3.5 3.5 0 1 1 13 8.5a3.5 3.5 0 0 1 0 7z" transform="translate(-1 0)"/></svg>
+        <span>Settings</span>
+    </a>
+</nav>
+
+<th:block th:fragment="scripts">
+    <script src="/js/app.js" th:src="@{/js/app.js}"></script>
+    <script src="/js/voice.js" th:src="@{/js/voice.js}"></script>
+</th:block>
+
+</body>
+</html>

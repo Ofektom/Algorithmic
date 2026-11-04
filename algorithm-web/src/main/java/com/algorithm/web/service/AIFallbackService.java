@@ -34,13 +34,16 @@ public class AIFallbackService {
     // Wait at most this long for a rate-limit retry before giving up (the user is watching "Loading…")
     private static final long MAX_RETRY_WAIT_SECONDS = 10;
     private static final String GROQ_SYSTEM_PROMPT = "You are an expert algorithm tutor. Explain clearly, "
-            + "write correct, complete Java, and follow the requested section format exactly.";
+            + "write correct, complete code in the requested language, follow any required signature exactly, "
+            + "and follow the requested section format exactly.";
+    // User-supplied guidance is free text; cap it so one request can't blow the prompt budget
+    private static final int MAX_GUIDANCE_CHARS = 4000;
     // Users see one neutral message; which provider failed and why goes to the log
     public static final String UNAVAILABLE_MESSAGE = "Couldn't load a solution right now. Please try again.";
     private static final Pattern SECTION_HEADER = Pattern.compile(
             // "EXPLANATION:", "**Solution:**", "## Code" — header alone on its line or followed by a colon
             "(?im)^[ \\t]*(?:#+[ \\t]*)?(?:\\*\\*)?(PROBLEM|EXPLANATION|SOLUTION|CODE|COMPLEXITY)(?:\\*\\*)?[ \\t]*(?::(?:\\*\\*)?|$)");
-    private static final Pattern CODE_BLOCK = Pattern.compile("```[a-zA-Z]*\\s*\\n(.*?)```", Pattern.DOTALL);
+    private static final Pattern CODE_BLOCK = Pattern.compile("```[a-zA-Z+#]*\\s*\\n(.*?)```", Pattern.DOTALL);
 
     // Generation blocks for seconds (minutes for Claude Code); keep it off the common pool
     private static final ExecutorService GENERATORS = Executors.newFixedThreadPool(4, runnable -> {
@@ -101,13 +104,30 @@ public class AIFallbackService {
             Object[] inputs,
             String[] paramTypes,
             String language) {
+        return getSolutionWithInputs(problemStatement, methodName, inputs, paramTypes, language, Guidance.NONE);
+    }
+
+    /**
+     * Same as above, with the user's corrections applied: a required signature (e.g. the platform's
+     * {@code char* solve(int* arr, int n)} stub), extra instructions, and the previous code to fix.
+     */
+    public CompletableFuture<AISolution> getSolutionWithInputs(String problemStatement,
+            String methodName,
+            Object[] inputs,
+            String[] paramTypes,
+            String language,
+            Guidance guidance) {
+        // Language goes into the prompt; keep it to a plain name such as "C", "C++", "C#" or "Python"
+        String cleanLanguage = language == null ? "" : language.replaceAll("[^A-Za-z0-9+# ]", "").trim();
+        language = cleanLanguage.isEmpty() || cleanLanguage.length() > 20 ? "Java" : cleanLanguage;
+        guidance = guidance == null ? Guidance.NONE : guidance;
         if (!isConfigured()) {
             log.warn("Solution requested but no engine is available (Claude Code not signed in, GROQ_API_KEY not set)");
             return CompletableFuture.completedFuture(AISolution.failure(UNAVAILABLE_MESSAGE));
         }
 
-        String prompt = buildPrompt(problemStatement, methodName, inputs, paramTypes, language);
-        String cacheKey = cacheKey(problemStatement, methodName, inputs, language);
+        String prompt = buildPrompt(problemStatement, methodName, inputs, paramTypes, language, guidance);
+        String cacheKey = cacheKey(problemStatement, methodName, inputs, language, guidance);
         AISolution cached = cache.get(cacheKey);
         if (cached != null) {
             return CompletableFuture.completedFuture(cached);
@@ -147,15 +167,28 @@ public class AIFallbackService {
     }
 
     // Spoken questions differ in case/punctuation between attempts; those shouldn't miss the cache
-    private static String cacheKey(String problemStatement, String methodName, Object[] inputs, String language) {
+    private static String cacheKey(String problemStatement, String methodName, Object[] inputs, String language,
+            Guidance guidance) {
         String statement = problemStatement == null ? ""
                 : problemStatement.toLowerCase().replaceAll("[^a-z0-9]+", " ").trim();
+        // Guidance is kept exact: "int*" vs "int" matters there. Language is case-insensitive.
         return String.join("|", statement, String.valueOf(methodName),
-                inputs == null ? "" : Arrays.deepToString(inputs), String.valueOf(language));
+                inputs == null ? "" : Arrays.deepToString(inputs), language.toLowerCase(),
+                String.valueOf(guidance.signature()), String.valueOf(guidance.instructions()),
+                String.valueOf(guidance.previousCode()));
     }
 
-    private String buildPrompt(String problemStatement, String methodName,
-            Object[] inputs, String[] paramTypes, String language) {
+    private static boolean isBlank(String s) {
+        return s == null || s.trim().isEmpty();
+    }
+
+    private static String clip(String s) {
+        String trimmed = s.trim();
+        return trimmed.length() <= MAX_GUIDANCE_CHARS ? trimmed : trimmed.substring(0, MAX_GUIDANCE_CHARS);
+    }
+
+    String buildPrompt(String problemStatement, String methodName,
+            Object[] inputs, String[] paramTypes, String language, Guidance guidance) {
         StringBuilder sb = new StringBuilder();
         sb.append("You are an expert algorithm tutor. Solve the following problem step by step:\n\n");
         sb.append("Problem: ").append(problemStatement).append("\n\n");
@@ -174,15 +207,37 @@ public class AIFallbackService {
             sb.append("\n");
         }
 
+        if (!isBlank(guidance.signature())) {
+            sb.append("Required signature / starter code. Use it exactly as given: the same function name, ")
+                    .append("parameter types (e.g. a pointer such as int* stays a pointer, with its length passed ")
+                    .append("as given) and return type. Do not substitute other types:\n```\n")
+                    .append(clip(guidance.signature())).append("\n```\n\n");
+        }
+        if (!isBlank(guidance.previousCode())) {
+            sb.append("A previous answer did not fit. Here is its code; fix it rather than repeating its mistakes:\n```\n")
+                    .append(clip(guidance.previousCode())).append("\n```\n\n");
+        }
+        if (!isBlank(guidance.instructions())) {
+            sb.append("Additional instructions from the user. These override any assumption you would ")
+                    .append("otherwise make:\n").append(clip(guidance.instructions())).append("\n\n");
+        }
+
+        sb.append("Write the code in ").append(language).append(".\n\n");
         sb.append("Please provide in this exact format:\n");
         sb.append("PROBLEM:\n[the exact problem you are solving, restated in one or two sentences, "
                 + "then one example input and its output]\n\n");
         sb.append("EXPLANATION:\n[clear step-by-step explanation]\n\n");
         sb.append("SOLUTION:\n[step-by-step solution]\n\n");
-        sb.append("CODE:\n```java\n[complete Java code]\n```\n\n");
+        sb.append("CODE:\n```").append(fenceTag(language)).append("\n[complete ").append(language)
+                .append(" code]\n```\n\n");
         sb.append("COMPLEXITY:\n[time and space complexity analysis]");
 
         return sb.toString();
+    }
+
+    private static String fenceTag(String language) {
+        String tag = language.toLowerCase().replaceAll("[^a-z0-9+#]", "");
+        return tag.isEmpty() ? "java" : tag;
     }
 
     private String callGroqApi(String prompt) throws Exception {
@@ -282,6 +337,15 @@ public class AIFallbackService {
 
     private static String stripCodeBlocks(String text) {
         return CODE_BLOCK.matcher(text).replaceAll("").trim();
+    }
+
+    /** User corrections for a generated answer that didn't fit the problem as their platform states it. */
+    public record Guidance(String signature, String instructions, String previousCode) {
+        public static final Guidance NONE = new Guidance(null, null, null);
+
+        public boolean isEmpty() {
+            return isBlank(signature) && isBlank(instructions) && isBlank(previousCode);
+        }
     }
 
     public static class AISolution {

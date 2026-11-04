@@ -39,7 +39,16 @@ public class AIController {
     @PostMapping("/solution-with-inputs")
     public CompletableFuture<ResponseEntity<AIFallbackService.AISolution>> getSolutionWithInputs(
             @RequestBody AISolutionRequest request) {
-        missedQuestions.record(request.problemStatement);
+        if (request.problemStatement == null || request.problemStatement.isBlank()) {
+            return CompletableFuture.completedFuture(
+                    ResponseEntity.badRequest().body(AIFallbackService.AISolution.failure("Ask a question first.")));
+        }
+        AIFallbackService.Guidance guidance = new AIFallbackService.Guidance(
+                request.signature, request.instructions, request.previousCode);
+        // A refinement re-asks a question already recorded on the first attempt
+        if (guidance.isEmpty()) {
+            missedQuestions.record(request.problemStatement);
+        }
 
         if (!aiService.isConfigured()) {
             return CompletableFuture.completedFuture(
@@ -51,7 +60,8 @@ public class AIController {
                 request.methodName,
                 request.inputs,
                 request.paramTypes,
-                request.language)
+                request.language,
+                guidance)
                 .thenApply(AIController::toResponse);
     }
 
@@ -68,5 +78,11 @@ public class AIController {
         public Object[] inputs;
         public String[] paramTypes;
         public String language = "Java";
+        /** Signature or starter code the answer must use exactly, e.g. "char* solve(int* arr, int n)". */
+        public String signature;
+        /** Extra guidance when an answer didn't fit, e.g. "return the result as a string". */
+        public String instructions;
+        /** The previous answer's code, so a refinement fixes it instead of starting over. */
+        public String previousCode;
     }
 }

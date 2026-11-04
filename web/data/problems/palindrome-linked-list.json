@@ -1,0 +1,41 @@
+{
+  "name" : "Palindrome Linked List",
+  "slug" : "palindrome-linked-list",
+  "category" : "Linked List",
+  "description" : "Given the head of a singly linked list, return true if it is a palindrome or false otherwise.",
+  "shortDescription" : "Check if linked list is palindrome",
+  "className" : "linkedlist.PalindromeLinkedList",
+  "methods" : [ {
+    "name" : "computeWithReversal",
+    "label" : "Reversal",
+    "code" : "public static boolean computeWithReversal(ListNode head) {\n    if (head == null || head.next == null) return true;\n\n    ListNode slow = head, fast = head;\n    while (fast.next != null && fast.next.next != null) {\n        slow = slow.next;\n        fast = fast.next.next;\n    }\n\n    ListNode secondHalf = reverse(slow.next);\n    ListNode firstHalf = head;\n\n    while (secondHalf != null) {\n        if (firstHalf.val != secondHalf.val) {\n            return false;\n        }\n        firstHalf = firstHalf.next;\n        secondHalf = secondHalf.next;\n    }\n\n    return true;\n}"
+  }, {
+    "name" : "computeWithStack",
+    "label" : "Stack",
+    "code" : "public static boolean computeWithStack(ListNode head) {\n    java.util.Stack<Integer> stack = new java.util.Stack<>();\n    ListNode current = head;\n\n    while (current != null) {\n        stack.push(current.val);\n        current = current.next;\n    }\n\n    current = head;\n    while (current != null) {\n        if (current.val != stack.pop()) {\n            return false;\n        }\n        current = current.next;\n    }\n\n    return true;\n}"
+  }, {
+    "name" : "computeRecursive",
+    "label" : "Recursive",
+    "code" : "public static boolean computeRecursive(ListNode head) {\n    front = head;\n    return checkRecursive(head);\n}"
+  } ],
+  "paramNames" : [ "head" ],
+  "paramTypes" : [ "ListNode" ],
+  "exampleInputs" : null,
+  "related" : [ {
+    "name" : "Reverse Linked List",
+    "shortDescription" : "Reverse a singly linked list",
+    "slug" : "reverse-linked-list"
+  }, {
+    "name" : "Merge Two Sorted Lists",
+    "shortDescription" : "Merge two sorted linked lists",
+    "slug" : "merge-two-sorted-lists"
+  }, {
+    "name" : "Linked List Cycle",
+    "shortDescription" : "Detect if a linked list has a cycle",
+    "slug" : "linked-list-cycle"
+  }, {
+    "name" : "Add Two Numbers",
+    "shortDescription" : "Add two numbers represented by linked lists",
+    "slug" : "add-two-numbers"
+  } ]
+}

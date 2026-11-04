@@ -1,0 +1,25 @@
+{
+  "name" : "Pow(x, n)",
+  "slug" : "pow-x-n",
+  "category" : "Math/Geometry",
+  "description" : "Implement pow(x, n), which calculates x raised to the power n (i.e., x^n).",
+  "shortDescription" : "Calculate x raised to power n",
+  "className" : "math.Pow",
+  "methods" : [ {
+    "name" : "computeRecursive",
+    "label" : "Recursive",
+    "code" : "public static double computeRecursive(double x, int n) {\n    long N = n;\n    if (N < 0) {\n        x = 1 / x;\n        N = -N;\n    }\n    return fastPower(x, N);\n}"
+  }, {
+    "name" : "computeIterative",
+    "label" : "Iterative",
+    "code" : "public static double computeIterative(double x, int n) {\n    long N = n;\n    if (N < 0) {\n        x = 1 / x;\n        N = -N;\n    }\n\n    double result = 1.0;\n    double currentProduct = x;\n\n    while (N > 0) {\n        if (N % 2 == 1) {\n            result *= currentProduct;\n        }\n        currentProduct *= currentProduct;\n        N /= 2;\n    }\n\n    return result;\n}"
+  }, {
+    "name" : "computeBruteForce",
+    "label" : "Brute force",
+    "code" : "public static double computeBruteForce(double x, int n) {\n    if (n == 0) return 1.0;\n    if (n < 0) {\n        x = 1 / x;\n        n = -n;\n    }\n    return x * computeBruteForce(x, n - 1);\n}"
+  } ],
+  "paramNames" : [ "x", "n" ],
+  "paramTypes" : [ "double", "int" ],
+  "exampleInputs" : [ 2.0, 10 ],
+  "related" : [ ]
+}

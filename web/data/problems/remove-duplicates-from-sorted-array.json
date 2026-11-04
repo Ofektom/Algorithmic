@@ -1,0 +1,41 @@
+{
+  "name" : "Remove Duplicates from Sorted Array",
+  "slug" : "remove-duplicates-from-sorted-array",
+  "category" : "Two Pointers",
+  "description" : "Given an integer array nums sorted in non-decreasing order, remove the duplicates in-place such that each unique element appears only once. The relative order of the elements should be kept the same. Then return the number of unique elements in nums.",
+  "shortDescription" : "Remove duplicates from sorted array in-place",
+  "className" : "pointers.RemoveDuplicatesFromSortedArray",
+  "methods" : [ {
+    "name" : "computeWithTwoPointers",
+    "label" : "Two pointers",
+    "code" : "public static int computeWithTwoPointers(int[] nums) {\n    if (nums.length == 0) return 0;\n\n    int writeIndex = 1;\n    for (int readIndex = 1; readIndex < nums.length; readIndex++) {\n        if (nums[readIndex] != nums[readIndex - 1]) {\n            nums[writeIndex] = nums[readIndex];\n            writeIndex++;\n        }\n    }\n    return writeIndex;\n}"
+  }, {
+    "name" : "computeWithArrayList",
+    "label" : "Array list",
+    "code" : "public static int computeWithArrayList(int[] nums) {\n    if (nums.length == 0) return 0;\n\n    java.util.List<Integer> result = new java.util.ArrayList<>();\n    result.add(nums[0]);\n\n    for (int i = 1; i < nums.length; i++) {\n        if (nums[i] != nums[i - 1]) {\n            result.add(nums[i]);\n        }\n    }\n\n    for (int i = 0; i < result.size(); i++) {\n        nums[i] = result.get(i);\n    }\n\n    return result.size();\n}"
+  }, {
+    "name" : "computeWithBruteForce",
+    "label" : "Brute force",
+    "code" : "public static int computeWithBruteForce(int[] nums) {\n    if (nums.length == 0) return 0;\n\n    int length = nums.length;\n    for (int i = 1; i < length; i++) {\n        if (nums[i] == nums[i - 1]) {\n            for (int j = i; j < length - 1; j++) {\n                nums[j] = nums[j + 1];\n            }\n            length--;\n            i--;\n        }\n    }\n    return length;\n}"
+  } ],
+  "paramNames" : [ "nums" ],
+  "paramTypes" : [ "int[]" ],
+  "exampleInputs" : [ [ 1, 1, 2 ] ],
+  "related" : [ {
+    "name" : "Valid Palindrome",
+    "shortDescription" : "Check if string is palindrome",
+    "slug" : "valid-palindrome"
+  }, {
+    "name" : "Two Sum II",
+    "shortDescription" : "Find two numbers that add to target in sorted array",
+    "slug" : "two-sum-ii"
+  }, {
+    "name" : "Container With Most Water",
+    "shortDescription" : "Find container that holds most water",
+    "slug" : "container-with-most-water"
+  }, {
+    "name" : "3Sum",
+    "shortDescription" : "Find all triplets that sum to zero",
+    "slug" : "3sum"
+  } ]
+}

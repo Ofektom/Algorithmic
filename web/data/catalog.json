@@ -1,0 +1,804 @@
+{
+  "problemCount" : 107,
+  "categories" : [ {
+    "problems" : [ {
+      "name" : "Two Sum",
+      "slug" : "two-sum",
+      "shortDescription" : "Find two numbers that add up to target",
+      "methodCount" : 3,
+      "aliases" : [ "TwoSum", "2Sum" ],
+      "keywords" : [ "array", "integers", "target", "indices", "add", "sum", "two", "numbers" ]
+    }, {
+      "name" : "Contains Duplicate",
+      "slug" : "contains-duplicate",
+      "shortDescription" : "Check if array has duplicate values",
+      "methodCount" : 4,
+      "aliases" : [ "ContainsDuplicate", "Duplicate" ],
+      "keywords" : [ "array", "duplicate", "appears", "twice", "distinct" ]
+    }, {
+      "name" : "Missing Number",
+      "slug" : "missing-number",
+      "shortDescription" : "Find the missing number in array [0, n]",
+      "methodCount" : 4,
+      "aliases" : [ "MissingNumber", "Missing" ],
+      "keywords" : [ "array", "missing", "number", "range", "distinct" ]
+    }, {
+      "name" : "Single Number",
+      "slug" : "single-number",
+      "shortDescription" : "Find the number that appears only once",
+      "methodCount" : 3,
+      "aliases" : [ "SingleNumber", "Single" ],
+      "keywords" : [ "array", "single", "appears", "twice", "once", "unique" ]
+    }, {
+      "name" : "Plus One",
+      "slug" : "plus-one",
+      "shortDescription" : "Increment a number represented as array by one",
+      "methodCount" : 3,
+      "aliases" : [ "PlusOne", "Increment Array" ],
+      "keywords" : [ "array", "digits", "increment", "plus", "one", "large", "integer" ]
+    }, {
+      "name" : "Count Even Numbers",
+      "slug" : "count-even-numbers",
+      "shortDescription" : "Count even numbers in array",
+      "methodCount" : 4,
+      "aliases" : [ "CountEven", "Count Even" ],
+      "keywords" : [ "array", "count", "even", "numbers", "integers" ]
+    }, {
+      "name" : "Product of Array Except Self",
+      "slug" : "product-of-array-except-self",
+      "shortDescription" : "Return array where each element is product of all others",
+      "methodCount" : 3,
+      "aliases" : [ "ProductExceptSelf", "Array Product" ],
+      "keywords" : [ "array", "product", "except", "self", "prefix", "suffix" ]
+    }, {
+      "name" : "Top K Frequent Elements",
+      "slug" : "top-k-frequent-elements",
+      "shortDescription" : "Find k most frequent elements in array",
+      "methodCount" : 3,
+      "aliases" : [ "TopKFrequent", "K Most Frequent", "Top K" ],
+      "keywords" : [ "array", "frequent", "top", "k", "frequency", "elements", "most" ]
+    }, {
+      "name" : "Longest Consecutive Sequence",
+      "slug" : "longest-consecutive-sequence",
+      "shortDescription" : "Find length of longest consecutive sequence",
+      "methodCount" : 3,
+      "aliases" : [ "LongestConsecutive", "Consecutive Sequence" ],
+      "keywords" : [ "array", "consecutive", "sequence", "longest", "unsorted" ]
+    }, {
+      "name" : "Maximum Subarray",
+      "slug" : "maximum-subarray",
+      "shortDescription" : "Find maximum sum of contiguous subarray",
+      "methodCount" : 4,
+      "aliases" : [ "MaximumSubarray", "Max Subarray", "Kadane" ],
+      "keywords" : [ "array", "subarray", "maximum", "sum", "contiguous", "kadane" ]
+    }, {
+      "name" : "Maximum Product Subarray",
+      "slug" : "maximum-product-subarray",
+      "shortDescription" : "Find maximum product of contiguous subarray",
+      "methodCount" : 4,
+      "aliases" : [ "MaximumProductSubarray", "Max Product Subarray", "Product Subarray" ],
+      "keywords" : [ "array", "subarray", "maximum", "product", "contiguous" ]
+    }, {
+      "name" : "Contains Duplicate II",
+      "slug" : "contains-duplicate-ii",
+      "shortDescription" : "Check if duplicate exists within k distance",
+      "methodCount" : 3,
+      "aliases" : [ "ContainsDuplicateII", "Duplicate II", "Duplicate Distance" ],
+      "keywords" : [ "array", "duplicate", "distance", "k", "indices", "hashmap", "sliding window" ]
+    }, {
+      "name" : "Rotate Array",
+      "slug" : "rotate-array",
+      "shortDescription" : "Rotate array to the right by k steps",
+      "methodCount" : 4,
+      "aliases" : [ "RotateArray", "Rotate", "Shift Array" ],
+      "keywords" : [ "array", "rotate", "shift", "k", "steps", "right" ]
+    }, {
+      "name" : "Diagonal Difference",
+      "slug" : "diagonal-difference",
+      "shortDescription" : "Absolute difference between the two diagonal sums",
+      "methodCount" : 2,
+      "aliases" : [ "DiagonalDifference", "Matrix Diagonal Difference" ],
+      "keywords" : [ "matrix", "diagonal", "square", "difference", "absolute", "sum" ]
+    }, {
+      "name" : "Plus Minus",
+      "slug" : "plus-minus",
+      "shortDescription" : "Ratios of positive, negative and zero elements",
+      "methodCount" : 2,
+      "aliases" : [ "PlusMinus", "Positive Negative Zero Ratio" ],
+      "keywords" : [ "array", "ratio", "positive", "negative", "zero", "fraction", "decimal" ]
+    }, {
+      "name" : "Mini-Max Sum",
+      "slug" : "mini-max-sum",
+      "shortDescription" : "Min and max sum of four out of five integers",
+      "methodCount" : 2,
+      "aliases" : [ "MiniMaxSum", "Min Max Sum", "Minimum Maximum Sum" ],
+      "keywords" : [ "array", "minimum", "maximum", "sum", "four", "five", "integers" ]
+    }, {
+      "name" : "Birthday Cake Candles",
+      "slug" : "birthday-cake-candles",
+      "shortDescription" : "Count how many candles are the tallest",
+      "methodCount" : 2,
+      "aliases" : [ "BirthdayCakeCandles", "Tallest Candles" ],
+      "keywords" : [ "array", "candles", "tallest", "maximum", "count", "birthday" ]
+    }, {
+      "name" : "Sales by Match",
+      "slug" : "sales-by-match",
+      "shortDescription" : "Count pairs of matching socks",
+      "methodCount" : 2,
+      "aliases" : [ "SalesByMatch", "Sock Merchant", "Matching Socks" ],
+      "keywords" : [ "array", "socks", "pairs", "matching", "color", "count", "hashset" ]
+    } ],
+    "name" : "Arrays & Hashing"
+  }, {
+    "problems" : [ {
+      "name" : "Valid Anagram",
+      "slug" : "valid-anagram",
+      "shortDescription" : "Check if two strings are anagrams",
+      "methodCount" : 4,
+      "aliases" : [ "IsAnagram", "Anagram", "Valid Anagram" ],
+      "keywords" : [ "string", "anagram", "rearrange", "letters", "characters" ]
+    }, {
+      "name" : "Group Anagrams",
+      "slug" : "group-anagrams",
+      "shortDescription" : "Group strings that are anagrams of each other",
+      "methodCount" : 3,
+      "aliases" : [ "GroupAnagrams", "Anagram Groups" ],
+      "keywords" : [ "string", "array", "anagram", "group", "sort" ]
+    }, {
+      "name" : "Ransom Note",
+      "slug" : "ransom-note",
+      "shortDescription" : "Check if ransom note can be constructed from magazine",
+      "methodCount" : 3,
+      "aliases" : [ "RansomNote", "Ransom" ],
+      "keywords" : [ "string", "ransom", "magazine", "construct", "letters" ]
+    }, {
+      "name" : "Isomorphic Strings",
+      "slug" : "isomorphic-strings",
+      "shortDescription" : "Check if two strings are isomorphic",
+      "methodCount" : 3,
+      "aliases" : [ "IsomorphicStrings", "Isomorphic" ],
+      "keywords" : [ "string", "isomorphic", "characters", "mapping", "replace" ]
+    }, {
+      "name" : "Word Pattern",
+      "slug" : "word-pattern",
+      "shortDescription" : "Check if string follows word pattern",
+      "methodCount" : 3,
+      "aliases" : [ "WordPattern", "Pattern" ],
+      "keywords" : [ "string", "pattern", "word", "bijection", "mapping" ]
+    }, {
+      "name" : "First Unique Character",
+      "slug" : "first-unique-character",
+      "shortDescription" : "Find first non-repeating character index",
+      "methodCount" : 3,
+      "aliases" : [ "FirstUniqueCharacter", "First Unique", "Non-repeating" ],
+      "keywords" : [ "string", "unique", "non-repeating", "character", "index", "first" ]
+    }, {
+      "name" : "Longest Common Prefix",
+      "slug" : "longest-common-prefix",
+      "shortDescription" : "Find longest common prefix among strings",
+      "methodCount" : 3,
+      "aliases" : [ "LongestCommonPrefix", "Common Prefix", "LCP" ],
+      "keywords" : [ "string", "array", "prefix", "common", "longest" ]
+    }, {
+      "name" : "Longest Palindromic Substring",
+      "slug" : "longest-palindromic-substring",
+      "shortDescription" : "Find longest palindromic substring",
+      "methodCount" : 3,
+      "aliases" : [ "LongestPalindromicSubstring", "Longest Palindrome", "Palindromic Substring" ],
+      "keywords" : [ "string", "palindrome", "substring", "longest", "palindromic" ]
+    }, {
+      "name" : "Valid Palindrome II",
+      "slug" : "valid-palindrome-ii",
+      "shortDescription" : "Check if string can be palindrome after deleting one character",
+      "methodCount" : 3,
+      "aliases" : [ "ValidPalindromeII", "Valid Palindrome Two" ],
+      "keywords" : [ "string", "palindrome", "delete", "character", "valid" ]
+    }, {
+      "name" : "Reverse String",
+      "slug" : "reverse-string",
+      "shortDescription" : "Reverse a string in-place",
+      "methodCount" : 3,
+      "aliases" : [ "ReverseString", "Reverse" ],
+      "keywords" : [ "string", "reverse", "array", "characters", "in-place" ]
+    }, {
+      "name" : "Reverse Words in String",
+      "slug" : "reverse-words-in-string",
+      "shortDescription" : "Reverse the order of words in a string",
+      "methodCount" : 3,
+      "aliases" : [ "ReverseWordsInString", "Reverse Words" ],
+      "keywords" : [ "string", "words", "reverse", "order", "space" ]
+    }, {
+      "name" : "Backspace String Compare",
+      "slug" : "backspace-string-compare",
+      "shortDescription" : "Compare strings with backspace characters",
+      "methodCount" : 3,
+      "aliases" : [ "BackspaceStringCompare", "Backspace Compare" ],
+      "keywords" : [ "string", "backspace", "compare", "character", "#" ]
+    }, {
+      "name" : "Find All Anagrams in String",
+      "slug" : "find-all-anagrams-in-string",
+      "shortDescription" : "Find all start indices of anagram substrings",
+      "methodCount" : 3,
+      "aliases" : [ "FindAllAnagramsInString", "Find Anagrams" ],
+      "keywords" : [ "string", "anagram", "indices", "substring", "start" ]
+    }, {
+      "name" : "Decode String",
+      "slug" : "decode-string",
+      "shortDescription" : "Decode string with number-bracket pattern",
+      "methodCount" : 3,
+      "aliases" : [ "DecodeString", "Decode" ],
+      "keywords" : [ "string", "decode", "brackets", "repeat", "number" ]
+    }, {
+      "name" : "String to Integer (atoi)",
+      "slug" : "string-to-integer-atoi",
+      "shortDescription" : "Convert string to 32-bit signed integer",
+      "methodCount" : 3,
+      "aliases" : [ "StringToInteger", "Atoi", "String to Integer" ],
+      "keywords" : [ "string", "integer", "conversion", "atoi", "parse", "number" ]
+    }, {
+      "name" : "Implement strStr()",
+      "slug" : "implement-strstr",
+      "shortDescription" : "Find first occurrence of needle in haystack",
+      "methodCount" : 4,
+      "aliases" : [ "ImplementStrStr", "StrStr", "Find Needle", "Needle in Haystack" ],
+      "keywords" : [ "string", "strstr", "needle", "haystack", "substring", "index", "kmp" ]
+    }, {
+      "name" : "Add Binary",
+      "slug" : "add-binary",
+      "shortDescription" : "Add two binary strings",
+      "methodCount" : 4,
+      "aliases" : [ "AddBinary", "Binary Add", "Binary Sum" ],
+      "keywords" : [ "string", "binary", "add", "sum", "carry", "stringbuilder" ]
+    }, {
+      "name" : "Time Conversion",
+      "slug" : "time-conversion",
+      "shortDescription" : "Convert 12-hour AM/PM time to 24-hour time",
+      "methodCount" : 2,
+      "aliases" : [ "TimeConversion", "12 Hour to 24 Hour", "Military Time" ],
+      "keywords" : [ "string", "time", "conversion", "12-hour", "24-hour", "military", "am", "pm" ]
+    }, {
+      "name" : "Counting Valleys",
+      "slug" : "counting-valleys",
+      "shortDescription" : "Count valleys walked through on a hike",
+      "methodCount" : 1,
+      "aliases" : [ "CountingValleys", "Valleys" ],
+      "keywords" : [ "string", "valley", "sea level", "hike", "steps", "up", "down", "altitude" ]
+    }, {
+      "name" : "Repeated String",
+      "slug" : "repeated-string",
+      "shortDescription" : "Count 'a' in first n chars of an infinitely repeated string",
+      "methodCount" : 2,
+      "aliases" : [ "RepeatedString", "Count A in Infinite String" ],
+      "keywords" : [ "string", "repeated", "infinite", "count", "letter", "a", "modulo" ]
+    }, {
+      "name" : "Caesar Cipher",
+      "slug" : "caesar-cipher",
+      "shortDescription" : "Shift each letter by k positions in the alphabet",
+      "methodCount" : 2,
+      "aliases" : [ "CaesarCipher", "Caesar Shift", "Shift Cipher" ],
+      "keywords" : [ "string", "cipher", "caesar", "shift", "rotate", "encrypt", "alphabet" ]
+    } ],
+    "name" : "Strings"
+  }, {
+    "problems" : [ {
+      "name" : "Maximum Depth of Binary Tree",
+      "slug" : "maximum-depth-of-binary-tree",
+      "shortDescription" : "Find the maximum depth of a binary tree",
+      "methodCount" : 3,
+      "aliases" : [ "MaximumDepthOfBinaryTree", "Max Depth", "Tree Depth" ],
+      "keywords" : [ "tree", "binary tree", "depth", "maximum", "nodes", "root", "leaf", "path" ]
+    }, {
+      "name" : "Same Tree",
+      "slug" : "same-tree",
+      "shortDescription" : "Check if two binary trees are identical",
+      "methodCount" : 3,
+      "aliases" : [ "SameTree", "Identical Trees" ],
+      "keywords" : [ "tree", "binary tree", "same", "identical", "structure", "value", "nodes" ]
+    }, {
+      "name" : "Invert Binary Tree",
+      "slug" : "invert-binary-tree",
+      "shortDescription" : "Invert a binary tree",
+      "methodCount" : 3,
+      "aliases" : [ "InvertBinaryTree", "Invert Tree", "Mirror Tree" ],
+      "keywords" : [ "tree", "binary tree", "invert", "mirror", "root" ]
+    }, {
+      "name" : "Symmetric Tree",
+      "slug" : "symmetric-tree",
+      "shortDescription" : "Check if a binary tree is symmetric",
+      "methodCount" : 3,
+      "aliases" : [ "SymmetricTree", "Symmetric", "Mirror" ],
+      "keywords" : [ "tree", "binary tree", "symmetric", "mirror", "center" ]
+    }, {
+      "name" : "Binary Tree Level Order Traversal",
+      "slug" : "binary-tree-level-order-traversal",
+      "shortDescription" : "Return level order traversal of binary tree",
+      "methodCount" : 3,
+      "aliases" : [ "BinaryTreeLevelOrderTraversal", "Level Order", "BFS" ],
+      "keywords" : [ "tree", "binary tree", "level order", "traversal", "bfs", "breadth first" ]
+    }, {
+      "name" : "Validate Binary Search Tree",
+      "slug" : "validate-binary-search-tree",
+      "shortDescription" : "Check if binary tree is a valid BST",
+      "methodCount" : 3,
+      "aliases" : [ "ValidateBinarySearchTree", "Validate BST", "BST Validation" ],
+      "keywords" : [ "tree", "binary tree", "bst", "binary search tree", "validate", "valid" ]
+    }, {
+      "name" : "Binary Tree Inorder Traversal",
+      "slug" : "binary-tree-inorder-traversal",
+      "shortDescription" : "Return inorder traversal of binary tree",
+      "methodCount" : 3,
+      "aliases" : [ "BinaryTreeInorderTraversal", "Inorder Traversal", "Inorder" ],
+      "keywords" : [ "tree", "binary tree", "inorder", "traversal", "dfs" ]
+    }, {
+      "name" : "Binary Tree Maximum Path Sum",
+      "slug" : "binary-tree-maximum-path-sum",
+      "shortDescription" : "Find maximum path sum in binary tree",
+      "methodCount" : 2,
+      "aliases" : [ "BinaryTreeMaximumPathSum", "Max Path Sum", "Path Sum" ],
+      "keywords" : [ "tree", "binary tree", "path", "sum", "maximum", "dfs" ]
+    }, {
+      "name" : "Subtree of Another Tree",
+      "slug" : "subtree-of-another-tree",
+      "shortDescription" : "Check if subRoot is a subtree of root",
+      "methodCount" : 2,
+      "aliases" : [ "SubtreeOfAnotherTree", "Subtree", "Contains Subtree" ],
+      "keywords" : [ "tree", "binary tree", "subtree", "contains", "same structure" ]
+    }, {
+      "name" : "Lowest Common Ancestor of Binary Tree",
+      "slug" : "lowest-common-ancestor-of-binary-tree",
+      "shortDescription" : "Find lowest common ancestor of two nodes",
+      "methodCount" : 2,
+      "aliases" : [ "LowestCommonAncestorOfBinaryTree", "LCA", "Lowest Common Ancestor" ],
+      "keywords" : [ "tree", "binary tree", "lca", "lowest common ancestor", "nodes" ]
+    }, {
+      "name" : "Binary Tree Right Side View",
+      "slug" : "binary-tree-right-side-view",
+      "shortDescription" : "Return right side view of binary tree",
+      "methodCount" : 3,
+      "aliases" : [ "BinaryTreeRightSideView", "Right Side View", "Right View" ],
+      "keywords" : [ "tree", "binary tree", "right side", "view", "bfs", "level order" ]
+    }, {
+      "name" : "Path Sum",
+      "slug" : "path-sum",
+      "shortDescription" : "Check if tree has path with given sum",
+      "methodCount" : 3,
+      "aliases" : [ "PathSum", "Tree Path Sum", "Sum Path" ],
+      "keywords" : [ "tree", "binary tree", "path", "sum", "target", "root to leaf", "dfs" ]
+    }, {
+      "name" : "Construct Binary Tree from Preorder and Inorder",
+      "slug" : "construct-binary-tree-from-preorder-and-inorder",
+      "shortDescription" : "Construct binary tree from preorder and inorder",
+      "methodCount" : 2,
+      "aliases" : [ "ConstructBinaryTreeFromPreorderAndInorder", "Build Tree", "Construct Tree" ],
+      "keywords" : [ "tree", "binary tree", "construct", "build", "preorder", "inorder", "traversal" ]
+    }, {
+      "name" : "Binary Tree Preorder Traversal",
+      "slug" : "binary-tree-preorder-traversal",
+      "shortDescription" : "Return preorder traversal of binary tree",
+      "methodCount" : 3,
+      "aliases" : [ "BinaryTreePreorderTraversal", "Preorder Traversal", "Preorder" ],
+      "keywords" : [ "tree", "binary tree", "preorder", "traversal", "dfs" ]
+    } ],
+    "name" : "Trees"
+  }, {
+    "problems" : [ {
+      "name" : "Reverse Linked List",
+      "slug" : "reverse-linked-list",
+      "shortDescription" : "Reverse a singly linked list",
+      "methodCount" : 3,
+      "aliases" : [ "ReverseLinkedList", "Reverse List" ],
+      "keywords" : [ "linked list", "reverse", "singly", "head", "nodes" ]
+    }, {
+      "name" : "Merge Two Sorted Lists",
+      "slug" : "merge-two-sorted-lists",
+      "shortDescription" : "Merge two sorted linked lists",
+      "methodCount" : 2,
+      "aliases" : [ "MergeTwoSortedLists", "Merge Lists" ],
+      "keywords" : [ "linked list", "merge", "sorted", "heads", "nodes" ]
+    }, {
+      "name" : "Linked List Cycle",
+      "slug" : "linked-list-cycle",
+      "shortDescription" : "Detect if a linked list has a cycle",
+      "methodCount" : 2,
+      "aliases" : [ "LinkedListCycle", "Cycle Detection" ],
+      "keywords" : [ "linked list", "cycle", "head", "node", "pointer", "detect" ]
+    }, {
+      "name" : "Add Two Numbers",
+      "slug" : "add-two-numbers",
+      "shortDescription" : "Add two numbers represented by linked lists",
+      "methodCount" : 2,
+      "aliases" : [ "AddTwoNumbers", "Sum Lists" ],
+      "keywords" : [ "linked list", "add", "numbers", "sum", "digits", "reverse order" ]
+    }, {
+      "name" : "Remove Nth Node From End of List",
+      "slug" : "remove-nth-node-from-end-of-list",
+      "shortDescription" : "Remove the nth node from end of linked list",
+      "methodCount" : 3,
+      "aliases" : [ "RemoveNthNodeFromEnd", "Remove Nth Node", "Remove Node" ],
+      "keywords" : [ "linked list", "remove", "nth", "node", "end", "head" ]
+    }, {
+      "name" : "Palindrome Linked List",
+      "slug" : "palindrome-linked-list",
+      "shortDescription" : "Check if linked list is palindrome",
+      "methodCount" : 3,
+      "aliases" : [ "PalindromeLinkedList", "Palindrome List", "Linked List Palindrome" ],
+      "keywords" : [ "linked list", "palindrome", "singly", "reverse", "compare" ]
+    }, {
+      "name" : "Linked List Cycle II",
+      "slug" : "linked-list-cycle-ii",
+      "shortDescription" : "Find the node where cycle begins in linked list",
+      "methodCount" : 2,
+      "aliases" : [ "LinkedListCycleII", "Cycle II", "Find Cycle Start" ],
+      "keywords" : [ "linked list", "cycle", "node", "begin", "start", "floyd" ]
+    }, {
+      "name" : "Reorder List",
+      "slug" : "reorder-list",
+      "shortDescription" : "Reorder linked list: L0→Ln→L1→Ln-1...",
+      "methodCount" : 2,
+      "aliases" : [ "ReorderList", "Reorder", "L0 Ln L1" ],
+      "keywords" : [ "linked list", "reorder", "middle", "reverse", "merge" ]
+    }, {
+      "name" : "Merge k Sorted Lists",
+      "slug" : "merge-k-sorted-lists",
+      "shortDescription" : "Merge k sorted linked lists into one",
+      "methodCount" : 3,
+      "aliases" : [ "MergeKSortedLists", "Merge K Lists", "K Sorted Lists" ],
+      "keywords" : [ "linked list", "merge", "k", "sorted", "heap", "priority queue", "divide conquer" ]
+    }, {
+      "name" : "Remove Duplicates from Sorted List",
+      "slug" : "remove-duplicates-from-sorted-list",
+      "shortDescription" : "Remove duplicates from sorted linked list",
+      "methodCount" : 3,
+      "aliases" : [ "RemoveDuplicatesFromSortedList", "Remove Duplicates List", "Unique List" ],
+      "keywords" : [ "linked list", "remove", "duplicates", "sorted", "unique" ]
+    } ],
+    "name" : "Linked List"
+  }, {
+    "problems" : [ {
+      "name" : "Valid Palindrome",
+      "slug" : "valid-palindrome",
+      "shortDescription" : "Check if string is palindrome",
+      "methodCount" : 3,
+      "aliases" : [ "ValidPalindrome", "Palindrome" ],
+      "keywords" : [ "string", "palindrome", "alphanumeric", "forward", "backward" ]
+    }, {
+      "name" : "Two Sum II",
+      "slug" : "two-sum-ii",
+      "shortDescription" : "Find two numbers that add to target in sorted array",
+      "methodCount" : 3,
+      "aliases" : [ "TwoSumII", "Two Sum Two", "Sorted Two Sum" ],
+      "keywords" : [ "array", "sorted", "target", "two", "sum", "indices", "increasing" ]
+    }, {
+      "name" : "Container With Most Water",
+      "slug" : "container-with-most-water",
+      "shortDescription" : "Find container that holds most water",
+      "methodCount" : 3,
+      "aliases" : [ "ContainerWithMostWater", "Most Water", "Container" ],
+      "keywords" : [ "array", "height", "container", "water", "area", "two pointers" ]
+    }, {
+      "name" : "3Sum",
+      "slug" : "3sum",
+      "shortDescription" : "Find all triplets that sum to zero",
+      "methodCount" : 3,
+      "aliases" : [ "ThreeSum", "3 Sum", "Three Sum" ],
+      "keywords" : [ "array", "three", "sum", "triplets", "zero", "duplicate" ]
+    }, {
+      "name" : "Trapping Rain Water",
+      "slug" : "trapping-rain-water",
+      "shortDescription" : "Calculate trapped rainwater",
+      "methodCount" : 3,
+      "aliases" : [ "TrappingRainWater", "Rain Water", "Trapping Water" ],
+      "keywords" : [ "array", "height", "water", "trapping", "rain", "elevation" ]
+    }, {
+      "name" : "Remove Duplicates from Sorted Array",
+      "slug" : "remove-duplicates-from-sorted-array",
+      "shortDescription" : "Remove duplicates from sorted array in-place",
+      "methodCount" : 3,
+      "aliases" : [ "RemoveDuplicatesFromSortedArray", "Remove Duplicates", "Unique Elements" ],
+      "keywords" : [ "array", "duplicates", "sorted", "unique", "in-place", "two pointers" ]
+    }, {
+      "name" : "Move Zeroes",
+      "slug" : "move-zeroes",
+      "shortDescription" : "Move all zeros to end maintaining order",
+      "methodCount" : 3,
+      "aliases" : [ "MoveZeroes", "Move Zero", "Zeros to End" ],
+      "keywords" : [ "array", "zeroes", "zeros", "move", "in-place", "two pointers" ]
+    }, {
+      "name" : "Sort Colors",
+      "slug" : "sort-colors",
+      "shortDescription" : "Sort array of 0s, 1s, and 2s (Dutch Flag)",
+      "methodCount" : 3,
+      "aliases" : [ "SortColors", "Dutch National Flag", "Three Colors" ],
+      "keywords" : [ "array", "sort", "colors", "three", "dutch flag", "0 1 2", "in-place" ]
+    }, {
+      "name" : "4Sum",
+      "slug" : "4sum",
+      "shortDescription" : "Find all unique quadruplets that sum to target",
+      "methodCount" : 3,
+      "aliases" : [ "FourSum", "4Sum", "Four Sum" ],
+      "keywords" : [ "array", "four", "sum", "quadruplets", "target", "two pointers", "unique" ]
+    } ],
+    "name" : "Two Pointers"
+  }, {
+    "problems" : [ {
+      "name" : "Best Time to Buy and Sell Stock",
+      "slug" : "best-time-to-buy-and-sell-stock",
+      "shortDescription" : "Find maximum profit from buying and selling stock",
+      "methodCount" : 3,
+      "aliases" : [ "BestTimeToBuySellStock", "Buy Sell Stock", "Stock Price" ],
+      "keywords" : [ "array", "prices", "stock", "profit", "buy", "sell", "maximum" ]
+    }, {
+      "name" : "Longest Substring Without Repeating",
+      "slug" : "longest-substring-without-repeating",
+      "shortDescription" : "Find longest substring without repeating characters",
+      "methodCount" : 4,
+      "aliases" : [ "LongestSubstringWithoutRepeating", "Longest Substring", "No Repeating" ],
+      "keywords" : [ "string", "substring", "longest", "repeating", "characters", "unique" ]
+    }, {
+      "name" : "Longest Repeating Character Replacement",
+      "slug" : "longest-repeating-character-replacement",
+      "shortDescription" : "Find longest substring after replacing k characters",
+      "methodCount" : 3,
+      "aliases" : [ "LongestRepeatingCharacterReplacement", "Character Replacement", "Repeating Replacement" ],
+      "keywords" : [ "string", "substring", "replace", "character", "longest", "k" ]
+    }, {
+      "name" : "Minimum Window Substring",
+      "slug" : "minimum-window-substring",
+      "shortDescription" : "Find minimum window substring containing all characters of t",
+      "methodCount" : 2,
+      "aliases" : [ "MinimumWindowSubstring", "Min Window", "Window Substring" ],
+      "keywords" : [ "string", "substring", "window", "minimum", "sliding window", "contains" ]
+    }, {
+      "name" : "Minimum Size Subarray Sum",
+      "slug" : "minimum-size-subarray-sum",
+      "shortDescription" : "Find minimum length subarray with sum >= target",
+      "methodCount" : 3,
+      "aliases" : [ "MinimumSizeSubarraySum", "Min Size Subarray", "Subarray Sum" ],
+      "keywords" : [ "array", "subarray", "sum", "target", "minimum", "length", "sliding window" ]
+    }, {
+      "name" : "Permutation in String",
+      "slug" : "permutation-in-string",
+      "shortDescription" : "Check if s2 contains permutation of s1",
+      "methodCount" : 3,
+      "aliases" : [ "PermutationInString", "Permutation String", "s2 Contains s1" ],
+      "keywords" : [ "string", "permutation", "substring", "contains", "sliding window", "anagram" ]
+    }, {
+      "name" : "Substring with Concatenation of All Words",
+      "slug" : "substring-with-concatenation-of-all-words",
+      "shortDescription" : "Find indices of substrings containing all words",
+      "methodCount" : 2,
+      "aliases" : [ "SubstringWithConcatenationOfAllWords", "Concatenation", "All Words" ],
+      "keywords" : [ "string", "substring", "concatenation", "words", "indices", "sliding window", "hashmap" ]
+    } ],
+    "name" : "Sliding Window"
+  }, {
+    "problems" : [ {
+      "name" : "Valid Parentheses",
+      "slug" : "valid-parentheses",
+      "shortDescription" : "Check if parentheses/brackets are valid",
+      "methodCount" : 3,
+      "aliases" : [ "ValidParentheses", "Parentheses", "Valid Brackets" ],
+      "keywords" : [ "string", "parentheses", "brackets", "valid", "stack", "matching" ]
+    }, {
+      "name" : "Daily Temperatures",
+      "slug" : "daily-temperatures",
+      "shortDescription" : "Find days to wait for warmer temperature",
+      "methodCount" : 3,
+      "aliases" : [ "DailyTemperatures", "Temperatures", "Next Warmer" ],
+      "keywords" : [ "array", "temperatures", "warmer", "days", "wait", "next" ]
+    }, {
+      "name" : "Largest Rectangle in Histogram",
+      "slug" : "largest-rectangle-in-histogram",
+      "shortDescription" : "Find largest rectangle area in histogram",
+      "methodCount" : 3,
+      "aliases" : [ "LargestRectangleInHistogram", "Largest Rectangle", "Histogram" ],
+      "keywords" : [ "array", "heights", "histogram", "rectangle", "largest", "area", "monotonic stack" ]
+    }, {
+      "name" : "Evaluate Reverse Polish Notation",
+      "slug" : "evaluate-reverse-polish-notation",
+      "shortDescription" : "Evaluate RPN expression",
+      "methodCount" : 3,
+      "aliases" : [ "EvaluateReversePolishNotation", "RPN", "Polish Notation" ],
+      "keywords" : [ "array", "tokens", "rpn", "reverse polish notation", "expression", "stack", "evaluate" ]
+    }, {
+      "name" : "Generate Parentheses",
+      "slug" : "generate-parentheses",
+      "shortDescription" : "Generate all valid parentheses combinations",
+      "methodCount" : 3,
+      "aliases" : [ "GenerateParentheses", "Generate Brackets", "Valid Parentheses Combinations" ],
+      "keywords" : [ "parentheses", "brackets", "generate", "combinations", "well-formed", "backtracking", "recursive" ]
+    }, {
+      "name" : "Car Fleet",
+      "slug" : "car-fleet",
+      "shortDescription" : "Count number of car fleets reaching destination",
+      "methodCount" : 3,
+      "aliases" : [ "CarFleet", "Fleet", "Cars" ],
+      "keywords" : [ "cars", "fleet", "position", "speed", "target", "stack", "monotonic" ]
+    } ],
+    "name" : "Stack"
+  }, {
+    "problems" : [ {
+      "name" : "Search in Rotated Sorted Array",
+      "slug" : "search-in-rotated-sorted-array",
+      "shortDescription" : "Search target in rotated sorted array",
+      "methodCount" : 3,
+      "aliases" : [ "SearchInRotatedSortedArray", "Rotated Array", "Search Rotated" ],
+      "keywords" : [ "array", "rotated", "sorted", "search", "target", "pivot", "binary search" ]
+    }, {
+      "name" : "Find Minimum in Rotated Sorted Array",
+      "slug" : "find-minimum-in-rotated-sorted-array",
+      "shortDescription" : "Find minimum element in rotated sorted array",
+      "methodCount" : 3,
+      "aliases" : [ "FindMinimumInRotatedSortedArray", "Min Rotated Array", "Minimum Rotated" ],
+      "keywords" : [ "array", "rotated", "sorted", "minimum", "element", "binary search" ]
+    }, {
+      "name" : "Find Peak Element",
+      "slug" : "find-peak-element",
+      "shortDescription" : "Find peak element in array",
+      "methodCount" : 3,
+      "aliases" : [ "FindPeakElement", "Peak Element", "Peak" ],
+      "keywords" : [ "array", "peak", "element", "neighbors", "binary search", "log n" ]
+    }, {
+      "name" : "Search a 2D Matrix",
+      "slug" : "search-a-2d-matrix",
+      "shortDescription" : "Search target in sorted 2D matrix",
+      "methodCount" : 3,
+      "aliases" : [ "SearchA2DMatrix", "2D Matrix Search", "Matrix Search" ],
+      "keywords" : [ "matrix", "2d", "sorted", "target", "binary search", "rows" ]
+    }, {
+      "name" : "Binary Search",
+      "slug" : "binary-search",
+      "shortDescription" : "Search target in sorted array using binary search",
+      "methodCount" : 3,
+      "aliases" : [ "BinarySearch", "Search", "Binary" ],
+      "keywords" : [ "array", "sorted", "target", "binary search", "log n", "search" ]
+    }, {
+      "name" : "First Bad Version",
+      "slug" : "first-bad-version",
+      "shortDescription" : "Find first bad version using binary search",
+      "methodCount" : 3,
+      "aliases" : [ "FirstBadVersion", "Bad Version", "Version" ],
+      "keywords" : [ "version", "bad", "binary search", "log n", "api", "search" ]
+    }, {
+      "name" : "Sqrt(x)",
+      "slug" : "sqrt-x",
+      "shortDescription" : "Find square root of x (rounded down)",
+      "methodCount" : 4,
+      "aliases" : [ "Sqrt", "Square Root", "Root" ],
+      "keywords" : [ "math", "sqrt", "square root", "binary search", "newton" ]
+    } ],
+    "name" : "Search"
+  }, {
+    "problems" : [ {
+      "name" : "Climbing Stairs",
+      "slug" : "climbing-stairs",
+      "shortDescription" : "Find distinct ways to climb n steps (1 or 2 at a time)",
+      "methodCount" : 4,
+      "aliases" : [ "ClimbingStairs", "Stairs", "Fibonacci" ],
+      "keywords" : [ "stairs", "steps", "distinct", "ways", "climbing", "fibonacci", "dp" ]
+    }, {
+      "name" : "House Robber",
+      "slug" : "house-robber",
+      "shortDescription" : "Find maximum money robbing houses (no two adjacent)",
+      "methodCount" : 4,
+      "aliases" : [ "HouseRobber", "Robber", "Max Sum No Adjacent" ],
+      "keywords" : [ "houses", "robber", "money", "maximum", "adjacent", "dp", "constraint" ]
+    }, {
+      "name" : "Coin Change",
+      "slug" : "coin-change",
+      "shortDescription" : "Find minimum coins to make amount",
+      "methodCount" : 3,
+      "aliases" : [ "CoinChange", "Min Coins", "Change" ],
+      "keywords" : [ "coins", "amount", "minimum", "fewest", "change", "dp", "unbounded" ]
+    }, {
+      "name" : "Unique Paths",
+      "slug" : "unique-paths",
+      "shortDescription" : "Count unique paths from top-left to bottom-right",
+      "methodCount" : 3,
+      "aliases" : [ "UniquePaths", "Robot Paths", "Grid Paths" ],
+      "keywords" : [ "grid", "robot", "paths", "unique", "m", "n", "dp", "2d" ]
+    }, {
+      "name" : "Word Break",
+      "slug" : "word-break",
+      "shortDescription" : "Check if string can be segmented into dictionary words",
+      "methodCount" : 3,
+      "aliases" : [ "WordBreak", "Break", "Segment" ],
+      "keywords" : [ "string", "word", "break", "segment", "dictionary", "dp", "recursion" ]
+    }, {
+      "name" : "Longest Increasing Subsequence",
+      "slug" : "longest-increasing-subsequence",
+      "shortDescription" : "Find length of longest increasing subsequence",
+      "methodCount" : 3,
+      "aliases" : [ "LongestIncreasingSubsequence", "LIS", "Increasing Subsequence" ],
+      "keywords" : [ "array", "subsequence", "increasing", "longest", "dp", "binary search" ]
+    } ],
+    "name" : "Dynamic Programming"
+  }, {
+    "problems" : [ {
+      "name" : "Number of Islands",
+      "slug" : "number-of-islands",
+      "shortDescription" : "Count number of islands in 2D grid",
+      "methodCount" : 3,
+      "aliases" : [ "NumberOfIslands", "Islands", "Grid Islands" ],
+      "keywords" : [ "grid", "2d", "islands", "land", "water", "dfs", "bfs", "graph" ]
+    } ],
+    "name" : "Graphs"
+  }, {
+    "problems" : [ {
+      "name" : "Kth Largest Element in Array",
+      "slug" : "kth-largest-element-in-array",
+      "shortDescription" : "Find kth largest element in array",
+      "methodCount" : 4,
+      "aliases" : [ "KthLargestElementInArray", "Kth Largest", "K Largest" ],
+      "keywords" : [ "array", "kth", "largest", "element", "heap", "priority queue", "quickselect" ]
+    } ],
+    "name" : "Heap/Priority Queue"
+  }, {
+    "problems" : [ {
+      "name" : "Subsets",
+      "slug" : "subsets",
+      "shortDescription" : "Find all subsets of array",
+      "methodCount" : 3,
+      "aliases" : [ "Subsets", "Power Set", "All Subsets" ],
+      "keywords" : [ "array", "subsets", "power set", "combinations", "backtracking", "recursive" ]
+    } ],
+    "name" : "Backtracking"
+  }, {
+    "problems" : [ {
+      "name" : "Implement Trie",
+      "slug" : "implement-trie",
+      "shortDescription" : "Implement Trie (Prefix Tree) data structure",
+      "methodCount" : 3,
+      "aliases" : [ "ImplementTrie", "Trie", "Prefix Tree" ],
+      "keywords" : [ "trie", "prefix tree", "data structure", "insert", "search", "startsWith", "autocomplete" ]
+    } ],
+    "name" : "Trie"
+  }, {
+    "problems" : [ {
+      "name" : "Merge Intervals",
+      "slug" : "merge-intervals",
+      "shortDescription" : "Merge overlapping intervals",
+      "methodCount" : 3,
+      "aliases" : [ "MergeIntervals", "Merge", "Overlapping Intervals" ],
+      "keywords" : [ "intervals", "merge", "overlapping", "array", "sort", "ranges" ]
+    } ],
+    "name" : "Intervals"
+  }, {
+    "problems" : [ {
+      "name" : "Pow(x, n)",
+      "slug" : "pow-x-n",
+      "shortDescription" : "Calculate x raised to power n",
+      "methodCount" : 3,
+      "aliases" : [ "Pow", "Power", "Exponentiation" ],
+      "keywords" : [ "math", "power", "exponent", "x^n", "fast power", "binary exponentiation" ]
+    } ],
+    "name" : "Math/Geometry"
+  }, {
+    "problems" : [ {
+      "name" : "Jump Game",
+      "slug" : "jump-game",
+      "shortDescription" : "Check if can reach last index by jumping",
+      "methodCount" : 3,
+      "aliases" : [ "JumpGame", "Jump", "Can Jump" ],
+      "keywords" : [ "array", "jump", "game", "reach", "last index", "greedy", "dp" ]
+    }, {
+      "name" : "Jumping on the Clouds",
+      "slug" : "jumping-on-the-clouds",
+      "shortDescription" : "Minimum jumps to reach the last safe cloud",
+      "methodCount" : 2,
+      "aliases" : [ "JumpingOnTheClouds", "Cloud Jump" ],
+      "keywords" : [ "array", "clouds", "jump", "minimum", "greedy", "dp", "thunderhead" ]
+    } ],
+    "name" : "Greedy"
+  }, {
+    "problems" : [ {
+      "name" : "Number of 1 Bits",
+      "slug" : "number-of-1-bits",
+      "shortDescription" : "Count number of 1 bits in integer",
+      "methodCount" : 5,
+      "aliases" : [ "NumberOf1Bits", "Hamming Weight", "Set Bits" ],
+      "keywords" : [ "bit", "bits", "hamming weight", "count", "ones", "set bits", "bit manipulation" ]
+    } ],
+    "name" : "Bit Manipulation"
+  } ]
+}

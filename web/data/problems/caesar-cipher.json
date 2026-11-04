@@ -1,0 +1,37 @@
+{
+  "name" : "Caesar Cipher",
+  "slug" : "caesar-cipher",
+  "category" : "Strings",
+  "description" : "Encrypt a string by shifting each letter by k positions in the alphabet, wrapping from z back to a. Uppercase and lowercase letters keep their case, and all other characters remain unchanged.",
+  "shortDescription" : "Shift each letter by k positions in the alphabet",
+  "className" : "strings.CaesarCipher",
+  "methods" : [ {
+    "name" : "computeWithShift",
+    "label" : "Shift",
+    "code" : "public static String computeWithShift(String s, int k) {\n    int shift = k % 26;\n    StringBuilder sb = new StringBuilder(s.length());\n    for (char c : s.toCharArray()) {\n        if (Character.isUpperCase(c)) {\n            sb.append((char) ('A' + (c - 'A' + shift) % 26));\n        } else if (Character.isLowerCase(c)) {\n            sb.append((char) ('a' + (c - 'a' + shift) % 26));\n        } else {\n            sb.append(c);\n        }\n    }\n    return sb.toString();\n}"
+  }, {
+    "name" : "computeWithLookup",
+    "label" : "Lookup",
+    "code" : "public static String computeWithLookup(String s, int k) {\n    String lower = \"abcdefghijklmnopqrstuvwxyz\";\n    int shift = k % 26;\n    String rotated = lower.substring(shift) + lower.substring(0, shift);\n    StringBuilder sb = new StringBuilder(s.length());\n    for (char c : s.toCharArray()) {\n        int index = lower.indexOf(Character.toLowerCase(c));\n        if (index < 0 || !Character.isLetter(c)) {\n            sb.append(c);\n        } else {\n            char mapped = rotated.charAt(index);\n            sb.append(Character.isUpperCase(c) ? Character.toUpperCase(mapped) : mapped);\n        }\n    }\n    return sb.toString();\n}"
+  } ],
+  "paramNames" : [ "s", "k" ],
+  "paramTypes" : [ "String", "int" ],
+  "exampleInputs" : [ "middle-Outz", 2 ],
+  "related" : [ {
+    "name" : "Valid Anagram",
+    "shortDescription" : "Check if two strings are anagrams",
+    "slug" : "valid-anagram"
+  }, {
+    "name" : "Group Anagrams",
+    "shortDescription" : "Group strings that are anagrams of each other",
+    "slug" : "group-anagrams"
+  }, {
+    "name" : "Ransom Note",
+    "shortDescription" : "Check if ransom note can be constructed from magazine",
+    "slug" : "ransom-note"
+  }, {
+    "name" : "Isomorphic Strings",
+    "shortDescription" : "Check if two strings are isomorphic",
+    "slug" : "isomorphic-strings"
+  } ]
+}

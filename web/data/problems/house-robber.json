@@ -1,0 +1,45 @@
+{
+  "name" : "House Robber",
+  "slug" : "house-robber",
+  "category" : "Dynamic Programming",
+  "description" : "You are a professional robber planning to rob houses along a street. Each house has a certain amount of money stashed, the only constraint stopping you from robbing each of them is that adjacent houses have security systems connected and it will automatically contact the police if two adjacent houses were broken into on the same night. Given an integer array nums representing the amount of money of each house, return the maximum amount of money you can rob tonight without alerting the police.",
+  "shortDescription" : "Find maximum money robbing houses (no two adjacent)",
+  "className" : "dp.HouseRobber",
+  "methods" : [ {
+    "name" : "computeWithDP",
+    "label" : "DP",
+    "code" : "public static int computeWithDP(int[] nums) {\n    if (nums.length == 0) return 0;\n    if (nums.length == 1) return nums[0];\n    \n    int[] dp = new int[nums.length];\n    dp[0] = nums[0];\n    dp[1] = Math.max(nums[0], nums[1]);\n    \n    for (int i = 2; i < nums.length; i++) {\n        dp[i] = Math.max(dp[i - 1], dp[i - 2] + nums[i]);\n    }\n    \n    return dp[nums.length - 1];\n}"
+  }, {
+    "name" : "computeWithOptimizedSpace",
+    "label" : "Optimized space",
+    "code" : "public static int computeWithOptimizedSpace(int[] nums) {\n    if (nums.length == 0) return 0;\n    if (nums.length == 1) return nums[0];\n    \n    int prev2 = nums[0];\n    int prev1 = Math.max(nums[0], nums[1]);\n    \n    for (int i = 2; i < nums.length; i++) {\n        int current = Math.max(prev1, prev2 + nums[i]);\n        prev2 = prev1;\n        prev1 = current;\n    }\n    \n    return prev1;\n}"
+  }, {
+    "name" : "computeWithRecursion",
+    "label" : "Recursion",
+    "code" : "public static int computeWithRecursion(int[] nums) {\n    Map<Integer, Integer> memo = new HashMap<>();\n    return robRecursive(nums, 0, memo);\n}"
+  }, {
+    "name" : "computeWithPureRecursion",
+    "label" : "Pure recursion",
+    "code" : "public static int computeWithPureRecursion(int[] nums) {\n    return robPureRecursive(nums, 0);\n}"
+  } ],
+  "paramNames" : [ "nums" ],
+  "paramTypes" : [ "int[]" ],
+  "exampleInputs" : [ [ 2, 7, 9, 3, 1 ] ],
+  "related" : [ {
+    "name" : "Climbing Stairs",
+    "shortDescription" : "Find distinct ways to climb n steps (1 or 2 at a time)",
+    "slug" : "climbing-stairs"
+  }, {
+    "name" : "Coin Change",
+    "shortDescription" : "Find minimum coins to make amount",
+    "slug" : "coin-change"
+  }, {
+    "name" : "Unique Paths",
+    "shortDescription" : "Count unique paths from top-left to bottom-right",
+    "slug" : "unique-paths"
+  }, {
+    "name" : "Word Break",
+    "shortDescription" : "Check if string can be segmented into dictionary words",
+    "slug" : "word-break"
+  } ]
+}

@@ -1,0 +1,29 @@
+{
+  "name" : "Jump Game",
+  "slug" : "jump-game",
+  "category" : "Greedy",
+  "description" : "You are given an integer array nums. You are initially positioned at the array's first index, and each element in the array represents your maximum jump length at that position.",
+  "shortDescription" : "Check if can reach last index by jumping",
+  "className" : "greedy.JumpGame",
+  "methods" : [ {
+    "name" : "computeWithGreedy",
+    "label" : "Greedy",
+    "code" : "public static boolean computeWithGreedy(int[] nums) {\n    int maxReach = 0;\n\n    for (int i = 0; i < nums.length; i++) {\n        if (i > maxReach) {\n            return false;\n        }\n        maxReach = Math.max(maxReach, i + nums[i]);\n        if (maxReach >= nums.length - 1) {\n            return true;\n        }\n    }\n\n    return true;\n}"
+  }, {
+    "name" : "computeWithDP",
+    "label" : "DP",
+    "code" : "public static boolean computeWithDP(int[] nums) {\n    int n = nums.length;\n    boolean[] dp = new boolean[n];\n    dp[n - 1] = true;\n\n    for (int i = n - 2; i >= 0; i--) {\n        int furthestJump = Math.min(i + nums[i], n - 1);\n        for (int j = i + 1; j <= furthestJump; j++) {\n            if (dp[j]) {\n                dp[i] = true;\n                break;\n            }\n        }\n    }\n\n    return dp[0];\n}"
+  }, {
+    "name" : "computeRecursive",
+    "label" : "Recursive",
+    "code" : "public static boolean computeRecursive(int[] nums) {\n    return canJumpFromPosition(0, nums);\n}"
+  } ],
+  "paramNames" : [ "nums" ],
+  "paramTypes" : [ "int[]" ],
+  "exampleInputs" : [ [ 2, 3, 1, 1, 4 ] ],
+  "related" : [ {
+    "name" : "Jumping on the Clouds",
+    "shortDescription" : "Minimum jumps to reach the last safe cloud",
+    "slug" : "jumping-on-the-clouds"
+  } ]
+}

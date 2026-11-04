@@ -1,0 +1,41 @@
+{
+  "name" : "Same Tree",
+  "slug" : "same-tree",
+  "category" : "Trees",
+  "description" : "Given the roots of two binary trees p and q, return true if they are the same tree, and false otherwise. Two binary trees are considered the same if they are structurally identical, and the nodes have the same value.",
+  "shortDescription" : "Check if two binary trees are identical",
+  "className" : "trees.SameTree",
+  "methods" : [ {
+    "name" : "computeRecursive",
+    "label" : "Recursive",
+    "code" : "public static boolean computeRecursive(TreeNode p, TreeNode q) {\n    if (p == null && q == null) {\n        return true;\n    }\n    if (p == null || q == null) {\n        return false;\n    }\n    if (p.val != q.val) {\n        return false;\n    }\n    return computeRecursive(p.left, q.left) && computeRecursive(p.right, q.right);\n}"
+  }, {
+    "name" : "computeWithStack",
+    "label" : "Stack",
+    "code" : "public static boolean computeWithStack(TreeNode p, TreeNode q) {\n    java.util.Stack<TreeNode[]> stack = new java.util.Stack<>();\n    stack.push(new TreeNode[] { p, q });\n\n    while (!stack.isEmpty()) {\n        TreeNode[] nodes = stack.pop();\n        TreeNode node1 = nodes[0];\n        TreeNode node2 = nodes[1];\n\n        if (node1 == null && node2 == null) {\n            continue;\n        }\n        if (node1 == null || node2 == null || node1.val != node2.val) {\n            return false;\n        }\n\n        stack.push(new TreeNode[] { node1.left, node2.left });\n        stack.push(new TreeNode[] { node1.right, node2.right });\n    }\n    return true;\n}"
+  }, {
+    "name" : "computeWithBFS",
+    "label" : "BFS",
+    "code" : "public static boolean computeWithBFS(TreeNode p, TreeNode q) {\n    java.util.Queue<TreeNode> queue1 = new java.util.LinkedList<>();\n    java.util.Queue<TreeNode> queue2 = new java.util.LinkedList<>();\n    queue1.offer(p);\n    queue2.offer(q);\n\n    while (!queue1.isEmpty() && !queue2.isEmpty()) {\n        TreeNode node1 = queue1.poll();\n        TreeNode node2 = queue2.poll();\n\n        if (node1 == null && node2 == null) {\n            continue;\n        }\n        if (node1 == null || node2 == null || node1.val != node2.val) {\n            return false;\n        }\n\n        queue1.offer(node1.left);\n        queue1.offer(node1.right);\n        queue2.offer(node2.left);\n        queue2.offer(node2.right);\n    }\n\n    return queue1.isEmpty() && queue2.isEmpty();\n}"
+  } ],
+  "paramNames" : [ "p", "q" ],
+  "paramTypes" : [ "TreeNode", "TreeNode" ],
+  "exampleInputs" : null,
+  "related" : [ {
+    "name" : "Maximum Depth of Binary Tree",
+    "shortDescription" : "Find the maximum depth of a binary tree",
+    "slug" : "maximum-depth-of-binary-tree"
+  }, {
+    "name" : "Invert Binary Tree",
+    "shortDescription" : "Invert a binary tree",
+    "slug" : "invert-binary-tree"
+  }, {
+    "name" : "Symmetric Tree",
+    "shortDescription" : "Check if a binary tree is symmetric",
+    "slug" : "symmetric-tree"
+  }, {
+    "name" : "Binary Tree Level Order Traversal",
+    "shortDescription" : "Return level order traversal of binary tree",
+    "slug" : "binary-tree-level-order-traversal"
+  } ]
+}

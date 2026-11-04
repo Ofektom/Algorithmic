@@ -1,0 +1,41 @@
+{
+  "name" : "Permutation in String",
+  "slug" : "permutation-in-string",
+  "category" : "Sliding Window",
+  "description" : "Given two strings s1 and s2, return true if s2 contains a permutation of s1, or false otherwise. In other words, return true if one of s1's permutations is the substring of s2.",
+  "shortDescription" : "Check if s2 contains permutation of s1",
+  "className" : "window.PermutationInString",
+  "methods" : [ {
+    "name" : "computeWithArray",
+    "label" : "Array",
+    "code" : "public static boolean computeWithArray(String s1, String s2) {\n    if (s1.length() > s2.length()) return false;\n\n    int[] s1Count = new int[26];\n    int[] s2Count = new int[26];\n\n    for (int i = 0; i < s1.length(); i++) {\n        s1Count[s1.charAt(i) - 'a']++;\n        s2Count[s2.charAt(i) - 'a']++;\n    }\n\n    if (Arrays.equals(s1Count, s2Count)) return true;\n\n    for (int i = s1.length(); i < s2.length(); i++) {\n        s2Count[s2.charAt(i) - 'a']++;\n        s2Count[s2.charAt(i - s1.length()) - 'a']--;\n\n        if (Arrays.equals(s1Count, s2Count)) return true;\n    }\n\n    return false;\n}"
+  }, {
+    "name" : "computeWithHashMap",
+    "label" : "Hash map",
+    "code" : "public static boolean computeWithHashMap(String s1, String s2) {\n    if (s1.length() > s2.length()) return false;\n\n    java.util.Map<Character, Integer> s1Map = new java.util.HashMap<>();\n    for (char c : s1.toCharArray()) {\n        s1Map.put(c, s1Map.getOrDefault(c, 0) + 1);\n    }\n\n    java.util.Map<Character, Integer> windowMap = new java.util.HashMap<>();\n    int left = 0;\n\n    for (int right = 0; right < s2.length(); right++) {\n        char c = s2.charAt(right);\n        windowMap.put(c, windowMap.getOrDefault(c, 0) + 1);\n\n        if (right - left + 1 == s1.length()) {\n            if (windowMap.equals(s1Map)) return true;\n\n            char leftChar = s2.charAt(left);\n            windowMap.put(leftChar, windowMap.get(leftChar) - 1);\n            if (windowMap.get(leftChar) == 0) {\n                windowMap.remove(leftChar);\n            }\n            left++;\n        }\n    }\n\n    return false;\n}"
+  }, {
+    "name" : "computeWithBruteForce",
+    "label" : "Brute force",
+    "code" : "public static boolean computeWithBruteForce(String s1, String s2) {\n    if (s1.length() > s2.length()) return false;\n\n    for (int i = 0; i <= s2.length() - s1.length(); i++) {\n        String substring = s2.substring(i, i + s1.length());\n        if (isPermutation(s1, substring)) {\n            return true;\n        }\n    }\n    return false;\n}"
+  } ],
+  "paramNames" : [ "s1", "s2" ],
+  "paramTypes" : [ "String", "String" ],
+  "exampleInputs" : [ "ab", "eidbaooo" ],
+  "related" : [ {
+    "name" : "Best Time to Buy and Sell Stock",
+    "shortDescription" : "Find maximum profit from buying and selling stock",
+    "slug" : "best-time-to-buy-and-sell-stock"
+  }, {
+    "name" : "Longest Substring Without Repeating",
+    "shortDescription" : "Find longest substring without repeating characters",
+    "slug" : "longest-substring-without-repeating"
+  }, {
+    "name" : "Longest Repeating Character Replacement",
+    "shortDescription" : "Find longest substring after replacing k characters",
+    "slug" : "longest-repeating-character-replacement"
+  }, {
+    "name" : "Minimum Window Substring",
+    "shortDescription" : "Find minimum window substring containing all characters of t",
+    "slug" : "minimum-window-substring"
+  } ]
+}

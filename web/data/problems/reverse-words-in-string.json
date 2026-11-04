@@ -1,0 +1,41 @@
+{
+  "name" : "Reverse Words in String",
+  "slug" : "reverse-words-in-string",
+  "category" : "Strings",
+  "description" : "Given an input string s, reverse the order of the words. A word is defined as a sequence of non-space characters. The words in s will be separated by at least one space. Return a string of the words in reverse order concatenated by a single space.",
+  "shortDescription" : "Reverse the order of words in a string",
+  "className" : "strings.ReverseWordsInString",
+  "methods" : [ {
+    "name" : "computeWithBuiltIn",
+    "label" : "Built in",
+    "code" : "public static String computeWithBuiltIn(String s) {\n    String[] words = s.trim().split(\"\\\\s+\");\n    StringBuilder sb = new StringBuilder();\n\n    for (int i = words.length - 1; i >= 0; i--) {\n        sb.append(words[i]);\n        if (i > 0) {\n            sb.append(\" \");\n        }\n    }\n    return sb.toString();\n}"
+  }, {
+    "name" : "computeWithStringBuilder",
+    "label" : "String builder",
+    "code" : "public static String computeWithStringBuilder(String s) {\n    StringBuilder sb = new StringBuilder();\n    List<String> words = new ArrayList<>();\n    StringBuilder currentWord = new StringBuilder();\n\n    for (int i = 0; i < s.length(); i++) {\n        char c = s.charAt(i);\n        if (c == ' ') {\n            if (currentWord.length() > 0) {\n                words.add(currentWord.toString());\n                currentWord.setLength(0);\n            }\n        } else {\n            currentWord.append(c);\n        }\n    }\n    if (currentWord.length() > 0) {\n        words.add(currentWord.toString());\n    }\n\n    for (int i = words.size() - 1; i >= 0; i--) {\n        sb.append(words.get(i));\n        if (i > 0) {\n            sb.append(\" \");\n        }\n    }\n    return sb.toString();\n}"
+  }, {
+    "name" : "computeWithTwoPass",
+    "label" : "Two pass",
+    "code" : "public static String computeWithTwoPass(String s) {\n    s = s.trim();\n    StringBuilder sb = new StringBuilder();\n    int end = s.length();\n\n    for (int i = s.length() - 1; i >= 0; i--) {\n        if (s.charAt(i) == ' ') {\n            if (i < end - 1) {\n                if (sb.length() > 0) {\n                    sb.append(\" \");\n                }\n                sb.append(s.substring(i + 1, end));\n            }\n            end = i;\n        }\n    }\n\n    if (end > 0) {\n        if (sb.length() > 0) {\n            sb.append(\" \");\n        }\n        sb.append(s.substring(0, end));\n    }\n    return sb.toString();\n}"
+  } ],
+  "paramNames" : [ "s" ],
+  "paramTypes" : [ "String" ],
+  "exampleInputs" : [ "the sky is blue" ],
+  "related" : [ {
+    "name" : "Valid Anagram",
+    "shortDescription" : "Check if two strings are anagrams",
+    "slug" : "valid-anagram"
+  }, {
+    "name" : "Group Anagrams",
+    "shortDescription" : "Group strings that are anagrams of each other",
+    "slug" : "group-anagrams"
+  }, {
+    "name" : "Ransom Note",
+    "shortDescription" : "Check if ransom note can be constructed from magazine",
+    "slug" : "ransom-note"
+  }, {
+    "name" : "Isomorphic Strings",
+    "shortDescription" : "Check if two strings are isomorphic",
+    "slug" : "isomorphic-strings"
+  } ]
+}

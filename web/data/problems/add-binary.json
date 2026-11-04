@@ -1,0 +1,45 @@
+{
+  "name" : "Add Binary",
+  "slug" : "add-binary",
+  "category" : "Strings",
+  "description" : "Given two binary strings a and b, return their sum as a binary string.",
+  "shortDescription" : "Add two binary strings",
+  "className" : "strings.AddBinary",
+  "methods" : [ {
+    "name" : "computeWithStringBuilder",
+    "label" : "String builder",
+    "code" : "public static String computeWithStringBuilder(String a, String b) {\n    StringBuilder result = new StringBuilder();\n    int i = a.length() - 1;\n    int j = b.length() - 1;\n    int carry = 0;\n\n    while (i >= 0 || j >= 0 || carry > 0) {\n        int sum = carry;\n        if (i >= 0) sum += a.charAt(i--) - '0';\n        if (j >= 0) sum += b.charAt(j--) - '0';\n\n        result.append(sum % 2);\n        carry = sum / 2;\n    }\n\n    return result.reverse().toString();\n}"
+  }, {
+    "name" : "computeWithBigInteger",
+    "label" : "Big integer",
+    "code" : "public static String computeWithBigInteger(String a, String b) {\n    java.math.BigInteger num1 = new java.math.BigInteger(a, 2);\n    java.math.BigInteger num2 = new java.math.BigInteger(b, 2);\n    return num1.add(num2).toString(2);\n}"
+  }, {
+    "name" : "computeWithArray",
+    "label" : "Array",
+    "code" : "public static String computeWithArray(String a, String b) {\n    int maxLen = Math.max(a.length(), b.length());\n    char[] result = new char[maxLen + 1];\n    int carry = 0;\n    int index = maxLen;\n\n    int i = a.length() - 1;\n    int j = b.length() - 1;\n\n    while (i >= 0 || j >= 0 || carry > 0) {\n        int sum = carry;\n        if (i >= 0) sum += a.charAt(i--) - '0';\n        if (j >= 0) sum += b.charAt(j--) - '0';\n\n        result[index--] = (char) ('0' + (sum % 2));\n        carry = sum / 2;\n    }\n\n    int start = (index == 0) ? 0 : 1;\n    return new String(result, start, maxLen + 1 - start);\n}"
+  }, {
+    "name" : "computeRecursive",
+    "label" : "Recursive",
+    "code" : "public static String computeRecursive(String a, String b) {\n    return addBinaryRecursive(a, b, 0, new StringBuilder()).reverse().toString();\n}"
+  } ],
+  "paramNames" : [ "a", "b" ],
+  "paramTypes" : [ "String", "String" ],
+  "exampleInputs" : [ "11", "1" ],
+  "related" : [ {
+    "name" : "Valid Anagram",
+    "shortDescription" : "Check if two strings are anagrams",
+    "slug" : "valid-anagram"
+  }, {
+    "name" : "Group Anagrams",
+    "shortDescription" : "Group strings that are anagrams of each other",
+    "slug" : "group-anagrams"
+  }, {
+    "name" : "Ransom Note",
+    "shortDescription" : "Check if ransom note can be constructed from magazine",
+    "slug" : "ransom-note"
+  }, {
+    "name" : "Isomorphic Strings",
+    "shortDescription" : "Check if two strings are isomorphic",
+    "slug" : "isomorphic-strings"
+  } ]
+}

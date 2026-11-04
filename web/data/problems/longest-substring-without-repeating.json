@@ -1,0 +1,45 @@
+{
+  "name" : "Longest Substring Without Repeating",
+  "slug" : "longest-substring-without-repeating",
+  "category" : "Sliding Window",
+  "description" : "Given a string s, find the length of the longest substring without repeating characters.",
+  "shortDescription" : "Find longest substring without repeating characters",
+  "className" : "window.LongestSubstringWithoutRepeating",
+  "methods" : [ {
+    "name" : "computeWithHashSet",
+    "label" : "Hash set",
+    "code" : "public static int computeWithHashSet(String s) {\n    Set<Character> set = new HashSet<>();\n    int left = 0;\n    int maxLength = 0;\n\n    for (int right = 0; right < s.length(); right++) {\n        while (set.contains(s.charAt(right))) {\n            set.remove(s.charAt(left));\n            left++;\n        }\n        set.add(s.charAt(right));\n        maxLength = Math.max(maxLength, right - left + 1);\n    }\n    return maxLength;\n}"
+  }, {
+    "name" : "computeWithHashMap",
+    "label" : "Hash map",
+    "code" : "public static int computeWithHashMap(String s) {\n    Map<Character, Integer> map = new HashMap<>();\n    int left = 0;\n    int maxLength = 0;\n\n    for (int right = 0; right < s.length(); right++) {\n        char c = s.charAt(right);\n        if (map.containsKey(c) && map.get(c) >= left) {\n            left = map.get(c) + 1;\n        }\n        map.put(c, right);\n        maxLength = Math.max(maxLength, right - left + 1);\n    }\n    return maxLength;\n}"
+  }, {
+    "name" : "computeWithStringBuilder",
+    "label" : "String builder",
+    "code" : "public static int computeWithStringBuilder(String s) {\n    StringBuilder sb = new StringBuilder();\n    int maxLength = 0;\n\n    for (int i = 0; i < s.length(); i++) {\n        char c = s.charAt(i);\n        int index = sb.indexOf(String.valueOf(c));\n        if (index != -1) {\n            sb.delete(0, index + 1);\n        }\n        sb.append(c);\n        maxLength = Math.max(maxLength, sb.length());\n    }\n    return maxLength;\n}"
+  }, {
+    "name" : "computeWithArray",
+    "label" : "Array",
+    "code" : "public static int computeWithArray(String s) {\n    int[] lastIndex = new int[128];\n    java.util.Arrays.fill(lastIndex, -1);\n    int left = 0;\n    int maxLength = 0;\n\n    for (int right = 0; right < s.length(); right++) {\n        char c = s.charAt(right);\n        if (lastIndex[c] >= left) {\n            left = lastIndex[c] + 1;\n        }\n        lastIndex[c] = right;\n        maxLength = Math.max(maxLength, right - left + 1);\n    }\n    return maxLength;\n}"
+  } ],
+  "paramNames" : [ "s" ],
+  "paramTypes" : [ "String" ],
+  "exampleInputs" : [ "abcabcbb" ],
+  "related" : [ {
+    "name" : "Best Time to Buy and Sell Stock",
+    "shortDescription" : "Find maximum profit from buying and selling stock",
+    "slug" : "best-time-to-buy-and-sell-stock"
+  }, {
+    "name" : "Longest Repeating Character Replacement",
+    "shortDescription" : "Find longest substring after replacing k characters",
+    "slug" : "longest-repeating-character-replacement"
+  }, {
+    "name" : "Minimum Window Substring",
+    "shortDescription" : "Find minimum window substring containing all characters of t",
+    "slug" : "minimum-window-substring"
+  }, {
+    "name" : "Minimum Size Subarray Sum",
+    "shortDescription" : "Find minimum length subarray with sum >= target",
+    "slug" : "minimum-size-subarray-sum"
+  } ]
+}

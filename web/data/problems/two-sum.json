@@ -1,0 +1,41 @@
+{
+  "name" : "Two Sum",
+  "slug" : "two-sum",
+  "category" : "Arrays & Hashing",
+  "description" : "Given an array of integers nums and an integer target, return indices of the two numbers such that they add up to target. You may assume that each input would have exactly one solution, and you may not use the same element twice. You can return the answer in any order.",
+  "shortDescription" : "Find two numbers that add up to target",
+  "className" : "arrays.TwoSum",
+  "methods" : [ {
+    "name" : "computeWithHashMap",
+    "label" : "Hash map",
+    "code" : "public static int[] computeWithHashMap(int[] nums, int target) {\n    Map<Integer, Integer> map = new HashMap<>();\n    for (int i = 0; i < nums.length; i++) {\n        int complement = target - nums[i];\n        if (map.containsKey(complement)) {\n            return new int[] { map.get(complement), i };\n        }\n        map.put(nums[i], i);\n    }\n    return new int[] {};\n}"
+  }, {
+    "name" : "computeWithHashMapTwoPass",
+    "label" : "Hash map two pass",
+    "code" : "public static int[] computeWithHashMapTwoPass(int[] nums, int target) {\n    Map<Integer, Integer> map = new HashMap<>();\n    for (int i = 0; i < nums.length; i++) {\n        map.put(nums[i], i);\n    }\n    for (int i = 0; i < nums.length; i++) {\n        int complement = target - nums[i];\n        if (map.containsKey(complement) && map.get(complement) != i) {\n            return new int[] { i, map.get(complement) };\n        }\n    }\n    return new int[] {};\n}"
+  }, {
+    "name" : "computeWithBruteForce",
+    "label" : "Brute force",
+    "code" : "public static int[] computeWithBruteForce(int[] nums, int target) {\n    for (int i = 0; i < nums.length; i++) {\n        for (int j = i + 1; j < nums.length; j++) {\n            if (nums[i] + nums[j] == target) {\n                return new int[] { i, j };\n            }\n        }\n    }\n    return new int[] {};\n}"
+  } ],
+  "paramNames" : [ "nums", "target" ],
+  "paramTypes" : [ "int[]", "int" ],
+  "exampleInputs" : [ [ 2, 7, 11, 15 ], 9 ],
+  "related" : [ {
+    "name" : "Contains Duplicate",
+    "shortDescription" : "Check if array has duplicate values",
+    "slug" : "contains-duplicate"
+  }, {
+    "name" : "Missing Number",
+    "shortDescription" : "Find the missing number in array [0, n]",
+    "slug" : "missing-number"
+  }, {
+    "name" : "Single Number",
+    "shortDescription" : "Find the number that appears only once",
+    "slug" : "single-number"
+  }, {
+    "name" : "Plus One",
+    "shortDescription" : "Increment a number represented as array by one",
+    "slug" : "plus-one"
+  } ]
+}

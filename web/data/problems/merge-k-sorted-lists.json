@@ -1,0 +1,41 @@
+{
+  "name" : "Merge k Sorted Lists",
+  "slug" : "merge-k-sorted-lists",
+  "category" : "Linked List",
+  "description" : "You are given an array of k linked-lists lists, each linked-list is sorted in ascending order. Merge all the linked-lists into one sorted linked-list and return it.",
+  "shortDescription" : "Merge k sorted linked lists into one",
+  "className" : "linkedlist.MergeKSortedLists",
+  "methods" : [ {
+    "name" : "computeWithHeap",
+    "label" : "Heap",
+    "code" : "public static ListNode computeWithHeap(ListNode[] lists) {\n    if (lists == null || lists.length == 0) return null;\n\n    PriorityQueue<ListNode> minHeap = new PriorityQueue<>(Comparator.comparingInt(a -> a.val));\n\n    for (ListNode list : lists) {\n        if (list != null) {\n            minHeap.offer(list);\n        }\n    }\n\n    ListNode dummy = new ListNode(0);\n    ListNode current = dummy;\n\n    while (!minHeap.isEmpty()) {\n        ListNode node = minHeap.poll();\n        current.next = node;\n        current = current.next;\n\n        if (node.next != null) {\n            minHeap.offer(node.next);\n        }\n    }\n\n    return dummy.next;\n}"
+  }, {
+    "name" : "computeWithDivideConquer",
+    "label" : "Divide conquer",
+    "code" : "public static ListNode computeWithDivideConquer(ListNode[] lists) {\n    if (lists == null || lists.length == 0) return null;\n    return mergeLists(lists, 0, lists.length - 1);\n}"
+  }, {
+    "name" : "computeIterative",
+    "label" : "Iterative",
+    "code" : "public static ListNode computeIterative(ListNode[] lists) {\n    if (lists == null || lists.length == 0) return null;\n\n    ListNode result = lists[0];\n    for (int i = 1; i < lists.length; i++) {\n        result = mergeTwoLists(result, lists[i]);\n    }\n\n    return result;\n}"
+  } ],
+  "paramNames" : [ "lists" ],
+  "paramTypes" : [ "ListNode[]" ],
+  "exampleInputs" : null,
+  "related" : [ {
+    "name" : "Reverse Linked List",
+    "shortDescription" : "Reverse a singly linked list",
+    "slug" : "reverse-linked-list"
+  }, {
+    "name" : "Merge Two Sorted Lists",
+    "shortDescription" : "Merge two sorted linked lists",
+    "slug" : "merge-two-sorted-lists"
+  }, {
+    "name" : "Linked List Cycle",
+    "shortDescription" : "Detect if a linked list has a cycle",
+    "slug" : "linked-list-cycle"
+  }, {
+    "name" : "Add Two Numbers",
+    "shortDescription" : "Add two numbers represented by linked lists",
+    "slug" : "add-two-numbers"
+  } ]
+}

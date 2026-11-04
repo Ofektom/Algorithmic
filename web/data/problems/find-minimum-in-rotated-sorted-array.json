@@ -1,0 +1,41 @@
+{
+  "name" : "Find Minimum in Rotated Sorted Array",
+  "slug" : "find-minimum-in-rotated-sorted-array",
+  "category" : "Search",
+  "description" : "Suppose an array of length n sorted in ascending order is rotated between 1 and n times. For example, the array nums = [0,1,2,4,5,6,7] might become [4,5,6,7,0,1,2] if it was rotated 4 times. Given the sorted rotated array nums of unique elements, return the minimum element of this array.",
+  "shortDescription" : "Find minimum element in rotated sorted array",
+  "className" : "search.FindMinimumInRotatedSortedArray",
+  "methods" : [ {
+    "name" : "computeWithBinarySearch",
+    "label" : "Binary search",
+    "code" : "public static int computeWithBinarySearch(int[] nums) {\n    int left = 0;\n    int right = nums.length - 1;\n\n    while (left < right) {\n        int mid = left + (right - left) / 2;\n        if (nums[mid] > nums[right]) {\n            left = mid + 1;\n        } else {\n            right = mid;\n        }\n    }\n    return nums[left];\n}"
+  }, {
+    "name" : "computeWithLinearSearch",
+    "label" : "Linear search",
+    "code" : "public static int computeWithLinearSearch(int[] nums) {\n    int min = nums[0];\n    for (int num : nums) {\n        if (num < min) {\n            min = num;\n        }\n    }\n    return min;\n}"
+  }, {
+    "name" : "computeWithRecursion",
+    "label" : "Recursion",
+    "code" : "public static int computeWithRecursion(int[] nums) {\n    return findMinRecursive(nums, 0, nums.length - 1);\n}"
+  } ],
+  "paramNames" : [ "nums" ],
+  "paramTypes" : [ "int[]" ],
+  "exampleInputs" : [ [ 3, 4, 5, 1, 2 ] ],
+  "related" : [ {
+    "name" : "Search in Rotated Sorted Array",
+    "shortDescription" : "Search target in rotated sorted array",
+    "slug" : "search-in-rotated-sorted-array"
+  }, {
+    "name" : "Find Peak Element",
+    "shortDescription" : "Find peak element in array",
+    "slug" : "find-peak-element"
+  }, {
+    "name" : "Search a 2D Matrix",
+    "shortDescription" : "Search target in sorted 2D matrix",
+    "slug" : "search-a-2d-matrix"
+  }, {
+    "name" : "Binary Search",
+    "shortDescription" : "Search target in sorted array using binary search",
+    "slug" : "binary-search"
+  } ]
+}

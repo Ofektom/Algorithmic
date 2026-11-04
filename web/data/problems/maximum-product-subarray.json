@@ -1,0 +1,45 @@
+{
+  "name" : "Maximum Product Subarray",
+  "slug" : "maximum-product-subarray",
+  "category" : "Arrays & Hashing",
+  "description" : "Given an integer array nums, find a contiguous non-empty subarray within the array that has the largest product, and return the product. The test cases are generated so that the answer will fit in a 32-bit integer.",
+  "shortDescription" : "Find maximum product of contiguous subarray",
+  "className" : "arrays.MaximumProductSubarray",
+  "methods" : [ {
+    "name" : "computeWithDP",
+    "label" : "DP",
+    "code" : "public static int computeWithDP(int[] nums) {\n    if (nums.length == 0) return 0;\n    \n    int maxSoFar = nums[0];\n    int minSoFar = nums[0];\n    int result = nums[0];\n    \n    for (int i = 1; i < nums.length; i++) {\n        int num = nums[i];\n        int tempMax = Math.max(num, Math.max(maxSoFar * num, minSoFar * num));\n        minSoFar = Math.min(num, Math.min(maxSoFar * num, minSoFar * num));\n        maxSoFar = tempMax;\n        result = Math.max(result, maxSoFar);\n    }\n    \n    return result;\n}"
+  }, {
+    "name" : "computeWithTwoPasses",
+    "label" : "Two passes",
+    "code" : "public static int computeWithTwoPasses(int[] nums) {\n    if (nums.length == 0) return 0;\n    \n    int maxProduct = Integer.MIN_VALUE;\n    int product = 1;\n    \n    // Left to right\n    for (int num : nums) {\n        product *= num;\n        maxProduct = Math.max(maxProduct, product);\n        if (product == 0) product = 1;\n    }\n    \n    product = 1;\n    // Right to left\n    for (int i = nums.length - 1; i >= 0; i--) {\n        product *= nums[i];\n        maxProduct = Math.max(maxProduct, product);\n        if (product == 0) product = 1;\n    }\n    \n    return maxProduct;\n}"
+  }, {
+    "name" : "computeWithBruteForce",
+    "label" : "Brute force",
+    "code" : "public static int computeWithBruteForce(int[] nums) {\n    if (nums.length == 0) return 0;\n    \n    int maxProduct = nums[0];\n    \n    for (int i = 0; i < nums.length; i++) {\n        int product = 1;\n        for (int j = i; j < nums.length; j++) {\n            product *= nums[j];\n            maxProduct = Math.max(maxProduct, product);\n        }\n    }\n    \n    return maxProduct;\n}"
+  }, {
+    "name" : "computeWithRecursion",
+    "label" : "Recursion",
+    "code" : "public static int computeWithRecursion(int[] nums) {\n    if (nums.length == 0) return 0;\n    return maxProductRecursive(nums, 0, nums[0], nums[0], nums[0]);\n}"
+  } ],
+  "paramNames" : [ "nums" ],
+  "paramTypes" : [ "int[]" ],
+  "exampleInputs" : [ [ 2, 3, -2, 4 ] ],
+  "related" : [ {
+    "name" : "Two Sum",
+    "shortDescription" : "Find two numbers that add up to target",
+    "slug" : "two-sum"
+  }, {
+    "name" : "Contains Duplicate",
+    "shortDescription" : "Check if array has duplicate values",
+    "slug" : "contains-duplicate"
+  }, {
+    "name" : "Missing Number",
+    "shortDescription" : "Find the missing number in array [0, n]",
+    "slug" : "missing-number"
+  }, {
+    "name" : "Single Number",
+    "shortDescription" : "Find the number that appears only once",
+    "slug" : "single-number"
+  } ]
+}

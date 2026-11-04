@@ -1,0 +1,45 @@
+{
+  "name" : "Sqrt(x)",
+  "slug" : "sqrt-x",
+  "category" : "Search",
+  "description" : "Given a non-negative integer x, return the square root of x rounded down to the nearest integer. The returned integer should be non-negative as well. You must not use any built-in exponent function or operator.",
+  "shortDescription" : "Find square root of x (rounded down)",
+  "className" : "search.Sqrt",
+  "methods" : [ {
+    "name" : "computeWithBinarySearch",
+    "label" : "Binary search",
+    "code" : "public static int computeWithBinarySearch(int x) {\n    if (x < 2) return x;\n\n    int left = 2;\n    int right = x / 2;\n\n    while (left <= right) {\n        int mid = left + (right - left) / 2;\n        long square = (long) mid * mid;\n\n        if (square == x) {\n            return mid;\n        } else if (square < x) {\n            left = mid + 1;\n        } else {\n            right = mid - 1;\n        }\n    }\n\n    return right;\n}"
+  }, {
+    "name" : "computeWithNewton",
+    "label" : "Newton",
+    "code" : "public static int computeWithNewton(int x) {\n    if (x < 2) return x;\n\n    long result = x;\n    while (result * result > x) {\n        result = (result + x / result) / 2;\n    }\n\n    return (int) result;\n}"
+  }, {
+    "name" : "computeWithMath",
+    "label" : "Math",
+    "code" : "public static int computeWithMath(int x) {\n    return (int) Math.sqrt(x);\n}"
+  }, {
+    "name" : "computeWithLinearSearch",
+    "label" : "Linear search",
+    "code" : "public static int computeWithLinearSearch(int x) {\n    if (x < 2) return x;\n\n    for (int i = 2; i <= x / 2; i++) {\n        long square = (long) i * i;\n        if (square == x) {\n            return i;\n        } else if (square > x) {\n            return i - 1;\n        }\n    }\n\n    return x / 2;\n}"
+  } ],
+  "paramNames" : [ "x" ],
+  "paramTypes" : [ "int" ],
+  "exampleInputs" : [ 8 ],
+  "related" : [ {
+    "name" : "Search in Rotated Sorted Array",
+    "shortDescription" : "Search target in rotated sorted array",
+    "slug" : "search-in-rotated-sorted-array"
+  }, {
+    "name" : "Find Minimum in Rotated Sorted Array",
+    "shortDescription" : "Find minimum element in rotated sorted array",
+    "slug" : "find-minimum-in-rotated-sorted-array"
+  }, {
+    "name" : "Find Peak Element",
+    "shortDescription" : "Find peak element in array",
+    "slug" : "find-peak-element"
+  }, {
+    "name" : "Search a 2D Matrix",
+    "shortDescription" : "Search target in sorted 2D matrix",
+    "slug" : "search-a-2d-matrix"
+  } ]
+}

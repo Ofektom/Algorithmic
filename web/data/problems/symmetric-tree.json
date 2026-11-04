@@ -1,0 +1,41 @@
+{
+  "name" : "Symmetric Tree",
+  "slug" : "symmetric-tree",
+  "category" : "Trees",
+  "description" : "Given the root of a binary tree, check whether it is a mirror of itself (i.e., symmetric around its center).",
+  "shortDescription" : "Check if a binary tree is symmetric",
+  "className" : "trees.SymmetricTree",
+  "methods" : [ {
+    "name" : "computeRecursive",
+    "label" : "Recursive",
+    "code" : "public static boolean computeRecursive(TreeNode root) {\n    if (root == null) {\n        return true;\n    }\n    return isSymmetricRecursive(root.left, root.right);\n}"
+  }, {
+    "name" : "computeWithQueue",
+    "label" : "Queue",
+    "code" : "public static boolean computeWithQueue(TreeNode root) {\n    if (root == null) {\n        return true;\n    }\n\n    Queue<TreeNode> queue = new LinkedList<>();\n    queue.offer(root.left);\n    queue.offer(root.right);\n\n    while (!queue.isEmpty()) {\n        TreeNode left = queue.poll();\n        TreeNode right = queue.poll();\n\n        if (left == null && right == null) {\n            continue;\n        }\n        if (left == null || right == null || left.val != right.val) {\n            return false;\n        }\n\n        queue.offer(left.left);\n        queue.offer(right.right);\n        queue.offer(left.right);\n        queue.offer(right.left);\n    }\n    return true;\n}"
+  }, {
+    "name" : "computeWithStack",
+    "label" : "Stack",
+    "code" : "public static boolean computeWithStack(TreeNode root) {\n    if (root == null) {\n        return true;\n    }\n\n    Stack<TreeNode> stack = new Stack<>();\n    stack.push(root.left);\n    stack.push(root.right);\n\n    while (!stack.isEmpty()) {\n        TreeNode right = stack.pop();\n        TreeNode left = stack.pop();\n\n        if (left == null && right == null) {\n            continue;\n        }\n        if (left == null || right == null || left.val != right.val) {\n            return false;\n        }\n\n        stack.push(left.left);\n        stack.push(right.right);\n        stack.push(left.right);\n        stack.push(right.left);\n    }\n    return true;\n}"
+  } ],
+  "paramNames" : [ "root" ],
+  "paramTypes" : [ "TreeNode" ],
+  "exampleInputs" : null,
+  "related" : [ {
+    "name" : "Maximum Depth of Binary Tree",
+    "shortDescription" : "Find the maximum depth of a binary tree",
+    "slug" : "maximum-depth-of-binary-tree"
+  }, {
+    "name" : "Same Tree",
+    "shortDescription" : "Check if two binary trees are identical",
+    "slug" : "same-tree"
+  }, {
+    "name" : "Invert Binary Tree",
+    "shortDescription" : "Invert a binary tree",
+    "slug" : "invert-binary-tree"
+  }, {
+    "name" : "Binary Tree Level Order Traversal",
+    "shortDescription" : "Return level order traversal of binary tree",
+    "slug" : "binary-tree-level-order-traversal"
+  } ]
+}

@@ -1,0 +1,25 @@
+{
+  "name" : "Subsets",
+  "slug" : "subsets",
+  "category" : "Backtracking",
+  "description" : "Given an integer array nums of unique elements, return all possible subsets (the power set).",
+  "shortDescription" : "Find all subsets of array",
+  "className" : "backtrack.Subsets",
+  "methods" : [ {
+    "name" : "computeRecursive",
+    "label" : "Recursive",
+    "code" : "public static List<List<Integer>> computeRecursive(int[] nums) {\n    List<List<Integer>> result = new ArrayList<>();\n    backtrack(result, new ArrayList<>(), nums, 0);\n    return result;\n}"
+  }, {
+    "name" : "computeIterative",
+    "label" : "Iterative",
+    "code" : "public static List<List<Integer>> computeIterative(int[] nums) {\n    List<List<Integer>> result = new ArrayList<>();\n    int n = nums.length;\n    int totalSubsets = 1 << n; // 2^n\n\n    for (int i = 0; i < totalSubsets; i++) {\n        List<Integer> subset = new ArrayList<>();\n        for (int j = 0; j < n; j++) {\n            if ((i & (1 << j)) != 0) {\n                subset.add(nums[j]);\n            }\n        }\n        result.add(subset);\n    }\n\n    return result;\n}"
+  }, {
+    "name" : "computeIncremental",
+    "label" : "Incremental",
+    "code" : "public static List<List<Integer>> computeIncremental(int[] nums) {\n    List<List<Integer>> result = new ArrayList<>();\n    result.add(new ArrayList<>());\n\n    for (int num : nums) {\n        int size = result.size();\n        for (int i = 0; i < size; i++) {\n            List<Integer> newSubset = new ArrayList<>(result.get(i));\n            newSubset.add(num);\n            result.add(newSubset);\n        }\n    }\n\n    return result;\n}"
+  } ],
+  "paramNames" : [ "nums" ],
+  "paramTypes" : [ "int[]" ],
+  "exampleInputs" : [ [ 1, 2, 3 ] ],
+  "related" : [ ]
+}

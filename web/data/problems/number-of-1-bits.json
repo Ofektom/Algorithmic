@@ -1,0 +1,33 @@
+{
+  "name" : "Number of 1 Bits",
+  "slug" : "number-of-1-bits",
+  "category" : "Bit Manipulation",
+  "description" : "Write a function that takes the binary representation of an unsigned integer and returns the number of '1' bits it has.",
+  "shortDescription" : "Count number of 1 bits in integer",
+  "className" : "bitmanip.NumberOf1Bits",
+  "methods" : [ {
+    "name" : "computeWithBuiltIn",
+    "label" : "Built in",
+    "code" : "public static int computeWithBuiltIn(int n) {\n    return Integer.bitCount(n);\n}"
+  }, {
+    "name" : "computeWithLoop",
+    "label" : "Loop",
+    "code" : "public static int computeWithLoop(int n) {\n    int count = 0;\n    for (int i = 0; i < 32; i++) {\n        if ((n & (1 << i)) != 0) {\n            count++;\n        }\n    }\n    return count;\n}"
+  }, {
+    "name" : "computeWithKernighan",
+    "label" : "Kernighan",
+    "code" : "public static int computeWithKernighan(int n) {\n    int count = 0;\n    while (n != 0) {\n        n &= (n - 1); // Turn off the rightmost 1-bit\n        count++;\n    }\n    return count;\n}"
+  }, {
+    "name" : "computeWithShift",
+    "label" : "Shift",
+    "code" : "public static int computeWithShift(int n) {\n    int count = 0;\n    while (n != 0) {\n        count += (n & 1);\n        n >>>= 1; // Unsigned right shift\n    }\n    return count;\n}"
+  }, {
+    "name" : "computeRecursive",
+    "label" : "Recursive",
+    "code" : "public static int computeRecursive(int n) {\n    if (n == 0) return 0;\n    return (n & 1) + computeRecursive(n >>> 1);\n}"
+  } ],
+  "paramNames" : [ "n" ],
+  "paramTypes" : [ "int" ],
+  "exampleInputs" : [ 11 ],
+  "related" : [ ]
+}

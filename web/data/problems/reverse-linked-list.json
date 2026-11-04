@@ -1,0 +1,41 @@
+{
+  "name" : "Reverse Linked List",
+  "slug" : "reverse-linked-list",
+  "category" : "Linked List",
+  "description" : "Given the head of a singly linked list, reverse the list, and return the reversed list.",
+  "shortDescription" : "Reverse a singly linked list",
+  "className" : "linkedlist.ReverseLinkedList",
+  "methods" : [ {
+    "name" : "computeIterative",
+    "label" : "Iterative",
+    "code" : "public static ListNode computeIterative(ListNode head) {\n    ListNode prev = null;\n    ListNode curr = head;\n\n    while (curr != null) {\n        ListNode next = curr.next;\n        curr.next = prev;\n        prev = curr;\n        curr = next;\n    }\n    return prev;\n}"
+  }, {
+    "name" : "computeRecursive",
+    "label" : "Recursive",
+    "code" : "public static ListNode computeRecursive(ListNode head) {\n    if (head == null || head.next == null) {\n        return head;\n    }\n\n    ListNode reversed = computeRecursive(head.next);\n    head.next.next = head;\n    head.next = null;\n    return reversed;\n}"
+  }, {
+    "name" : "computeWithStack",
+    "label" : "Stack",
+    "code" : "public static ListNode computeWithStack(ListNode head) {\n    if (head == null || head.next == null) {\n        return head;\n    }\n\n    java.util.Stack<ListNode> stack = new java.util.Stack<>();\n    ListNode curr = head;\n    while (curr != null) {\n        stack.push(curr);\n        curr = curr.next;\n    }\n\n    ListNode newHead = stack.pop();\n    curr = newHead;\n    while (!stack.isEmpty()) {\n        curr.next = stack.pop();\n        curr = curr.next;\n    }\n    curr.next = null;\n    return newHead;\n}"
+  } ],
+  "paramNames" : [ "head" ],
+  "paramTypes" : [ "ListNode" ],
+  "exampleInputs" : null,
+  "related" : [ {
+    "name" : "Merge Two Sorted Lists",
+    "shortDescription" : "Merge two sorted linked lists",
+    "slug" : "merge-two-sorted-lists"
+  }, {
+    "name" : "Linked List Cycle",
+    "shortDescription" : "Detect if a linked list has a cycle",
+    "slug" : "linked-list-cycle"
+  }, {
+    "name" : "Add Two Numbers",
+    "shortDescription" : "Add two numbers represented by linked lists",
+    "slug" : "add-two-numbers"
+  }, {
+    "name" : "Remove Nth Node From End of List",
+    "shortDescription" : "Remove the nth node from end of linked list",
+    "slug" : "remove-nth-node-from-end-of-list"
+  } ]
+}

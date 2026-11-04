@@ -1,0 +1,41 @@
+{
+  "name" : "Largest Rectangle in Histogram",
+  "slug" : "largest-rectangle-in-histogram",
+  "category" : "Stack",
+  "description" : "Given an array of integers heights representing the histogram's bar height where the width of each bar is 1, return the area of the largest rectangle in the histogram.",
+  "shortDescription" : "Find largest rectangle area in histogram",
+  "className" : "stack.LargestRectangleInHistogram",
+  "methods" : [ {
+    "name" : "computeWithStack",
+    "label" : "Stack",
+    "code" : "public static int computeWithStack(int[] heights) {\n    Stack<Integer> stack = new Stack<>();\n    int maxArea = 0;\n    int i = 0;\n\n    while (i < heights.length) {\n        if (stack.isEmpty() || heights[stack.peek()] <= heights[i]) {\n            stack.push(i++);\n        } else {\n            int top = stack.pop();\n            int width = stack.isEmpty() ? i : i - stack.peek() - 1;\n            maxArea = Math.max(maxArea, heights[top] * width);\n        }\n    }\n\n    while (!stack.isEmpty()) {\n        int top = stack.pop();\n        int width = stack.isEmpty() ? i : i - stack.peek() - 1;\n        maxArea = Math.max(maxArea, heights[top] * width);\n    }\n\n    return maxArea;\n}"
+  }, {
+    "name" : "computeWithBruteForce",
+    "label" : "Brute force",
+    "code" : "public static int computeWithBruteForce(int[] heights) {\n    int maxArea = 0;\n    \n    for (int i = 0; i < heights.length; i++) {\n        int minHeight = heights[i];\n        for (int j = i; j < heights.length; j++) {\n            minHeight = Math.min(minHeight, heights[j]);\n            maxArea = Math.max(maxArea, minHeight * (j - i + 1));\n        }\n    }\n    \n    return maxArea;\n}"
+  }, {
+    "name" : "computeWithDivideConquer",
+    "label" : "Divide conquer",
+    "code" : "public static int computeWithDivideConquer(int[] heights) {\n    return calculateArea(heights, 0, heights.length - 1);\n}"
+  } ],
+  "paramNames" : [ "heights" ],
+  "paramTypes" : [ "int[]" ],
+  "exampleInputs" : [ [ 2, 1, 5, 6, 2, 3 ] ],
+  "related" : [ {
+    "name" : "Valid Parentheses",
+    "shortDescription" : "Check if parentheses/brackets are valid",
+    "slug" : "valid-parentheses"
+  }, {
+    "name" : "Daily Temperatures",
+    "shortDescription" : "Find days to wait for warmer temperature",
+    "slug" : "daily-temperatures"
+  }, {
+    "name" : "Evaluate Reverse Polish Notation",
+    "shortDescription" : "Evaluate RPN expression",
+    "slug" : "evaluate-reverse-polish-notation"
+  }, {
+    "name" : "Generate Parentheses",
+    "shortDescription" : "Generate all valid parentheses combinations",
+    "slug" : "generate-parentheses"
+  } ]
+}

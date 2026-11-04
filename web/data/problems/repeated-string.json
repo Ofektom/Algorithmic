@@ -1,0 +1,37 @@
+{
+  "name" : "Repeated String",
+  "slug" : "repeated-string",
+  "category" : "Strings",
+  "description" : "A string s of lowercase letters is repeated infinitely many times. Given an integer n, count the occurrences of the letter 'a' in the first n characters of the infinite string.",
+  "shortDescription" : "Count 'a' in first n chars of an infinitely repeated string",
+  "className" : "strings.RepeatedString",
+  "methods" : [ {
+    "name" : "computeWithMath",
+    "label" : "Math",
+    "code" : "public static long computeWithMath(String s, long n) {\n    long perString = countA(s, s.length());\n    long fullRepeats = n / s.length();\n    int remainder = (int) (n % s.length());\n    return fullRepeats * perString + countA(s, remainder);\n}"
+  }, {
+    "name" : "computeWithBruteForce",
+    "label" : "Brute force",
+    "code" : "public static long computeWithBruteForce(String s, long n) {\n    long count = 0;\n    for (long i = 0; i < n; i++) {\n        if (s.charAt((int) (i % s.length())) == 'a') count++;\n    }\n    return count;\n}"
+  } ],
+  "paramNames" : [ "s", "n" ],
+  "paramTypes" : [ "String", "long" ],
+  "exampleInputs" : [ "aba", 10 ],
+  "related" : [ {
+    "name" : "Valid Anagram",
+    "shortDescription" : "Check if two strings are anagrams",
+    "slug" : "valid-anagram"
+  }, {
+    "name" : "Group Anagrams",
+    "shortDescription" : "Group strings that are anagrams of each other",
+    "slug" : "group-anagrams"
+  }, {
+    "name" : "Ransom Note",
+    "shortDescription" : "Check if ransom note can be constructed from magazine",
+    "slug" : "ransom-note"
+  }, {
+    "name" : "Isomorphic Strings",
+    "shortDescription" : "Check if two strings are isomorphic",
+    "slug" : "isomorphic-strings"
+  } ]
+}

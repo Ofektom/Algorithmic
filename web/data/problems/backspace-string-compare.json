@@ -1,0 +1,41 @@
+{
+  "name" : "Backspace String Compare",
+  "slug" : "backspace-string-compare",
+  "category" : "Strings",
+  "description" : "Given two strings s and t, return true if they are equal when both are typed into empty text editors. '#' means a backspace character.",
+  "shortDescription" : "Compare strings with backspace characters",
+  "className" : "strings.BackspaceStringCompare",
+  "methods" : [ {
+    "name" : "computeWithStack",
+    "label" : "Stack",
+    "code" : "public static boolean computeWithStack(String s, String t) {\n    return buildString(s).equals(buildString(t));\n}"
+  }, {
+    "name" : "computeWithStringBuilder",
+    "label" : "String builder",
+    "code" : "public static boolean computeWithStringBuilder(String s, String t) {\n    return buildStringStringBuilder(s).equals(buildStringStringBuilder(t));\n}"
+  }, {
+    "name" : "computeWithTwoPointers",
+    "label" : "Two pointers",
+    "code" : "public static boolean computeWithTwoPointers(String s, String t) {\n    int i = s.length() - 1;\n    int j = t.length() - 1;\n\n    while (i >= 0 || j >= 0) {\n        i = getNextValidIndex(s, i);\n        j = getNextValidIndex(t, j);\n\n        if (i < 0 && j < 0) {\n            return true;\n        }\n        if (i < 0 || j < 0) {\n            return false;\n        }\n        if (s.charAt(i) != t.charAt(j)) {\n            return false;\n        }\n\n        i--;\n        j--;\n    }\n    return true;\n}"
+  } ],
+  "paramNames" : [ "s", "t" ],
+  "paramTypes" : [ "String", "String" ],
+  "exampleInputs" : [ "ab#c", "ad#c" ],
+  "related" : [ {
+    "name" : "Valid Anagram",
+    "shortDescription" : "Check if two strings are anagrams",
+    "slug" : "valid-anagram"
+  }, {
+    "name" : "Group Anagrams",
+    "shortDescription" : "Group strings that are anagrams of each other",
+    "slug" : "group-anagrams"
+  }, {
+    "name" : "Ransom Note",
+    "shortDescription" : "Check if ransom note can be constructed from magazine",
+    "slug" : "ransom-note"
+  }, {
+    "name" : "Isomorphic Strings",
+    "shortDescription" : "Check if two strings are isomorphic",
+    "slug" : "isomorphic-strings"
+  } ]
+}

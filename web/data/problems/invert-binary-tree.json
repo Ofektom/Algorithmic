@@ -1,0 +1,41 @@
+{
+  "name" : "Invert Binary Tree",
+  "slug" : "invert-binary-tree",
+  "category" : "Trees",
+  "description" : "Given the root of a binary tree, invert the tree, and return its root.",
+  "shortDescription" : "Invert a binary tree",
+  "className" : "trees.InvertBinaryTree",
+  "methods" : [ {
+    "name" : "computeRecursive",
+    "label" : "Recursive",
+    "code" : "public static TreeNode computeRecursive(TreeNode root) {\n    if (root == null) {\n        return null;\n    }\n\n    TreeNode left = computeRecursive(root.left);\n    TreeNode right = computeRecursive(root.right);\n\n    root.left = right;\n    root.right = left;\n\n    return root;\n}"
+  }, {
+    "name" : "computeWithStack",
+    "label" : "Stack",
+    "code" : "public static TreeNode computeWithStack(TreeNode root) {\n    if (root == null) {\n        return null;\n    }\n\n    Stack<TreeNode> stack = new Stack<>();\n    stack.push(root);\n\n    while (!stack.isEmpty()) {\n        TreeNode node = stack.pop();\n\n        TreeNode temp = node.left;\n        node.left = node.right;\n        node.right = temp;\n\n        if (node.left != null) {\n            stack.push(node.left);\n        }\n        if (node.right != null) {\n            stack.push(node.right);\n        }\n    }\n    return root;\n}"
+  }, {
+    "name" : "computeWithQueue",
+    "label" : "Queue",
+    "code" : "public static TreeNode computeWithQueue(TreeNode root) {\n    if (root == null) {\n        return null;\n    }\n\n    Queue<TreeNode> queue = new LinkedList<>();\n    queue.offer(root);\n\n    while (!queue.isEmpty()) {\n        TreeNode node = queue.poll();\n\n        TreeNode temp = node.left;\n        node.left = node.right;\n        node.right = temp;\n\n        if (node.left != null) {\n            queue.offer(node.left);\n        }\n        if (node.right != null) {\n            queue.offer(node.right);\n        }\n    }\n    return root;\n}"
+  } ],
+  "paramNames" : [ "root" ],
+  "paramTypes" : [ "TreeNode" ],
+  "exampleInputs" : null,
+  "related" : [ {
+    "name" : "Maximum Depth of Binary Tree",
+    "shortDescription" : "Find the maximum depth of a binary tree",
+    "slug" : "maximum-depth-of-binary-tree"
+  }, {
+    "name" : "Same Tree",
+    "shortDescription" : "Check if two binary trees are identical",
+    "slug" : "same-tree"
+  }, {
+    "name" : "Symmetric Tree",
+    "shortDescription" : "Check if a binary tree is symmetric",
+    "slug" : "symmetric-tree"
+  }, {
+    "name" : "Binary Tree Level Order Traversal",
+    "shortDescription" : "Return level order traversal of binary tree",
+    "slug" : "binary-tree-level-order-traversal"
+  } ]
+}

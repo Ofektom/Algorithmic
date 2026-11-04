@@ -1,0 +1,41 @@
+{
+  "name" : "Coin Change",
+  "slug" : "coin-change",
+  "category" : "Dynamic Programming",
+  "description" : "You are given an integer array coins representing coins of different denominations and an integer amount representing a total amount of money. Return the fewest number of coins that you need to make up that amount. If that amount of money cannot be made up by any combination of the coins, return -1. You may assume that you have an infinite number of each kind of coin.",
+  "shortDescription" : "Find minimum coins to make amount",
+  "className" : "dp.CoinChange",
+  "methods" : [ {
+    "name" : "computeWithDP",
+    "label" : "DP",
+    "code" : "public static int computeWithDP(int[] coins, int amount) {\n    int[] dp = new int[amount + 1];\n    Arrays.fill(dp, amount + 1);\n    dp[0] = 0;\n    \n    for (int i = 1; i <= amount; i++) {\n        for (int coin : coins) {\n            if (coin <= i) {\n                dp[i] = Math.min(dp[i], dp[i - coin] + 1);\n            }\n        }\n    }\n    \n    return dp[amount] > amount ? -1 : dp[amount];\n}"
+  }, {
+    "name" : "computeWithRecursion",
+    "label" : "Recursion",
+    "code" : "public static int computeWithRecursion(int[] coins, int amount) {\n    Map<Integer, Integer> memo = new HashMap<>();\n    int result = coinChangeRecursive(coins, amount, memo);\n    return result == Integer.MAX_VALUE ? -1 : result;\n}"
+  }, {
+    "name" : "computeWithPureRecursion",
+    "label" : "Pure recursion",
+    "code" : "public static int computeWithPureRecursion(int[] coins, int amount) {\n    if (amount == 0) return 0;\n    if (amount < 0) return -1;\n    \n    int minCoins = Integer.MAX_VALUE;\n    for (int coin : coins) {\n        int result = computeWithPureRecursion(coins, amount - coin);\n        if (result != -1) {\n            minCoins = Math.min(minCoins, result + 1);\n        }\n    }\n    \n    return minCoins == Integer.MAX_VALUE ? -1 : minCoins;\n}"
+  } ],
+  "paramNames" : [ "coins", "amount" ],
+  "paramTypes" : [ "int[]", "int" ],
+  "exampleInputs" : [ [ 1, 2, 5 ], 11 ],
+  "related" : [ {
+    "name" : "Climbing Stairs",
+    "shortDescription" : "Find distinct ways to climb n steps (1 or 2 at a time)",
+    "slug" : "climbing-stairs"
+  }, {
+    "name" : "House Robber",
+    "shortDescription" : "Find maximum money robbing houses (no two adjacent)",
+    "slug" : "house-robber"
+  }, {
+    "name" : "Unique Paths",
+    "shortDescription" : "Count unique paths from top-left to bottom-right",
+    "slug" : "unique-paths"
+  }, {
+    "name" : "Word Break",
+    "shortDescription" : "Check if string can be segmented into dictionary words",
+    "slug" : "word-break"
+  } ]
+}

@@ -1,0 +1,37 @@
+{
+  "name" : "Time Conversion",
+  "slug" : "time-conversion",
+  "category" : "Strings",
+  "description" : "Given a time in 12-hour AM/PM format (hh:mm:ssAM or hh:mm:ssPM), convert it to 24-hour military time (HH:mm:ss). Midnight is 12:00:00AM in 12-hour format and 00:00:00 in 24-hour format.",
+  "shortDescription" : "Convert 12-hour AM/PM time to 24-hour time",
+  "className" : "strings.TimeConversion",
+  "methods" : [ {
+    "name" : "computeWithParsing",
+    "label" : "Parsing",
+    "code" : "public static String computeWithParsing(String s) {\n    int hour = Integer.parseInt(s.substring(0, 2));\n    boolean pm = s.substring(8).equalsIgnoreCase(\"PM\");\n    if (pm && hour != 12) hour += 12;\n    if (!pm && hour == 12) hour = 0;\n    return String.format(\"%02d%s\", hour, s.substring(2, 8));\n}"
+  }, {
+    "name" : "computeWithLocalTime",
+    "label" : "Local time",
+    "code" : "public static String computeWithLocalTime(String s) {\n    DateTimeFormatter input = DateTimeFormatter.ofPattern(\"hh:mm:ssa\", Locale.ENGLISH);\n    return LocalTime.parse(s.toUpperCase(), input).format(DateTimeFormatter.ofPattern(\"HH:mm:ss\"));\n}"
+  } ],
+  "paramNames" : [ "s" ],
+  "paramTypes" : [ "String" ],
+  "exampleInputs" : [ "07:05:45PM" ],
+  "related" : [ {
+    "name" : "Valid Anagram",
+    "shortDescription" : "Check if two strings are anagrams",
+    "slug" : "valid-anagram"
+  }, {
+    "name" : "Group Anagrams",
+    "shortDescription" : "Group strings that are anagrams of each other",
+    "slug" : "group-anagrams"
+  }, {
+    "name" : "Ransom Note",
+    "shortDescription" : "Check if ransom note can be constructed from magazine",
+    "slug" : "ransom-note"
+  }, {
+    "name" : "Isomorphic Strings",
+    "shortDescription" : "Check if two strings are isomorphic",
+    "slug" : "isomorphic-strings"
+  } ]
+}

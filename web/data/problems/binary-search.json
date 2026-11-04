@@ -1,0 +1,41 @@
+{
+  "name" : "Binary Search",
+  "slug" : "binary-search",
+  "category" : "Search",
+  "description" : "Given an array of integers nums which is sorted in ascending order, and an integer target, write a function to search target in nums. If target exists, then return its index. Otherwise, return -1. You must write an algorithm with O(log n) runtime complexity.",
+  "shortDescription" : "Search target in sorted array using binary search",
+  "className" : "search.BinarySearch",
+  "methods" : [ {
+    "name" : "computeIterative",
+    "label" : "Iterative",
+    "code" : "public static int computeIterative(int[] nums, int target) {\n    int left = 0;\n    int right = nums.length - 1;\n\n    while (left <= right) {\n        int mid = left + (right - left) / 2;\n        if (nums[mid] == target) {\n            return mid;\n        } else if (nums[mid] < target) {\n            left = mid + 1;\n        } else {\n            right = mid - 1;\n        }\n    }\n\n    return -1;\n}"
+  }, {
+    "name" : "computeRecursive",
+    "label" : "Recursive",
+    "code" : "public static int computeRecursive(int[] nums, int target) {\n    return binarySearchRecursive(nums, target, 0, nums.length - 1);\n}"
+  }, {
+    "name" : "computeWithArrays",
+    "label" : "Arrays",
+    "code" : "public static int computeWithArrays(int[] nums, int target) {\n    int index = java.util.Arrays.binarySearch(nums, target);\n    return index >= 0 ? index : -1;\n}"
+  } ],
+  "paramNames" : [ "nums", "target" ],
+  "paramTypes" : [ "int[]", "int" ],
+  "exampleInputs" : [ [ -1, 0, 3, 5, 9, 12 ], 9 ],
+  "related" : [ {
+    "name" : "Search in Rotated Sorted Array",
+    "shortDescription" : "Search target in rotated sorted array",
+    "slug" : "search-in-rotated-sorted-array"
+  }, {
+    "name" : "Find Minimum in Rotated Sorted Array",
+    "shortDescription" : "Find minimum element in rotated sorted array",
+    "slug" : "find-minimum-in-rotated-sorted-array"
+  }, {
+    "name" : "Find Peak Element",
+    "shortDescription" : "Find peak element in array",
+    "slug" : "find-peak-element"
+  }, {
+    "name" : "Search a 2D Matrix",
+    "shortDescription" : "Search target in sorted 2D matrix",
+    "slug" : "search-a-2d-matrix"
+  } ]
+}

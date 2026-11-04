@@ -1,0 +1,41 @@
+{
+  "name" : "Top K Frequent Elements",
+  "slug" : "top-k-frequent-elements",
+  "category" : "Arrays & Hashing",
+  "description" : "Given an integer array nums and an integer k, return the k most frequent elements. You may return the answer in any order.",
+  "shortDescription" : "Find k most frequent elements in array",
+  "className" : "arrays.TopKFrequent",
+  "methods" : [ {
+    "name" : "computeWithHeap",
+    "label" : "Heap",
+    "code" : "public static int[] computeWithHeap(int[] nums, int k) {\n    Map<Integer, Integer> freq = new HashMap<>();\n    for (int num : nums) {\n        freq.put(num, freq.getOrDefault(num, 0) + 1);\n    }\n\n    PriorityQueue<Map.Entry<Integer, Integer>> pq = new PriorityQueue<>(\n            (a, b) -> a.getValue() - b.getValue());\n\n    for (Map.Entry<Integer, Integer> entry : freq.entrySet()) {\n        pq.offer(entry);\n        if (pq.size() > k) {\n            pq.poll();\n        }\n    }\n\n    int[] result = new int[k];\n    for (int i = k - 1; i >= 0; i--) {\n        result[i] = pq.poll().getKey();\n    }\n    return result;\n}"
+  }, {
+    "name" : "computeWithBucketSort",
+    "label" : "Bucket sort",
+    "code" : "public static int[] computeWithBucketSort(int[] nums, int k) {\n    Map<Integer, Integer> freq = new HashMap<>();\n    for (int num : nums) {\n        freq.put(num, freq.getOrDefault(num, 0) + 1);\n    }\n\n    @SuppressWarnings(\"unchecked\")\n    List<Integer>[] buckets = new List[nums.length + 1];\n    for (Map.Entry<Integer, Integer> entry : freq.entrySet()) {\n        int frequency = entry.getValue();\n        if (buckets[frequency] == null) {\n            buckets[frequency] = new ArrayList<>();\n        }\n        buckets[frequency].add(entry.getKey());\n    }\n\n    int[] result = new int[k];\n    int idx = 0;\n    for (int i = buckets.length - 1; i >= 0 && idx < k; i--) {\n        if (buckets[i] != null) {\n            for (int num : buckets[i]) {\n                result[idx++] = num;\n                if (idx == k)\n                    break;\n            }\n        }\n    }\n    return result;\n}"
+  }, {
+    "name" : "computeWithSorting",
+    "label" : "Sorting",
+    "code" : "public static int[] computeWithSorting(int[] nums, int k) {\n    Map<Integer, Integer> freq = new HashMap<>();\n    for (int num : nums) {\n        freq.put(num, freq.getOrDefault(num, 0) + 1);\n    }\n\n    List<Map.Entry<Integer, Integer>> entries = new ArrayList<>(freq.entrySet());\n    entries.sort((a, b) -> b.getValue() - a.getValue());\n\n    int[] result = new int[k];\n    for (int i = 0; i < k; i++) {\n        result[i] = entries.get(i).getKey();\n    }\n    return result;\n}"
+  } ],
+  "paramNames" : [ "nums", "k" ],
+  "paramTypes" : [ "int[]", "int" ],
+  "exampleInputs" : [ [ 1, 1, 1, 2, 2, 3 ], 2 ],
+  "related" : [ {
+    "name" : "Two Sum",
+    "shortDescription" : "Find two numbers that add up to target",
+    "slug" : "two-sum"
+  }, {
+    "name" : "Contains Duplicate",
+    "shortDescription" : "Check if array has duplicate values",
+    "slug" : "contains-duplicate"
+  }, {
+    "name" : "Missing Number",
+    "shortDescription" : "Find the missing number in array [0, n]",
+    "slug" : "missing-number"
+  }, {
+    "name" : "Single Number",
+    "shortDescription" : "Find the number that appears only once",
+    "slug" : "single-number"
+  } ]
+}

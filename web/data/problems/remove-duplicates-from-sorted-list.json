@@ -1,0 +1,41 @@
+{
+  "name" : "Remove Duplicates from Sorted List",
+  "slug" : "remove-duplicates-from-sorted-list",
+  "category" : "Linked List",
+  "description" : "Given the head of a sorted linked list, delete all duplicates such that each element appears only once. Return the linked list sorted as well.",
+  "shortDescription" : "Remove duplicates from sorted linked list",
+  "className" : "linkedlist.RemoveDuplicatesFromSortedList",
+  "methods" : [ {
+    "name" : "computeIterative",
+    "label" : "Iterative",
+    "code" : "public static ListNode computeIterative(ListNode head) {\n    ListNode current = head;\n\n    while (current != null && current.next != null) {\n        if (current.val == current.next.val) {\n            current.next = current.next.next;\n        } else {\n            current = current.next;\n        }\n    }\n\n    return head;\n}"
+  }, {
+    "name" : "computeRecursive",
+    "label" : "Recursive",
+    "code" : "public static ListNode computeRecursive(ListNode head) {\n    if (head == null || head.next == null) {\n        return head;\n    }\n\n    head.next = computeRecursive(head.next);\n\n    if (head.val == head.next.val) {\n        return head.next;\n    }\n\n    return head;\n}"
+  }, {
+    "name" : "computeWithHashSet",
+    "label" : "Hash set",
+    "code" : "public static ListNode computeWithHashSet(ListNode head) {\n    if (head == null) return null;\n\n    java.util.Set<Integer> seen = new java.util.HashSet<>();\n    ListNode current = head;\n    ListNode prev = null;\n\n    while (current != null) {\n        if (seen.contains(current.val)) {\n            prev.next = current.next;\n        } else {\n            seen.add(current.val);\n            prev = current;\n        }\n        current = current.next;\n    }\n\n    return head;\n}"
+  } ],
+  "paramNames" : [ "head" ],
+  "paramTypes" : [ "ListNode" ],
+  "exampleInputs" : null,
+  "related" : [ {
+    "name" : "Reverse Linked List",
+    "shortDescription" : "Reverse a singly linked list",
+    "slug" : "reverse-linked-list"
+  }, {
+    "name" : "Merge Two Sorted Lists",
+    "shortDescription" : "Merge two sorted linked lists",
+    "slug" : "merge-two-sorted-lists"
+  }, {
+    "name" : "Linked List Cycle",
+    "shortDescription" : "Detect if a linked list has a cycle",
+    "slug" : "linked-list-cycle"
+  }, {
+    "name" : "Add Two Numbers",
+    "shortDescription" : "Add two numbers represented by linked lists",
+    "slug" : "add-two-numbers"
+  } ]
+}

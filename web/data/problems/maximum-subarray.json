@@ -1,0 +1,45 @@
+{
+  "name" : "Maximum Subarray",
+  "slug" : "maximum-subarray",
+  "category" : "Arrays & Hashing",
+  "description" : "Given an integer array nums, find the contiguous subarray (containing at least one number) which has the largest sum and return its sum. A subarray is a contiguous part of an array.",
+  "shortDescription" : "Find maximum sum of contiguous subarray",
+  "className" : "arrays.MaximumSubarray",
+  "methods" : [ {
+    "name" : "computeWithKadane",
+    "label" : "Kadane",
+    "code" : "public static int computeWithKadane(int[] nums) {\n    int maxSum = nums[0];\n    int currentSum = nums[0];\n    \n    for (int i = 1; i < nums.length; i++) {\n        currentSum = Math.max(nums[i], currentSum + nums[i]);\n        maxSum = Math.max(maxSum, currentSum);\n    }\n    \n    return maxSum;\n}"
+  }, {
+    "name" : "computeWithDP",
+    "label" : "DP",
+    "code" : "public static int computeWithDP(int[] nums) {\n    int n = nums.length;\n    int[] dp = new int[n];\n    dp[0] = nums[0];\n    int maxSum = dp[0];\n    \n    for (int i = 1; i < n; i++) {\n        dp[i] = Math.max(nums[i], dp[i - 1] + nums[i]);\n        maxSum = Math.max(maxSum, dp[i]);\n    }\n    \n    return maxSum;\n}"
+  }, {
+    "name" : "computeWithDivideConquer",
+    "label" : "Divide conquer",
+    "code" : "public static int computeWithDivideConquer(int[] nums) {\n    return maxSubarrayRecursive(nums, 0, nums.length - 1);\n}"
+  }, {
+    "name" : "computeWithBruteForce",
+    "label" : "Brute force",
+    "code" : "public static int computeWithBruteForce(int[] nums) {\n    int maxSum = Integer.MIN_VALUE;\n    \n    for (int i = 0; i < nums.length; i++) {\n        int currentSum = 0;\n        for (int j = i; j < nums.length; j++) {\n            currentSum += nums[j];\n            maxSum = Math.max(maxSum, currentSum);\n        }\n    }\n    \n    return maxSum;\n}"
+  } ],
+  "paramNames" : [ "nums" ],
+  "paramTypes" : [ "int[]" ],
+  "exampleInputs" : [ [ -2, 1, -3, 4, -1, 2, 1, -5, 4 ] ],
+  "related" : [ {
+    "name" : "Two Sum",
+    "shortDescription" : "Find two numbers that add up to target",
+    "slug" : "two-sum"
+  }, {
+    "name" : "Contains Duplicate",
+    "shortDescription" : "Check if array has duplicate values",
+    "slug" : "contains-duplicate"
+  }, {
+    "name" : "Missing Number",
+    "shortDescription" : "Find the missing number in array [0, n]",
+    "slug" : "missing-number"
+  }, {
+    "name" : "Single Number",
+    "shortDescription" : "Find the number that appears only once",
+    "slug" : "single-number"
+  } ]
+}

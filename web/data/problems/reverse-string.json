@@ -1,0 +1,41 @@
+{
+  "name" : "Reverse String",
+  "slug" : "reverse-string",
+  "category" : "Strings",
+  "description" : "Write a function that reverses a string. The input string is given as an array of characters s. You must do this by modifying the input array in-place with O(1) extra memory.",
+  "shortDescription" : "Reverse a string in-place",
+  "className" : "strings.ReverseString",
+  "methods" : [ {
+    "name" : "computeWithTwoPointers",
+    "label" : "Two pointers",
+    "code" : "public static void computeWithTwoPointers(char[] s) {\n    int left = 0;\n    int right = s.length - 1;\n\n    while (left < right) {\n        char temp = s[left];\n        s[left] = s[right];\n        s[right] = temp;\n        left++;\n        right--;\n    }\n}"
+  }, {
+    "name" : "computeWithStringBuilder",
+    "label" : "String builder",
+    "code" : "public static String computeWithStringBuilder(String s) {\n    StringBuilder sb = new StringBuilder(s);\n    return sb.reverse().toString();\n}"
+  }, {
+    "name" : "computeWithRecursion",
+    "label" : "Recursion",
+    "code" : "public static void computeWithRecursion(char[] s) {\n    reverseRecursive(s, 0, s.length - 1);\n}"
+  } ],
+  "paramNames" : [ "s" ],
+  "paramTypes" : [ "char[]" ],
+  "exampleInputs" : [ "hello" ],
+  "related" : [ {
+    "name" : "Valid Anagram",
+    "shortDescription" : "Check if two strings are anagrams",
+    "slug" : "valid-anagram"
+  }, {
+    "name" : "Group Anagrams",
+    "shortDescription" : "Group strings that are anagrams of each other",
+    "slug" : "group-anagrams"
+  }, {
+    "name" : "Ransom Note",
+    "shortDescription" : "Check if ransom note can be constructed from magazine",
+    "slug" : "ransom-note"
+  }, {
+    "name" : "Isomorphic Strings",
+    "shortDescription" : "Check if two strings are isomorphic",
+    "slug" : "isomorphic-strings"
+  } ]
+}

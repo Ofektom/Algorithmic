@@ -1,0 +1,41 @@
+{
+  "name" : "Product of Array Except Self",
+  "slug" : "product-of-array-except-self",
+  "category" : "Arrays & Hashing",
+  "description" : "Given an integer array nums, return an array answer such that answer[i] is equal to the product of all the elements of nums except nums[i]. You must write an algorithm that runs in O(n) time and without using the division operator.",
+  "shortDescription" : "Return array where each element is product of all others",
+  "className" : "arrays.ProductExceptSelf",
+  "methods" : [ {
+    "name" : "computeWithPrefixSuffix",
+    "label" : "Prefix suffix",
+    "code" : "public static int[] computeWithPrefixSuffix(int[] nums) {\n    int n = nums.length;\n    int[] prefix = new int[n];\n    int[] suffix = new int[n];\n    int[] result = new int[n];\n\n    prefix[0] = 1;\n    for (int i = 1; i < n; i++) {\n        prefix[i] = prefix[i - 1] * nums[i - 1];\n    }\n\n    suffix[n - 1] = 1;\n    for (int i = n - 2; i >= 0; i--) {\n        suffix[i] = suffix[i + 1] * nums[i + 1];\n    }\n\n    for (int i = 0; i < n; i++) {\n        result[i] = prefix[i] * suffix[i];\n    }\n    return result;\n}"
+  }, {
+    "name" : "computeWithOptimizedSpace",
+    "label" : "Optimized space",
+    "code" : "public static int[] computeWithOptimizedSpace(int[] nums) {\n    int n = nums.length;\n    int[] result = new int[n];\n\n    result[0] = 1;\n    for (int i = 1; i < n; i++) {\n        result[i] = result[i - 1] * nums[i - 1];\n    }\n\n    int right = 1;\n    for (int i = n - 1; i >= 0; i--) {\n        result[i] *= right;\n        right *= nums[i];\n    }\n\n    return result;\n}"
+  }, {
+    "name" : "computeWithRecursion",
+    "label" : "Recursion",
+    "code" : "public static int[] computeWithRecursion(int[] nums) {\n    int n = nums.length;\n    int[] result = new int[n];\n    productRecursive(nums, result, 0, 1, 1);\n    return result;\n}"
+  } ],
+  "paramNames" : [ "nums" ],
+  "paramTypes" : [ "int[]" ],
+  "exampleInputs" : [ [ 1, 2, 3, 4 ] ],
+  "related" : [ {
+    "name" : "Two Sum",
+    "shortDescription" : "Find two numbers that add up to target",
+    "slug" : "two-sum"
+  }, {
+    "name" : "Contains Duplicate",
+    "shortDescription" : "Check if array has duplicate values",
+    "slug" : "contains-duplicate"
+  }, {
+    "name" : "Missing Number",
+    "shortDescription" : "Find the missing number in array [0, n]",
+    "slug" : "missing-number"
+  }, {
+    "name" : "Single Number",
+    "shortDescription" : "Find the number that appears only once",
+    "slug" : "single-number"
+  } ]
+}

@@ -1,0 +1,41 @@
+{
+  "name" : "Valid Palindrome II",
+  "slug" : "valid-palindrome-ii",
+  "category" : "Strings",
+  "description" : "Given a string s, return true if the s can be palindrome after deleting at most one character from it.",
+  "shortDescription" : "Check if string can be palindrome after deleting one character",
+  "className" : "strings.ValidPalindromeII",
+  "methods" : [ {
+    "name" : "computeWithTwoPointers",
+    "label" : "Two pointers",
+    "code" : "public static boolean computeWithTwoPointers(String s) {\n    int left = 0;\n    int right = s.length() - 1;\n\n    while (left < right) {\n        if (s.charAt(left) != s.charAt(right)) {\n            return isPalindrome(s, left + 1, right) || isPalindrome(s, left, right - 1);\n        }\n        left++;\n        right--;\n    }\n    return true;\n}"
+  }, {
+    "name" : "computeWithStringBuilder",
+    "label" : "String builder",
+    "code" : "public static boolean computeWithStringBuilder(String s) {\n    int left = 0;\n    int right = s.length() - 1;\n\n    while (left < right) {\n        if (s.charAt(left) != s.charAt(right)) {\n            StringBuilder sb1 = new StringBuilder(s);\n            sb1.deleteCharAt(left);\n            if (isPalindromeStringBuilder(sb1)) {\n                return true;\n            }\n\n            StringBuilder sb2 = new StringBuilder(s);\n            sb2.deleteCharAt(right);\n            return isPalindromeStringBuilder(sb2);\n        }\n        left++;\n        right--;\n    }\n    return true;\n}"
+  }, {
+    "name" : "computeWithRecursion",
+    "label" : "Recursion",
+    "code" : "public static boolean computeWithRecursion(String s) {\n    return isValidPalindromeRecursive(s, 0, s.length() - 1, true);\n}"
+  } ],
+  "paramNames" : [ "s" ],
+  "paramTypes" : [ "String" ],
+  "exampleInputs" : [ "aba" ],
+  "related" : [ {
+    "name" : "Valid Anagram",
+    "shortDescription" : "Check if two strings are anagrams",
+    "slug" : "valid-anagram"
+  }, {
+    "name" : "Group Anagrams",
+    "shortDescription" : "Group strings that are anagrams of each other",
+    "slug" : "group-anagrams"
+  }, {
+    "name" : "Ransom Note",
+    "shortDescription" : "Check if ransom note can be constructed from magazine",
+    "slug" : "ransom-note"
+  }, {
+    "name" : "Isomorphic Strings",
+    "shortDescription" : "Check if two strings are isomorphic",
+    "slug" : "isomorphic-strings"
+  } ]
+}

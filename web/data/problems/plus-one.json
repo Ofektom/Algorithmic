@@ -1,0 +1,41 @@
+{
+  "name" : "Plus One",
+  "slug" : "plus-one",
+  "category" : "Arrays & Hashing",
+  "description" : "You are given a large integer represented as an integer array digits, where each digits[i] is the ith digit of the integer. Increment the large integer by one and return the resulting array of digits.",
+  "shortDescription" : "Increment a number represented as array by one",
+  "className" : "arrays.PlusOne",
+  "methods" : [ {
+    "name" : "computeIterative",
+    "label" : "Iterative",
+    "code" : "public static int[] computeIterative(int[] digits) {\n    int n = digits.length;\n\n    for (int i = n - 1; i >= 0; i--) {\n        if (digits[i] < 9) {\n            digits[i]++;\n            return digits;\n        }\n        digits[i] = 0;\n    }\n\n    // If all digits were 9\n    int[] result = new int[n + 1];\n    result[0] = 1;\n    return result;\n}"
+  }, {
+    "name" : "computeWithArrayList",
+    "label" : "Array list",
+    "code" : "public static int[] computeWithArrayList(int[] digits) {\n    List<Integer> list = new ArrayList<>();\n    int carry = 1;\n\n    for (int i = digits.length - 1; i >= 0; i--) {\n        int sum = digits[i] + carry;\n        list.add(0, sum % 10);\n        carry = sum / 10;\n    }\n\n    if (carry > 0) {\n        list.add(0, carry);\n    }\n\n    int[] result = new int[list.size()];\n    for (int i = 0; i < list.size(); i++) {\n        result[i] = list.get(i);\n    }\n    return result;\n}"
+  }, {
+    "name" : "computeWithRecursion",
+    "label" : "Recursion",
+    "code" : "public static int[] computeWithRecursion(int[] digits) {\n    int[] result = addOneRecursive(digits, digits.length - 1, 1);\n    return result;\n}"
+  } ],
+  "paramNames" : [ "digits" ],
+  "paramTypes" : [ "int[]" ],
+  "exampleInputs" : [ [ 1, 2, 3 ] ],
+  "related" : [ {
+    "name" : "Two Sum",
+    "shortDescription" : "Find two numbers that add up to target",
+    "slug" : "two-sum"
+  }, {
+    "name" : "Contains Duplicate",
+    "shortDescription" : "Check if array has duplicate values",
+    "slug" : "contains-duplicate"
+  }, {
+    "name" : "Missing Number",
+    "shortDescription" : "Find the missing number in array [0, n]",
+    "slug" : "missing-number"
+  }, {
+    "name" : "Single Number",
+    "shortDescription" : "Find the number that appears only once",
+    "slug" : "single-number"
+  } ]
+}

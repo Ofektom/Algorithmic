@@ -1,0 +1,45 @@
+{
+  "name" : "Rotate Array",
+  "slug" : "rotate-array",
+  "category" : "Arrays & Hashing",
+  "description" : "Given an integer array nums, rotate the array to the right by k steps, where k is non-negative.",
+  "shortDescription" : "Rotate array to the right by k steps",
+  "className" : "arrays.RotateArray",
+  "methods" : [ {
+    "name" : "computeWithExtraArray",
+    "label" : "Extra array",
+    "code" : "public static void computeWithExtraArray(int[] nums, int k) {\n    int n = nums.length;\n    k = k % n;\n    int[] result = new int[n];\n\n    for (int i = 0; i < n; i++) {\n        result[(i + k) % n] = nums[i];\n    }\n\n    System.arraycopy(result, 0, nums, 0, n);\n}"
+  }, {
+    "name" : "computeWithReverse",
+    "label" : "Reverse",
+    "code" : "public static void computeWithReverse(int[] nums, int k) {\n    int n = nums.length;\n    k = k % n;\n\n    reverse(nums, 0, n - 1);\n    reverse(nums, 0, k - 1);\n    reverse(nums, k, n - 1);\n}"
+  }, {
+    "name" : "computeWithArrayList",
+    "label" : "Array list",
+    "code" : "public static void computeWithArrayList(int[] nums, int k) {\n    int n = nums.length;\n    k = k % n;\n    java.util.List<Integer> list = new java.util.ArrayList<>();\n\n    for (int num : nums) {\n        list.add(num);\n    }\n\n    for (int i = 0; i < k; i++) {\n        list.add(0, list.remove(list.size() - 1));\n    }\n\n    for (int i = 0; i < n; i++) {\n        nums[i] = list.get(i);\n    }\n}"
+  }, {
+    "name" : "computeWithCyclic",
+    "label" : "Cyclic",
+    "code" : "public static void computeWithCyclic(int[] nums, int k) {\n    int n = nums.length;\n    k = k % n;\n    int count = 0;\n\n    for (int start = 0; count < n; start++) {\n        int current = start;\n        int prev = nums[start];\n\n        do {\n            int next = (current + k) % n;\n            int temp = nums[next];\n            nums[next] = prev;\n            prev = temp;\n            current = next;\n            count++;\n        } while (start != current);\n    }\n}"
+  } ],
+  "paramNames" : [ "nums", "k" ],
+  "paramTypes" : [ "int[]", "int" ],
+  "exampleInputs" : [ [ 1, 2, 3, 4, 5, 6, 7 ], 3 ],
+  "related" : [ {
+    "name" : "Two Sum",
+    "shortDescription" : "Find two numbers that add up to target",
+    "slug" : "two-sum"
+  }, {
+    "name" : "Contains Duplicate",
+    "shortDescription" : "Check if array has duplicate values",
+    "slug" : "contains-duplicate"
+  }, {
+    "name" : "Missing Number",
+    "shortDescription" : "Find the missing number in array [0, n]",
+    "slug" : "missing-number"
+  }, {
+    "name" : "Single Number",
+    "shortDescription" : "Find the number that appears only once",
+    "slug" : "single-number"
+  } ]
+}

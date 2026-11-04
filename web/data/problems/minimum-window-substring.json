@@ -1,0 +1,37 @@
+{
+  "name" : "Minimum Window Substring",
+  "slug" : "minimum-window-substring",
+  "category" : "Sliding Window",
+  "description" : "Given two strings s and t, return the minimum window substring of s such that every character in t (including duplicates) is included in the window. If there is no such substring, return the empty string \"\".",
+  "shortDescription" : "Find minimum window substring containing all characters of t",
+  "className" : "window.MinimumWindowSubstring",
+  "methods" : [ {
+    "name" : "computeWithHashMap",
+    "label" : "Hash map",
+    "code" : "public static String computeWithHashMap(String s, String t) {\n    if (s.length() == 0 || t.length() == 0 || s.length() < t.length()) {\n        return \"\";\n    }\n\n    Map<Character, Integer> tMap = new HashMap<>();\n    for (char c : t.toCharArray()) {\n        tMap.put(c, tMap.getOrDefault(c, 0) + 1);\n    }\n\n    int required = tMap.size();\n    int left = 0, right = 0;\n    int formed = 0;\n\n    Map<Character, Integer> windowMap = new HashMap<>();\n    int[] result = {-1, 0, 0}; // {window length, left, right}\n\n    while (right < s.length()) {\n        char c = s.charAt(right);\n        windowMap.put(c, windowMap.getOrDefault(c, 0) + 1);\n\n        if (tMap.containsKey(c) && windowMap.get(c).intValue() == tMap.get(c).intValue()) {\n            formed++;\n        }\n\n        while (left <= right && formed == required) {\n            c = s.charAt(left);\n            if (result[0] == -1 || right - left + 1 < result[0]) {\n                result[0] = right - left + 1;\n                result[1] = left;\n                result[2] = right;\n            }\n\n            windowMap.put(c, windowMap.get(c) - 1);\n            if (tMap.containsKey(c) && windowMap.get(c).intValue() < tMap.get(c).intValue()) {\n                formed--;\n            }\n            left++;\n        }\n        right++;\n    }\n\n    return result[0] == -1 ? \"\" : s.substring(result[1], result[2] + 1);\n}"
+  }, {
+    "name" : "computeWithArray",
+    "label" : "Array",
+    "code" : "public static String computeWithArray(String s, String t) {\n    if (s.length() == 0 || t.length() == 0 || s.length() < t.length()) {\n        return \"\";\n    }\n\n    int[] tCount = new int[128];\n    for (char c : t.toCharArray()) {\n        tCount[c]++;\n    }\n\n    int required = 0;\n    for (int count : tCount) {\n        if (count > 0) required++;\n    }\n\n    int[] windowCount = new int[128];\n    int left = 0, right = 0;\n    int formed = 0;\n\n    int[] result = {-1, 0, 0};\n\n    while (right < s.length()) {\n        char c = s.charAt(right);\n        windowCount[c]++;\n\n        if (tCount[c] > 0 && windowCount[c] == tCount[c]) {\n            formed++;\n        }\n\n        while (left <= right && formed == required) {\n            c = s.charAt(left);\n            if (result[0] == -1 || right - left + 1 < result[0]) {\n                result[0] = right - left + 1;\n                result[1] = left;\n                result[2] = right;\n            }\n\n            windowCount[c]--;\n            if (tCount[c] > 0 && windowCount[c] < tCount[c]) {\n                formed--;\n            }\n            left++;\n        }\n        right++;\n    }\n\n    return result[0] == -1 ? \"\" : s.substring(result[1], result[2] + 1);\n}"
+  } ],
+  "paramNames" : [ "s", "t" ],
+  "paramTypes" : [ "String", "String" ],
+  "exampleInputs" : [ "ADOBECODEBANC", "ABC" ],
+  "related" : [ {
+    "name" : "Best Time to Buy and Sell Stock",
+    "shortDescription" : "Find maximum profit from buying and selling stock",
+    "slug" : "best-time-to-buy-and-sell-stock"
+  }, {
+    "name" : "Longest Substring Without Repeating",
+    "shortDescription" : "Find longest substring without repeating characters",
+    "slug" : "longest-substring-without-repeating"
+  }, {
+    "name" : "Longest Repeating Character Replacement",
+    "shortDescription" : "Find longest substring after replacing k characters",
+    "slug" : "longest-repeating-character-replacement"
+  }, {
+    "name" : "Minimum Size Subarray Sum",
+    "shortDescription" : "Find minimum length subarray with sum >= target",
+    "slug" : "minimum-size-subarray-sum"
+  } ]
+}

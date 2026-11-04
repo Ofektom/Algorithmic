@@ -1,0 +1,37 @@
+{
+  "name" : "Linked List Cycle II",
+  "slug" : "linked-list-cycle-ii",
+  "category" : "Linked List",
+  "description" : "Given the head of a linked list, return the node where the cycle begins. If there is no cycle, return null. There is a cycle in a linked list if there is some node in the list that can be reached again by continuously following the next pointer.",
+  "shortDescription" : "Find the node where cycle begins in linked list",
+  "className" : "linkedlist.LinkedListCycleII",
+  "methods" : [ {
+    "name" : "computeWithTwoPointers",
+    "label" : "Two pointers",
+    "code" : "public static ListNode computeWithTwoPointers(ListNode head) {\n    ListNode slow = head;\n    ListNode fast = head;\n\n    while (fast != null && fast.next != null) {\n        slow = slow.next;\n        fast = fast.next.next;\n\n        if (slow == fast) {\n            ListNode pointer = head;\n            while (pointer != slow) {\n                pointer = pointer.next;\n                slow = slow.next;\n            }\n            return pointer;\n        }\n    }\n\n    return null;\n}"
+  }, {
+    "name" : "computeWithHashSet",
+    "label" : "Hash set",
+    "code" : "public static ListNode computeWithHashSet(ListNode head) {\n    Set<ListNode> visited = new HashSet<>();\n    ListNode current = head;\n\n    while (current != null) {\n        if (visited.contains(current)) {\n            return current;\n        }\n        visited.add(current);\n        current = current.next;\n    }\n\n    return null;\n}"
+  } ],
+  "paramNames" : [ "head" ],
+  "paramTypes" : [ "ListNode" ],
+  "exampleInputs" : null,
+  "related" : [ {
+    "name" : "Reverse Linked List",
+    "shortDescription" : "Reverse a singly linked list",
+    "slug" : "reverse-linked-list"
+  }, {
+    "name" : "Merge Two Sorted Lists",
+    "shortDescription" : "Merge two sorted linked lists",
+    "slug" : "merge-two-sorted-lists"
+  }, {
+    "name" : "Linked List Cycle",
+    "shortDescription" : "Detect if a linked list has a cycle",
+    "slug" : "linked-list-cycle"
+  }, {
+    "name" : "Add Two Numbers",
+    "shortDescription" : "Add two numbers represented by linked lists",
+    "slug" : "add-two-numbers"
+  } ]
+}

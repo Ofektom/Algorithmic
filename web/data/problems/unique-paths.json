@@ -1,0 +1,41 @@
+{
+  "name" : "Unique Paths",
+  "slug" : "unique-paths",
+  "category" : "Dynamic Programming",
+  "description" : "There is a robot on an m x n grid. The robot is initially located at the top-left corner (grid[0][0]). The robot tries to move to the bottom-right corner (grid[m - 1][n - 1]). The robot can only move either down or right at any point in time. Given the two integers m and n, return the number of possible unique paths that the robot can take to reach the bottom-right corner.",
+  "shortDescription" : "Count unique paths from top-left to bottom-right",
+  "className" : "dp.UniquePaths",
+  "methods" : [ {
+    "name" : "computeWithDP",
+    "label" : "DP",
+    "code" : "public static int computeWithDP(int m, int n) {\n    int[][] dp = new int[m][n];\n    \n    for (int i = 0; i < m; i++) dp[i][0] = 1;\n    for (int j = 0; j < n; j++) dp[0][j] = 1;\n    \n    for (int i = 1; i < m; i++) {\n        for (int j = 1; j < n; j++) {\n            dp[i][j] = dp[i - 1][j] + dp[i][j - 1];\n        }\n    }\n    \n    return dp[m - 1][n - 1];\n}"
+  }, {
+    "name" : "computeWithOptimizedSpace",
+    "label" : "Optimized space",
+    "code" : "public static int computeWithOptimizedSpace(int m, int n) {\n    int[] dp = new int[n];\n    Arrays.fill(dp, 1);\n    \n    for (int i = 1; i < m; i++) {\n        for (int j = 1; j < n; j++) {\n            dp[j] += dp[j - 1];\n        }\n    }\n    \n    return dp[n - 1];\n}"
+  }, {
+    "name" : "computeWithRecursion",
+    "label" : "Recursion",
+    "code" : "public static int computeWithRecursion(int m, int n) {\n    Map<String, Integer> memo = new HashMap<>();\n    return uniquePathsRecursive(m, n, 0, 0, memo);\n}"
+  } ],
+  "paramNames" : [ "m", "n" ],
+  "paramTypes" : [ "int", "int" ],
+  "exampleInputs" : [ 3, 7 ],
+  "related" : [ {
+    "name" : "Climbing Stairs",
+    "shortDescription" : "Find distinct ways to climb n steps (1 or 2 at a time)",
+    "slug" : "climbing-stairs"
+  }, {
+    "name" : "House Robber",
+    "shortDescription" : "Find maximum money robbing houses (no two adjacent)",
+    "slug" : "house-robber"
+  }, {
+    "name" : "Coin Change",
+    "shortDescription" : "Find minimum coins to make amount",
+    "slug" : "coin-change"
+  }, {
+    "name" : "Word Break",
+    "shortDescription" : "Check if string can be segmented into dictionary words",
+    "slug" : "word-break"
+  } ]
+}

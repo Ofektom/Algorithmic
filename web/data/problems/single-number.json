@@ -1,0 +1,41 @@
+{
+  "name" : "Single Number",
+  "slug" : "single-number",
+  "category" : "Arrays & Hashing",
+  "description" : "Given a non-empty array of integers nums, every element appears twice except for one. Find that single one.",
+  "shortDescription" : "Find the number that appears only once",
+  "className" : "arrays.SingleNumber",
+  "methods" : [ {
+    "name" : "computeWithXOR",
+    "label" : "XOR",
+    "code" : "public static int computeWithXOR(int[] nums) {\n    int result = 0;\n    for (int num : nums) {\n        result ^= num;\n    }\n    return result;\n}"
+  }, {
+    "name" : "computeWithHashSet",
+    "label" : "Hash set",
+    "code" : "public static int computeWithHashSet(int[] nums) {\n    Set<Integer> set = new HashSet<>();\n    for (int num : nums) {\n        if (set.contains(num)) {\n            set.remove(num);\n        } else {\n            set.add(num);\n        }\n    }\n    return set.iterator().next();\n}"
+  }, {
+    "name" : "computeWithHashMap",
+    "label" : "Hash map",
+    "code" : "public static int computeWithHashMap(int[] nums) {\n    Map<Integer, Integer> count = new HashMap<>();\n    for (int num : nums) {\n        count.put(num, count.getOrDefault(num, 0) + 1);\n    }\n\n    for (Map.Entry<Integer, Integer> entry : count.entrySet()) {\n        if (entry.getValue() == 1) {\n            return entry.getKey();\n        }\n    }\n    return -1;\n}"
+  } ],
+  "paramNames" : [ "nums" ],
+  "paramTypes" : [ "int[]" ],
+  "exampleInputs" : [ [ 2, 2, 1 ] ],
+  "related" : [ {
+    "name" : "Two Sum",
+    "shortDescription" : "Find two numbers that add up to target",
+    "slug" : "two-sum"
+  }, {
+    "name" : "Contains Duplicate",
+    "shortDescription" : "Check if array has duplicate values",
+    "slug" : "contains-duplicate"
+  }, {
+    "name" : "Missing Number",
+    "shortDescription" : "Find the missing number in array [0, n]",
+    "slug" : "missing-number"
+  }, {
+    "name" : "Plus One",
+    "shortDescription" : "Increment a number represented as array by one",
+    "slug" : "plus-one"
+  } ]
+}

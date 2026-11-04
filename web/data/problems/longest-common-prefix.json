@@ -1,0 +1,41 @@
+{
+  "name" : "Longest Common Prefix",
+  "slug" : "longest-common-prefix",
+  "category" : "Strings",
+  "description" : "Write a function to find the longest common prefix string amongst an array of strings. If there is no common prefix, return an empty string.",
+  "shortDescription" : "Find longest common prefix among strings",
+  "className" : "strings.LongestCommonPrefix",
+  "methods" : [ {
+    "name" : "computeHorizontal",
+    "label" : "Horizontal",
+    "code" : "public static String computeHorizontal(String[] strs) {\n    if (strs == null || strs.length == 0) {\n        return \"\";\n    }\n\n    String prefix = strs[0];\n    for (int i = 1; i < strs.length; i++) {\n        while (strs[i].indexOf(prefix) != 0) {\n            prefix = prefix.substring(0, prefix.length() - 1);\n            if (prefix.isEmpty()) {\n                return \"\";\n            }\n        }\n    }\n    return prefix;\n}"
+  }, {
+    "name" : "computeVertical",
+    "label" : "Vertical",
+    "code" : "public static String computeVertical(String[] strs) {\n    if (strs == null || strs.length == 0) {\n        return \"\";\n    }\n\n    for (int i = 0; i < strs[0].length(); i++) {\n        char c = strs[0].charAt(i);\n        for (int j = 1; j < strs.length; j++) {\n            if (i == strs[j].length() || strs[j].charAt(i) != c) {\n                return strs[0].substring(0, i);\n            }\n        }\n    }\n    return strs[0];\n}"
+  }, {
+    "name" : "computeWithStringBuilder",
+    "label" : "String builder",
+    "code" : "public static String computeWithStringBuilder(String[] strs) {\n    if (strs == null || strs.length == 0) {\n        return \"\";\n    }\n\n    StringBuilder prefix = new StringBuilder();\n    int minLen = Integer.MAX_VALUE;\n\n    for (String str : strs) {\n        minLen = Math.min(minLen, str.length());\n    }\n\n    for (int i = 0; i < minLen; i++) {\n        char c = strs[0].charAt(i);\n        for (int j = 1; j < strs.length; j++) {\n            if (strs[j].charAt(i) != c) {\n                return prefix.toString();\n            }\n        }\n        prefix.append(c);\n    }\n    return prefix.toString();\n}"
+  } ],
+  "paramNames" : [ "strs" ],
+  "paramTypes" : [ "String[]" ],
+  "exampleInputs" : [ [ "flower", "flow", "flight" ] ],
+  "related" : [ {
+    "name" : "Valid Anagram",
+    "shortDescription" : "Check if two strings are anagrams",
+    "slug" : "valid-anagram"
+  }, {
+    "name" : "Group Anagrams",
+    "shortDescription" : "Group strings that are anagrams of each other",
+    "slug" : "group-anagrams"
+  }, {
+    "name" : "Ransom Note",
+    "shortDescription" : "Check if ransom note can be constructed from magazine",
+    "slug" : "ransom-note"
+  }, {
+    "name" : "Isomorphic Strings",
+    "shortDescription" : "Check if two strings are isomorphic",
+    "slug" : "isomorphic-strings"
+  } ]
+}

@@ -1,0 +1,25 @@
+{
+  "name" : "Number of Islands",
+  "slug" : "number-of-islands",
+  "category" : "Graphs",
+  "description" : "Given an m x n 2D binary grid grid which represents a map of '1's (land) and '0's (water), return the number of islands.",
+  "shortDescription" : "Count number of islands in 2D grid",
+  "className" : "graph.NumberOfIslands",
+  "methods" : [ {
+    "name" : "computeWithDFS",
+    "label" : "DFS",
+    "code" : "public static int computeWithDFS(char[][] grid) {\n    if (grid == null || grid.length == 0) return 0;\n\n    int m = grid.length;\n    int n = grid[0].length;\n    int count = 0;\n\n    for (int i = 0; i < m; i++) {\n        for (int j = 0; j < n; j++) {\n            if (grid[i][j] == '1') {\n                count++;\n                dfs(grid, i, j, m, n);\n            }\n        }\n    }\n\n    return count;\n}"
+  }, {
+    "name" : "computeWithBFS",
+    "label" : "BFS",
+    "code" : "public static int computeWithBFS(char[][] grid) {\n    if (grid == null || grid.length == 0) return 0;\n\n    int m = grid.length;\n    int n = grid[0].length;\n    int count = 0;\n    int[][] directions = {{0, 1}, {0, -1}, {1, 0}, {-1, 0}};\n\n    for (int i = 0; i < m; i++) {\n        for (int j = 0; j < n; j++) {\n            if (grid[i][j] == '1') {\n                count++;\n                java.util.Queue<int[]> queue = new java.util.LinkedList<>();\n                queue.offer(new int[]{i, j});\n                grid[i][j] = '0';\n\n                while (!queue.isEmpty()) {\n                    int[] current = queue.poll();\n                    for (int[] dir : directions) {\n                        int x = current[0] + dir[0];\n                        int y = current[1] + dir[1];\n                        if (x >= 0 && x < m && y >= 0 && y < n && grid[x][y] == '1') {\n                            grid[x][y] = '0';\n                            queue.offer(new int[]{x, y});\n                        }\n                    }\n                }\n            }\n        }\n    }\n\n    return count;\n}"
+  }, {
+    "name" : "computeWithUnionFind",
+    "label" : "Union find",
+    "code" : "public static int computeWithUnionFind(char[][] grid) {\n    if (grid == null || grid.length == 0) return 0;\n\n    int m = grid.length;\n    int n = grid[0].length;\n    UnionFind uf = new UnionFind(grid);\n\n    for (int i = 0; i < m; i++) {\n        for (int j = 0; j < n; j++) {\n            if (grid[i][j] == '1') {\n                if (i + 1 < m && grid[i + 1][j] == '1') {\n                    uf.union(i * n + j, (i + 1) * n + j);\n                }\n                if (j + 1 < n && grid[i][j + 1] == '1') {\n                    uf.union(i * n + j, i * n + j + 1);\n                }\n            }\n        }\n    }\n\n    return uf.count;\n}"
+  } ],
+  "paramNames" : [ "grid" ],
+  "paramTypes" : [ "char[][]" ],
+  "exampleInputs" : [ [ "11110", "11010", "11000", "00000" ] ],
+  "related" : [ ]
+}

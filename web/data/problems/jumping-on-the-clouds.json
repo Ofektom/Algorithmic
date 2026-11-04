@@ -1,0 +1,25 @@
+{
+  "name" : "Jumping on the Clouds",
+  "slug" : "jumping-on-the-clouds",
+  "category" : "Greedy",
+  "description" : "Clouds are numbered 0 (safe) or 1 (thunderhead). Starting on the first cloud, you may jump 1 or 2 clouds ahead, but only onto safe clouds. Determine the minimum number of jumps needed to reach the last cloud. The first and last clouds are always safe.",
+  "shortDescription" : "Minimum jumps to reach the last safe cloud",
+  "className" : "greedy.JumpingOnTheClouds",
+  "methods" : [ {
+    "name" : "computeWithGreedy",
+    "label" : "Greedy",
+    "code" : "public static int computeWithGreedy(int[] clouds) {\n    int jumps = 0;\n    int i = 0;\n    while (i < clouds.length - 1) {\n        i += (i + 2 < clouds.length && clouds[i + 2] == 0) ? 2 : 1;\n        jumps++;\n    }\n    return jumps;\n}"
+  }, {
+    "name" : "computeWithDP",
+    "label" : "DP",
+    "code" : "public static int computeWithDP(int[] clouds) {\n    int n = clouds.length;\n    int[] dp = new int[n];\n    Arrays.fill(dp, Integer.MAX_VALUE);\n    dp[0] = 0;\n    for (int i = 1; i < n; i++) {\n        if (clouds[i] == 1) continue;\n        if (dp[i - 1] != Integer.MAX_VALUE) dp[i] = dp[i - 1] + 1;\n        if (i >= 2 && dp[i - 2] != Integer.MAX_VALUE) dp[i] = Math.min(dp[i], dp[i - 2] + 1);\n    }\n    return dp[n - 1];\n}"
+  } ],
+  "paramNames" : [ "clouds" ],
+  "paramTypes" : [ "int[]" ],
+  "exampleInputs" : [ [ 0, 0, 1, 0, 0, 1, 0 ] ],
+  "related" : [ {
+    "name" : "Jump Game",
+    "shortDescription" : "Check if can reach last index by jumping",
+    "slug" : "jump-game"
+  } ]
+}

@@ -1,0 +1,41 @@
+{
+  "name" : "Ransom Note",
+  "slug" : "ransom-note",
+  "category" : "Strings",
+  "description" : "Given two strings ransomNote and magazine, return true if ransomNote can be constructed by using the letters from magazine and false otherwise. Each letter in magazine can only be used once in ransomNote.",
+  "shortDescription" : "Check if ransom note can be constructed from magazine",
+  "className" : "strings.RansomNote",
+  "methods" : [ {
+    "name" : "computeWithHashMap",
+    "label" : "Hash map",
+    "code" : "public static boolean computeWithHashMap(String ransomNote, String magazine) {\n    Map<Character, Integer> magazineCount = new HashMap<>();\n    for (char c : magazine.toCharArray()) {\n        magazineCount.put(c, magazineCount.getOrDefault(c, 0) + 1);\n    }\n\n    for (char c : ransomNote.toCharArray()) {\n        int count = magazineCount.getOrDefault(c, 0);\n        if (count == 0) {\n            return false;\n        }\n        magazineCount.put(c, count - 1);\n    }\n    return true;\n}"
+  }, {
+    "name" : "computeWithArray",
+    "label" : "Array",
+    "code" : "public static boolean computeWithArray(String ransomNote, String magazine) {\n    int[] count = new int[26];\n\n    for (char c : magazine.toCharArray()) {\n        count[c - 'a']++;\n    }\n\n    for (char c : ransomNote.toCharArray()) {\n        if (count[c - 'a'] <= 0) {\n            return false;\n        }\n        count[c - 'a']--;\n    }\n    return true;\n}"
+  }, {
+    "name" : "computeWithStringBuilder",
+    "label" : "String builder",
+    "code" : "public static boolean computeWithStringBuilder(String ransomNote, String magazine) {\n    StringBuilder sb = new StringBuilder(magazine);\n\n    for (char c : ransomNote.toCharArray()) {\n        int index = sb.indexOf(String.valueOf(c));\n        if (index == -1) {\n            return false;\n        }\n        sb.deleteCharAt(index);\n    }\n    return true;\n}"
+  } ],
+  "paramNames" : [ "ransomNote", "magazine" ],
+  "paramTypes" : [ "String", "String" ],
+  "exampleInputs" : [ "aa", "aab" ],
+  "related" : [ {
+    "name" : "Valid Anagram",
+    "shortDescription" : "Check if two strings are anagrams",
+    "slug" : "valid-anagram"
+  }, {
+    "name" : "Group Anagrams",
+    "shortDescription" : "Group strings that are anagrams of each other",
+    "slug" : "group-anagrams"
+  }, {
+    "name" : "Isomorphic Strings",
+    "shortDescription" : "Check if two strings are isomorphic",
+    "slug" : "isomorphic-strings"
+  }, {
+    "name" : "Word Pattern",
+    "shortDescription" : "Check if string follows word pattern",
+    "slug" : "word-pattern"
+  } ]
+}

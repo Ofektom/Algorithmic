@@ -3,8 +3,8 @@
   "cleanUrls": true,
   "trailingSlash": false,
   "rewrites": [
-    { "source": "/problem/:name", "destination": "/problem.html" },
-    { "source": "/category/:name*", "destination": "/category.html" }
+    { "source": "/problem/:name", "destination": "/problem" },
+    { "source": "/category/:name*", "destination": "/category" }
   ],
   "headers": [
     {

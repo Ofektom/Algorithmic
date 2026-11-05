@@ -3,7 +3,7 @@
     const history = Store.history();
     const chips = document.getElementById('recentChips');
     history.slice(0, 4).forEach(function(entry) {
-        chips.appendChild(el('a.chip', { href: entry.url, text: entry.title }));
+        chips.appendChild(el('a.chip', { href: entry.url, title: entry.title }, [el('span.label', { text: entry.title })]));
     });
     chips.hidden = history.length === 0;
 

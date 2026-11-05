@@ -426,3 +426,32 @@ table.compare tr.mismatch td { color: var(--err); }
     /* Clear the floating Ask pill */
     .composer { bottom: 96px; }
 }
+
+/* iPhone Safari zooms the page in when a text box under 16px gets focus, and the zoom sticks
+   after going back (the bottom bar then looks shifted). 16px on touch screens prevents it. */
+@media (max-width: 1023px) {
+    .field input, .field select, .field textarea, .composer textarea, .search input { font-size: 16px; }
+}
+
+/* Long spoken questions: a chip or title wider than the phone made Android zoom the whole page
+   out (the bottom bar then looked like desktop). Shorten instead, and clip anything that still
+   spills, so one long line can't widen the page. clip, unlike hidden, keeps sticky working. */
+.page { overflow-x: clip; }
+.chip { max-width: 100%; min-width: 0; }
+.chip .label { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0; }
+.row-link .t, .row-link .st {
+    overflow-wrap: anywhere; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 3; overflow: hidden;
+}
+.row-link .st { -webkit-line-clamp: 2; }
+.appbar h1 { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 3; overflow: hidden; }
+
+/* Thumb-sized hit areas (44px) for small text links, without changing how they look */
+#seeAll, .link-btn { display: inline-block; padding: 12px 6px; margin: -12px -6px; }
+.setting.tappable { cursor: pointer; }
+.tabs [role="tab"] { min-width: 44px; }
+
+/* Landscape phones: a pinned chat box would cover most of the short screen, so it scrolls
+   with the page there instead */
+@media (max-height: 500px) and (max-width: 1023px) {
+    .composer { position: static; }
+}

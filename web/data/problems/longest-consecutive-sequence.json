@@ -12,7 +12,7 @@
   }, {
     "name" : "computeWithRecursion",
     "label" : "Recursion",
-    "code" : "public static int computeWithRecursion(int[] nums) {\n    if (nums.length == 0)\n        return 0;\n\n    Set<Integer> set = new HashSet<>();\n    for (int num : nums) {\n        set.add(num);\n    }\n\n    int longest = 0;\n    for (int num : set) {\n        if (!set.contains(num - 1)) {\n            longest = Math.max(longest, findSequenceLength(set, num));\n        }\n    }\n    return longest;\n}"
+    "code" : "public static int computeWithRecursion(int[] nums) {\n    if (nums.length == 0)\n        return 0;\n\n    Set<Integer> set = new HashSet<>();\n    for (int num : nums) {\n        set.add(num);\n    }\n\n    int longest = 0;\n    for (int num : set) {\n        if (!set.contains(num - 1)) {\n            longest = Math.max(longest, findSequenceLength(set, num));\n        }\n    }\n    return longest;\n}\n\nprivate static int findSequenceLength(Set<Integer> set, int num) {\n    if (!set.contains(num))\n        return 0;\n    return 1 + findSequenceLength(set, num + 1);\n}"
   }, {
     "name" : "computeWithSorting",
     "label" : "Sorting",
@@ -37,5 +37,42 @@
     "name" : "Single Number",
     "slug" : "single-number",
     "shortDescription" : "Find the number that appears only once"
-  } ]
+  } ],
+  "explanation" : {
+    "idea" : "A run of consecutive numbers has exactly one start: a number whose predecessor (x − 1) isn't in the data. Only count upward from those starts, so each number is visited a constant number of times.",
+    "pattern" : "Hash set with sequence starts",
+    "analogy" : "Finding the longest chain of house numbers on a street: only start counting at a house whose left neighbour's number is missing, then walk right until the numbers stop.",
+    "recommended" : "computeWithHashSet",
+    "methods" : {
+      "computeWithHashSet" : {
+        "java" : "7",
+        "summary" : "Put all numbers in a set; from each sequence start, count up.",
+        "steps" : [ "Add every number to a set (this also removes duplicates).", "For each number, skip it unless num − 1 is absent: it isn't the start of a run.", "From a start, keep checking num + 1, num + 2… and count the run.", "Keep the longest run." ],
+        "time" : "O(n)",
+        "space" : "O(n)",
+        "timeWhy" : "Each number is the start check once and is counted in at most one run, so the total work is about 2n.",
+        "spaceWhy" : "The set of n numbers."
+      },
+      "computeWithRecursion" : {
+        "java" : "7",
+        "summary" : "Same starts, but the run length is counted recursively.",
+        "steps" : [ "Build the set and find the starts as above.", "findSequenceLength(set, num) returns 0 if num isn't present, else 1 + the length from num + 1." ],
+        "time" : "O(n)",
+        "space" : "O(n)",
+        "timeWhy" : "The same visits as the iterative version.",
+        "spaceWhy" : "The set, plus a call stack as deep as the longest run (a run of a million numbers would overflow)."
+      },
+      "computeWithSorting" : {
+        "java" : "any",
+        "summary" : "Sort, then walk and count runs, ignoring repeated values.",
+        "steps" : [ "Sort the array.", "If the next value is previous + 1, extend the run.", "If it's equal, skip it (duplicates don't break a run).", "Otherwise close the run and start a new one." ],
+        "time" : "O(n log n)",
+        "space" : "O(log n)",
+        "timeWhy" : "Sorting dominates; this breaks the O(n) requirement.",
+        "spaceWhy" : "Sort stack space; changes the input."
+      }
+    },
+    "pitfalls" : [ "Counting up from every number, not just starts, makes it O(n²).", "Forgetting duplicates in the sorted version ([1, 2, 2, 3] is a run of 3)." ],
+    "interview" : [ "The key sentence: \"only start counting where num − 1 is missing\". Then argue why that makes it linear.", "Mention the sorting version as the simpler O(n log n) baseline." ]
+  }
 }

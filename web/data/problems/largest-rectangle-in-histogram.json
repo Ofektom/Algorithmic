@@ -16,7 +16,7 @@
   }, {
     "name" : "computeWithDivideConquer",
     "label" : "Divide conquer",
-    "code" : "public static int computeWithDivideConquer(int[] heights) {\n    return calculateArea(heights, 0, heights.length - 1);\n}"
+    "code" : "public static int computeWithDivideConquer(int[] heights) {\n    return calculateArea(heights, 0, heights.length - 1);\n}\n\nprivate static int calculateArea(int[] heights, int start, int end) {\n    if (start > end) return 0;\n    \n    int minIndex = start;\n    for (int i = start; i <= end; i++) {\n        if (heights[i] < heights[minIndex]) {\n            minIndex = i;\n        }\n    }\n    \n    int currentArea = heights[minIndex] * (end - start + 1);\n    int leftArea = calculateArea(heights, start, minIndex - 1);\n    int rightArea = calculateArea(heights, minIndex + 1, end);\n    \n    return Math.max(currentArea, Math.max(leftArea, rightArea));\n}"
   } ],
   "paramNames" : [ "heights" ],
   "paramTypes" : [ "int[]" ],

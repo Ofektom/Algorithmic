@@ -12,7 +12,7 @@
   }, {
     "name" : "computeWithRecursion",
     "label" : "Recursion",
-    "code" : "public static int computeWithRecursion(int[] coins, int amount) {\n    Map<Integer, Integer> memo = new HashMap<>();\n    int result = coinChangeRecursive(coins, amount, memo);\n    return result == Integer.MAX_VALUE ? -1 : result;\n}"
+    "code" : "public static int computeWithRecursion(int[] coins, int amount) {\n    Map<Integer, Integer> memo = new HashMap<>();\n    int result = coinChangeRecursive(coins, amount, memo);\n    return result == Integer.MAX_VALUE ? -1 : result;\n}\n\nprivate static int coinChangeRecursive(int[] coins, int amount, Map<Integer, Integer> memo) {\n    if (amount == 0) return 0;\n    if (amount < 0) return Integer.MAX_VALUE;\n    if (memo.containsKey(amount)) return memo.get(amount);\n    \n    int minCoins = Integer.MAX_VALUE;\n    for (int coin : coins) {\n        int result = coinChangeRecursive(coins, amount - coin, memo);\n        if (result != Integer.MAX_VALUE) {\n            minCoins = Math.min(minCoins, result + 1);\n        }\n    }\n    \n    memo.put(amount, minCoins);\n    return minCoins;\n}"
   }, {
     "name" : "computeWithPureRecursion",
     "label" : "Pure recursion",

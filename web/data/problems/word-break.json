@@ -12,7 +12,7 @@
   }, {
     "name" : "computeWithRecursion",
     "label" : "Recursion",
-    "code" : "public static boolean computeWithRecursion(String s, List<String> wordDict) {\n    Set<String> wordSet = new HashSet<>(wordDict);\n    Map<String, Boolean> memo = new HashMap<>();\n    return wordBreakRecursive(s, wordSet, memo);\n}"
+    "code" : "public static boolean computeWithRecursion(String s, List<String> wordDict) {\n    Set<String> wordSet = new HashSet<>(wordDict);\n    Map<String, Boolean> memo = new HashMap<>();\n    return wordBreakRecursive(s, wordSet, memo);\n}\n\nprivate static boolean wordBreakRecursive(String s, Set<String> wordSet, Map<String, Boolean> memo) {\n    if (s.isEmpty()) return true;\n    if (memo.containsKey(s)) return memo.get(s);\n\n    for (int i = 1; i <= s.length(); i++) {\n        String prefix = s.substring(0, i);\n        if (wordSet.contains(prefix) && wordBreakRecursive(s.substring(i), wordSet, memo)) {\n            memo.put(s, true);\n            return true;\n        }\n    }\n\n    memo.put(s, false);\n    return false;\n}"
   }, {
     "name" : "computeWithBFS",
     "label" : "BFS",

@@ -8,11 +8,11 @@
   "methods" : [ {
     "name" : "computeRecursive",
     "label" : "Recursive",
-    "code" : "public static TreeNode computeRecursive(int[] preorder, int[] inorder) {\n    Map<Integer, Integer> inMap = new HashMap<>();\n    for (int i = 0; i < inorder.length; i++) {\n        inMap.put(inorder[i], i);\n    }\n    return buildTree(preorder, 0, preorder.length - 1, inorder, 0, inorder.length - 1, inMap);\n}"
+    "code" : "public static TreeNode computeRecursive(int[] preorder, int[] inorder) {\n    Map<Integer, Integer> inMap = new HashMap<>();\n    for (int i = 0; i < inorder.length; i++) {\n        inMap.put(inorder[i], i);\n    }\n    return buildTree(preorder, 0, preorder.length - 1, inorder, 0, inorder.length - 1, inMap);\n}\n\nprivate static TreeNode buildTree(int[] preorder, int preStart, int preEnd,\n                                  int[] inorder, int inStart, int inEnd,"
   }, {
     "name" : "computeRecursiveLinear",
     "label" : "Recursive linear",
-    "code" : "public static TreeNode computeRecursiveLinear(int[] preorder, int[] inorder) {\n    return buildTreeLinear(preorder, 0, preorder.length - 1, inorder, 0, inorder.length - 1);\n}"
+    "code" : "public static TreeNode computeRecursiveLinear(int[] preorder, int[] inorder) {\n    return buildTreeLinear(preorder, 0, preorder.length - 1, inorder, 0, inorder.length - 1);\n}\n\nprivate static TreeNode buildTreeLinear(int[] preorder, int preStart, int preEnd,\n                                       int[] inorder, int inStart, int inEnd) {\n    if (preStart > preEnd || inStart > inEnd) {\n        return null;\n    }\n\n    TreeNode root = new TreeNode(preorder[preStart]);\n    int inRoot = 0;\n    for (int i = inStart; i <= inEnd; i++) {\n        if (inorder[i] == root.val) {\n            inRoot = i;\n            break;\n        }\n    }\n\n    int numsLeft = inRoot - inStart;\n    root.left = buildTreeLinear(preorder, preStart + 1, preStart + numsLeft,\n                               inorder, inStart, inRoot - 1);\n    root.right = buildTreeLinear(preorder, preStart + numsLeft + 1, preEnd,\n                                inorder, inRoot + 1, inEnd);\n\n    return root;\n}"
   } ],
   "paramNames" : [ "preorder", "inorder" ],
   "paramTypes" : [ "int[]", "int[]" ],

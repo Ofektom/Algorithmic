@@ -8,11 +8,11 @@
   "methods" : [ {
     "name" : "computeRecursive",
     "label" : "Recursive",
-    "code" : "public static boolean computeRecursive(TreeNode root) {\n    return validateBST(root, Long.MIN_VALUE, Long.MAX_VALUE);\n}"
+    "code" : "public static boolean computeRecursive(TreeNode root) {\n    return validateBST(root, Long.MIN_VALUE, Long.MAX_VALUE);\n}\n\nprivate static boolean validateBST(TreeNode node, long min, long max) {\n    if (node == null) return true;\n    if (node.val <= min || node.val >= max) return false;\n    return validateBST(node.left, min, node.val) && \n           validateBST(node.right, node.val, max);\n}"
   }, {
     "name" : "computeWithInorder",
     "label" : "Inorder",
-    "code" : "public static boolean computeWithInorder(TreeNode root) {\n    List<Integer> list = new ArrayList<>();\n    inorderTraversal(root, list);\n    for (int i = 1; i < list.size(); i++) {\n        if (list.get(i) <= list.get(i - 1)) {\n            return false;\n        }\n    }\n    return true;\n}"
+    "code" : "public static boolean computeWithInorder(TreeNode root) {\n    List<Integer> list = new ArrayList<>();\n    inorderTraversal(root, list);\n    for (int i = 1; i < list.size(); i++) {\n        if (list.get(i) <= list.get(i - 1)) {\n            return false;\n        }\n    }\n    return true;\n}\n\nprivate static void inorderTraversal(TreeNode root, List<Integer> list) {\n    if (root == null) return;\n    inorderTraversal(root.left, list);\n    list.add(root.val);\n    inorderTraversal(root.right, list);\n}"
   }, {
     "name" : "computeWithStack",
     "label" : "Stack",

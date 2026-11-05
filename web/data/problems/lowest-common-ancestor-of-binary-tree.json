@@ -12,7 +12,7 @@
   }, {
     "name" : "computeWithPath",
     "label" : "Path",
-    "code" : "public static TreeNode computeWithPath(TreeNode root, TreeNode p, TreeNode q) {\n    java.util.List<TreeNode> pathP = new java.util.ArrayList<>();\n    java.util.List<TreeNode> pathQ = new java.util.ArrayList<>();\n\n    findPath(root, p, pathP);\n    findPath(root, q, pathQ);\n\n    int i = 0;\n    while (i < pathP.size() && i < pathQ.size() && pathP.get(i) == pathQ.get(i)) {\n        i++;\n    }\n\n    return i > 0 ? pathP.get(i - 1) : null;\n}"
+    "code" : "public static TreeNode computeWithPath(TreeNode root, TreeNode p, TreeNode q) {\n    java.util.List<TreeNode> pathP = new java.util.ArrayList<>();\n    java.util.List<TreeNode> pathQ = new java.util.ArrayList<>();\n\n    findPath(root, p, pathP);\n    findPath(root, q, pathQ);\n\n    int i = 0;\n    while (i < pathP.size() && i < pathQ.size() && pathP.get(i) == pathQ.get(i)) {\n        i++;\n    }\n\n    return i > 0 ? pathP.get(i - 1) : null;\n}\n\nprivate static boolean findPath(TreeNode root, TreeNode target, java.util.List<TreeNode> path) {\n    if (root == null) return false;\n\n    path.add(root);\n\n    if (root == target) return true;\n\n    if (findPath(root.left, target, path) || findPath(root.right, target, path)) {\n        return true;\n    }\n\n    path.remove(path.size() - 1);\n    return false;\n}"
   } ],
   "paramNames" : [ "root", "p", "q" ],
   "paramTypes" : [ "TreeNode", "TreeNode", "TreeNode" ],

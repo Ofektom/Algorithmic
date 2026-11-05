@@ -16,7 +16,7 @@
   }, {
     "name" : "computeRecursive",
     "label" : "Recursive",
-    "code" : "public static boolean computeRecursive(int[] nums) {\n    return canJumpFromPosition(0, nums);\n}"
+    "code" : "public static boolean computeRecursive(int[] nums) {\n    return canJumpFromPosition(0, nums);\n}\n\nprivate static boolean canJumpFromPosition(int position, int[] nums) {\n    if (position == nums.length - 1) {\n        return true;\n    }\n\n    int furthestJump = Math.min(position + nums[position], nums.length - 1);\n    for (int nextPosition = position + 1; nextPosition <= furthestJump; nextPosition++) {\n        if (canJumpFromPosition(nextPosition, nums)) {\n            return true;\n        }\n    }\n\n    return false;\n}"
   } ],
   "paramNames" : [ "nums" ],
   "paramTypes" : [ "int[]" ],

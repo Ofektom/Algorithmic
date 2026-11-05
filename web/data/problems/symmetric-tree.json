@@ -8,7 +8,7 @@
   "methods" : [ {
     "name" : "computeRecursive",
     "label" : "Recursive",
-    "code" : "public static boolean computeRecursive(TreeNode root) {\n    if (root == null) {\n        return true;\n    }\n    return isSymmetricRecursive(root.left, root.right);\n}"
+    "code" : "public static boolean computeRecursive(TreeNode root) {\n    if (root == null) {\n        return true;\n    }\n    return isSymmetricRecursive(root.left, root.right);\n}\n\nprivate static boolean isSymmetricRecursive(TreeNode left, TreeNode right) {\n    if (left == null && right == null) {\n        return true;\n    }\n    if (left == null || right == null) {\n        return false;\n    }\n    if (left.val != right.val) {\n        return false;\n    }\n    return isSymmetricRecursive(left.left, right.right)\n            && isSymmetricRecursive(left.right, right.left);\n}"
   }, {
     "name" : "computeWithQueue",
     "label" : "Queue",

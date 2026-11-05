@@ -16,7 +16,7 @@
   }, {
     "name" : "computeWithRecursion",
     "label" : "Recursion",
-    "code" : "public static int computeWithRecursion(int[] nums) {\n    return findMinRecursive(nums, 0, nums.length - 1);\n}"
+    "code" : "public static int computeWithRecursion(int[] nums) {\n    return findMinRecursive(nums, 0, nums.length - 1);\n}\n\nprivate static int findMinRecursive(int[] nums, int left, int right) {\n    if (left == right) {\n        return nums[left];\n    }\n\n    int mid = left + (right - left) / 2;\n    if (nums[mid] > nums[right]) {\n        return findMinRecursive(nums, mid + 1, right);\n    } else {\n        return findMinRecursive(nums, left, mid);\n    }\n}"
   } ],
   "paramNames" : [ "nums" ],
   "paramTypes" : [ "int[]" ],

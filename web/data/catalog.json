@@ -414,7 +414,7 @@
       "name" : "Remove Nth Node From End of List",
       "slug" : "remove-nth-node-from-end-of-list",
       "shortDescription" : "Remove the nth node from end of linked list",
-      "methodCount" : 3,
+      "methodCount" : 4,
       "aliases" : [ "RemoveNthNodeFromEnd", "Remove Nth Node", "Remove Node" ],
       "keywords" : [ "linked list", "remove", "nth", "node", "end", "head" ]
     }, {

@@ -37,5 +37,42 @@
     "name" : "Plus One",
     "slug" : "plus-one",
     "shortDescription" : "Increment a number represented as array by one"
-  } ]
+  } ],
+  "explanation" : {
+    "idea" : "For each number, the partner you need is fixed: target minus that number. So instead of trying every pair, remember what you've already seen and ask \"have I met my partner yet?\" in one step.",
+    "pattern" : "Hash map lookup (complement search)",
+    "analogy" : "At a party where everyone needs a dance partner of a specific height, you don't measure yourself against every guest. You write each guest's height on a board as they arrive, and check the board for the height you need.",
+    "recommended" : "computeWithHashMap",
+    "methods" : {
+      "computeWithHashMap" : {
+        "java" : "7",
+        "summary" : "One pass: check the map for the complement before storing the current number.",
+        "steps" : [ "Create a map from number → its index.", "For each index i, compute complement = target − nums[i].", "If the complement is already in the map, its stored index and i are the answer.", "Otherwise store nums[i] → i and move on. Checking before storing stops a number pairing with itself." ],
+        "time" : "O(n)",
+        "space" : "O(n)",
+        "timeWhy" : "Each number is looked at once, and a hash map lookup or insert is O(1) on average.",
+        "spaceWhy" : "In the worst case every number is stored before the pair is found."
+      },
+      "computeWithHashMapTwoPass" : {
+        "java" : "7",
+        "summary" : "Fill the whole map first, then look up each complement.",
+        "steps" : [ "First loop: store every number → index (a later duplicate overwrites an earlier one).", "Second loop: for each i, look up target − nums[i].", "Accept it only if the stored index is not i itself, so 3 + 3 = 6 doesn't reuse one 3." ],
+        "time" : "O(n)",
+        "space" : "O(n)",
+        "timeWhy" : "Two separate passes over n numbers, each step O(1).",
+        "spaceWhy" : "The map holds every distinct number."
+      },
+      "computeWithBruteForce" : {
+        "java" : "any",
+        "summary" : "Try every pair i < j until one adds up to target.",
+        "steps" : [ "Pick each index i.", "For every j after i, check nums[i] + nums[j] == target.", "Return the first matching pair." ],
+        "time" : "O(n²)",
+        "space" : "O(1)",
+        "timeWhy" : "About n²/2 pairs are checked in the worst case.",
+        "spaceWhy" : "Only two loop counters are used."
+      }
+    },
+    "pitfalls" : [ "Storing before checking lets an element pair with itself (target 6 with a single 3).", "Returning the values instead of the indices.", "Sorting first to use two pointers loses the original indices unless you keep them." ],
+    "interview" : [ "Start with brute force in one sentence, then say \"I can trade memory for time with a hash map\". That shows the reasoning, not memory.", "Follow-up: if the array is sorted, two pointers solve it in O(1) extra space (see Two Sum II).", "Follow-up: if many targets are queried, build the map once and reuse it." ]
+  }
 }

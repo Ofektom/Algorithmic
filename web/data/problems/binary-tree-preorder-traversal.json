@@ -8,7 +8,7 @@
   "methods" : [ {
     "name" : "computeRecursive",
     "label" : "Recursive",
-    "code" : "public static List<Integer> computeRecursive(TreeNode root) {\n    List<Integer> result = new ArrayList<>();\n    preorderRecursive(root, result);\n    return result;\n}"
+    "code" : "public static List<Integer> computeRecursive(TreeNode root) {\n    List<Integer> result = new ArrayList<>();\n    preorderRecursive(root, result);\n    return result;\n}\n\nprivate static void preorderRecursive(TreeNode root, List<Integer> result) {\n    if (root == null) return;\n    result.add(root.val);\n    preorderRecursive(root.left, result);\n    preorderRecursive(root.right, result);\n}"
   }, {
     "name" : "computeWithStack",
     "label" : "Stack",

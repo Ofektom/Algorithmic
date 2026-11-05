@@ -16,7 +16,7 @@
   }, {
     "name" : "computeWithRecursion",
     "label" : "Recursion",
-    "code" : "public static int[] computeWithRecursion(int[] nums) {\n    int n = nums.length;\n    int[] result = new int[n];\n    productRecursive(nums, result, 0, 1, 1);\n    return result;\n}"
+    "code" : "public static int[] computeWithRecursion(int[] nums) {\n    int n = nums.length;\n    int[] result = new int[n];\n    productRecursive(nums, result, 0, 1, 1);\n    return result;\n}\n\nprivate static int productRecursive(int[] nums, int[] result, int index, int left, int right) {\n    if (index == nums.length) {\n        return 1;\n    }\n    int currentRight = productRecursive(nums, result, index + 1, left * nums[index], right);\n    result[index] = left * currentRight;\n    return currentRight * nums[index];\n}"
   } ],
   "paramNames" : [ "nums" ],
   "paramTypes" : [ "int[]" ],
@@ -37,5 +37,42 @@
     "name" : "Single Number",
     "slug" : "single-number",
     "shortDescription" : "Find the number that appears only once"
-  } ]
+  } ],
+  "explanation" : {
+    "idea" : "The product of everything except nums[i] is (everything to its left) × (everything to its right). Build those two running products and multiply them.",
+    "pattern" : "Prefix and suffix products",
+    "analogy" : "Standing in a queue: the people in front of you and the people behind you together are \"everyone but you\". Count each side as you walk the queue, and you never have to remove yourself from a total.",
+    "recommended" : "computeWithOptimizedSpace",
+    "methods" : {
+      "computeWithPrefixSuffix" : {
+        "java" : "any",
+        "summary" : "prefix[i] = product of everything before i; suffix[i] = product of everything after i.",
+        "steps" : [ "prefix[0] = 1 (nothing to the left); prefix[i] = prefix[i − 1] × nums[i − 1].", "suffix[n − 1] = 1 (nothing to the right); suffix[i] = suffix[i + 1] × nums[i + 1].", "answer[i] = prefix[i] × suffix[i]." ],
+        "time" : "O(n)",
+        "space" : "O(n)",
+        "timeWhy" : "Three linear passes.",
+        "spaceWhy" : "Two extra arrays of n."
+      },
+      "computeWithOptimizedSpace" : {
+        "java" : "any",
+        "summary" : "Put the left products in the answer array, then sweep right to left with one running number.",
+        "steps" : [ "First pass: result[i] = product of everything left of i.", "Keep right = 1.", "Second pass from the end: result[i] *= right, then right *= nums[i]." ],
+        "time" : "O(n)",
+        "space" : "O(1)",
+        "timeWhy" : "Two passes.",
+        "spaceWhy" : "Only the output array (which doesn't count as extra) and one variable."
+      },
+      "computeWithRecursion" : {
+        "java" : "any",
+        "summary" : "Carry the left product down the recursion and return the right product on the way back up.",
+        "steps" : [ "productRecursive passes left × nums[index] into the next call.", "The deepest call returns 1 (nothing to the right of the end).", "On the way back, each call sets result[index] = left × productOfRight and returns productOfRight × nums[index]." ],
+        "time" : "O(n)",
+        "space" : "O(n)",
+        "timeWhy" : "One call per element.",
+        "spaceWhy" : "n calls on the stack."
+      }
+    },
+    "pitfalls" : [ "Dividing the total product by nums[i] is banned, and breaks on zeros anyway.", "With one zero, every answer is 0 except at the zero's position; prefix/suffix handles this with no special case." ],
+    "interview" : [ "Explain left × right with a 4-element example on the board; then reduce the space to O(1) by reusing the output array.", "Mention that the output array is conventionally not counted as extra space." ]
+  }
 }

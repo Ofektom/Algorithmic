@@ -16,7 +16,7 @@
   }, {
     "name" : "computeWithRecursion",
     "label" : "Recursion",
-    "code" : "public static int computeWithRecursion(int m, int n) {\n    Map<String, Integer> memo = new HashMap<>();\n    return uniquePathsRecursive(m, n, 0, 0, memo);\n}"
+    "code" : "public static int computeWithRecursion(int m, int n) {\n    Map<String, Integer> memo = new HashMap<>();\n    return uniquePathsRecursive(m, n, 0, 0, memo);\n}\n\nprivate static int uniquePathsRecursive(int m, int n, int i, int j, Map<String, Integer> memo) {\n    if (i == m - 1 && j == n - 1) return 1;\n    if (i >= m || j >= n) return 0;\n    \n    String key = i + \",\" + j;\n    if (memo.containsKey(key)) return memo.get(key);\n    \n    int paths = uniquePathsRecursive(m, n, i + 1, j, memo) + \n                uniquePathsRecursive(m, n, i, j + 1, memo);\n    memo.put(key, paths);\n    return paths;\n}"
   } ],
   "paramNames" : [ "m", "n" ],
   "paramTypes" : [ "int", "int" ],

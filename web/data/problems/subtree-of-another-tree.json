@@ -8,11 +8,11 @@
   "methods" : [ {
     "name" : "computeRecursive",
     "label" : "Recursive",
-    "code" : "public static boolean computeRecursive(TreeNode root, TreeNode subRoot) {\n    if (root == null) return false;\n    if (isSameTree(root, subRoot)) return true;\n    return computeRecursive(root.left, subRoot) || computeRecursive(root.right, subRoot);\n}"
+    "code" : "public static boolean computeRecursive(TreeNode root, TreeNode subRoot) {\n    if (root == null) return false;\n    if (isSameTree(root, subRoot)) return true;\n    return computeRecursive(root.left, subRoot) || computeRecursive(root.right, subRoot);\n}\n\nprivate static boolean isSameTree(TreeNode p, TreeNode q) {\n    if (p == null && q == null) return true;\n    if (p == null || q == null) return false;\n    if (p.val != q.val) return false;\n    return isSameTree(p.left, q.left) && isSameTree(p.right, q.right);\n}"
   }, {
     "name" : "computeWithSerialization",
     "label" : "Serialization",
-    "code" : "public static boolean computeWithSerialization(TreeNode root, TreeNode subRoot) {\n    StringBuilder rootStr = new StringBuilder();\n    StringBuilder subRootStr = new StringBuilder();\n    serialize(root, rootStr);\n    serialize(subRoot, subRootStr);\n    return rootStr.toString().contains(subRootStr.toString());\n}"
+    "code" : "public static boolean computeWithSerialization(TreeNode root, TreeNode subRoot) {\n    StringBuilder rootStr = new StringBuilder();\n    StringBuilder subRootStr = new StringBuilder();\n    serialize(root, rootStr);\n    serialize(subRoot, subRootStr);\n    return rootStr.toString().contains(subRootStr.toString());\n}\n\nprivate static void serialize(TreeNode node, StringBuilder sb) {\n    if (node == null) {\n        sb.append(\"#\");\n        return;\n    }\n    sb.append(\",\").append(node.val).append(\",\");\n    serialize(node.left, sb);\n    serialize(node.right, sb);\n}"
   } ],
   "paramNames" : [ "root", "subRoot" ],
   "paramTypes" : [ "TreeNode", "TreeNode" ],

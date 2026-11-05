@@ -12,7 +12,7 @@
   }, {
     "name" : "computeWithRecursion",
     "label" : "Recursion",
-    "code" : "public static String computeWithRecursion(String s) {\n    int[] index = { 0 };\n    return decodeRecursive(s, index);\n}"
+    "code" : "public static String computeWithRecursion(String s) {\n    int[] index = { 0 };\n    return decodeRecursive(s, index);\n}\n\nprivate static String decodeRecursive(String s, int[] index) {\n    StringBuilder result = new StringBuilder();\n    int k = 0;\n\n    while (index[0] < s.length()) {\n        char c = s.charAt(index[0]);\n\n        if (Character.isDigit(c)) {\n            k = k * 10 + (c - '0');\n            index[0]++;\n        } else if (c == '[') {\n            index[0]++;\n            String decodedString = decodeRecursive(s, index);\n            for (int i = 0; i < k; i++) {\n                result.append(decodedString);\n            }\n            k = 0;\n        } else if (c == ']') {\n            index[0]++;\n            return result.toString();\n        } else {\n            result.append(c);\n            index[0]++;\n        }\n    }\n    return result.toString();\n}"
   }, {
     "name" : "computeWithStringBuilder",
     "label" : "String builder",

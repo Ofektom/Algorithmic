@@ -8,11 +8,11 @@
   "methods" : [ {
     "name" : "computeRecursive",
     "label" : "Recursive",
-    "code" : "public static List<String> computeRecursive(int n) {\n    List<String> result = new ArrayList<>();\n    backtrack(result, new StringBuilder(), 0, 0, n);\n    return result;\n}"
+    "code" : "public static List<String> computeRecursive(int n) {\n    List<String> result = new ArrayList<>();\n    backtrack(result, new StringBuilder(), 0, 0, n);\n    return result;\n}\n\nprivate static void backtrack(List<String> result, StringBuilder current,\n                               int open, int close, int max) {\n    if (current.length() == max * 2) {\n        result.add(current.toString());\n        return;\n    }\n\n    if (open < max) {\n        current.append('(');\n        backtrack(result, current, open + 1, close, max);\n        current.deleteCharAt(current.length() - 1);\n    }\n\n    if (close < open) {\n        current.append(')');\n        backtrack(result, current, open, close + 1, max);\n        current.deleteCharAt(current.length() - 1);\n    }\n}"
   }, {
     "name" : "computeWithRecursion",
     "label" : "Recursion",
-    "code" : "public static List<String> computeWithRecursion(int n) {\n    List<String> result = new ArrayList<>();\n    generate(result, \"\", 0, 0, n);\n    return result;\n}"
+    "code" : "public static List<String> computeWithRecursion(int n) {\n    List<String> result = new ArrayList<>();\n    generate(result, \"\", 0, 0, n);\n    return result;\n}\n\nprivate static void generate(List<String> result, String current,\n                             int open, int close, int max) {\n    if (current.length() == max * 2) {\n        result.add(current);\n        return;\n    }\n\n    if (open < max) {\n        generate(result, current + \"(\", open + 1, close, max);\n    }\n\n    if (close < open) {\n        generate(result, current + \")\", open, close + 1, max);\n    }\n}"
   }, {
     "name" : "computeWithStack",
     "label" : "Stack",

@@ -12,11 +12,11 @@
   }, {
     "name" : "computeWithDivideConquer",
     "label" : "Divide conquer",
-    "code" : "public static ListNode computeWithDivideConquer(ListNode[] lists) {\n    if (lists == null || lists.length == 0) return null;\n    return mergeLists(lists, 0, lists.length - 1);\n}"
+    "code" : "public static ListNode computeWithDivideConquer(ListNode[] lists) {\n    if (lists == null || lists.length == 0) return null;\n    return mergeLists(lists, 0, lists.length - 1);\n}\n\nprivate static ListNode mergeLists(ListNode[] lists, int left, int right) {\n    if (left == right) return lists[left];\n\n    int mid = left + (right - left) / 2;\n    ListNode leftList = mergeLists(lists, left, mid);\n    ListNode rightList = mergeLists(lists, mid + 1, right);\n\n    return mergeTwoLists(leftList, rightList);\n}\n\nprivate static ListNode mergeTwoLists(ListNode l1, ListNode l2) {\n    ListNode dummy = new ListNode(0);\n    ListNode current = dummy;\n\n    while (l1 != null && l2 != null) {\n        if (l1.val < l2.val) {\n            current.next = l1;\n            l1 = l1.next;\n        } else {\n            current.next = l2;\n            l2 = l2.next;\n        }\n        current = current.next;\n    }\n\n    current.next = (l1 != null) ? l1 : l2;\n    return dummy.next;\n}"
   }, {
     "name" : "computeIterative",
     "label" : "Iterative",
-    "code" : "public static ListNode computeIterative(ListNode[] lists) {\n    if (lists == null || lists.length == 0) return null;\n\n    ListNode result = lists[0];\n    for (int i = 1; i < lists.length; i++) {\n        result = mergeTwoLists(result, lists[i]);\n    }\n\n    return result;\n}"
+    "code" : "public static ListNode computeIterative(ListNode[] lists) {\n    if (lists == null || lists.length == 0) return null;\n\n    ListNode result = lists[0];\n    for (int i = 1; i < lists.length; i++) {\n        result = mergeTwoLists(result, lists[i]);\n    }\n\n    return result;\n}\n\nprivate static ListNode mergeTwoLists(ListNode l1, ListNode l2) {\n    ListNode dummy = new ListNode(0);\n    ListNode current = dummy;\n\n    while (l1 != null && l2 != null) {\n        if (l1.val < l2.val) {\n            current.next = l1;\n            l1 = l1.next;\n        } else {\n            current.next = l2;\n            l2 = l2.next;\n        }\n        current = current.next;\n    }\n\n    current.next = (l1 != null) ? l1 : l2;\n    return dummy.next;\n}"
   } ],
   "paramNames" : [ "lists" ],
   "paramTypes" : [ "ListNode[]" ],

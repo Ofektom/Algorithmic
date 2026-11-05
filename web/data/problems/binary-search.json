@@ -12,7 +12,7 @@
   }, {
     "name" : "computeRecursive",
     "label" : "Recursive",
-    "code" : "public static int computeRecursive(int[] nums, int target) {\n    return binarySearchRecursive(nums, target, 0, nums.length - 1);\n}"
+    "code" : "public static int computeRecursive(int[] nums, int target) {\n    return binarySearchRecursive(nums, target, 0, nums.length - 1);\n}\n\nprivate static int binarySearchRecursive(int[] nums, int target, int left, int right) {\n    if (left > right) return -1;\n\n    int mid = left + (right - left) / 2;\n    if (nums[mid] == target) {\n        return mid;\n    } else if (nums[mid] < target) {\n        return binarySearchRecursive(nums, target, mid + 1, right);\n    } else {\n        return binarySearchRecursive(nums, target, left, mid - 1);\n    }\n}"
   }, {
     "name" : "computeWithArrays",
     "label" : "Arrays",

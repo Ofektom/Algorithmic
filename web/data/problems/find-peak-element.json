@@ -16,7 +16,7 @@
   }, {
     "name" : "computeRecursive",
     "label" : "Recursive",
-    "code" : "public static int computeRecursive(int[] nums) {\n    return findPeakRecursive(nums, 0, nums.length - 1);\n}"
+    "code" : "public static int computeRecursive(int[] nums) {\n    return findPeakRecursive(nums, 0, nums.length - 1);\n}\n\nprivate static int findPeakRecursive(int[] nums, int left, int right) {\n    if (left == right) return left;\n    \n    int mid = left + (right - left) / 2;\n    if (nums[mid] > nums[mid + 1]) {\n        return findPeakRecursive(nums, left, mid);\n    } else {\n        return findPeakRecursive(nums, mid + 1, right);\n    }\n}"
   } ],
   "paramNames" : [ "nums" ],
   "paramTypes" : [ "int[]" ],

@@ -8,15 +8,15 @@
   "methods" : [ {
     "name" : "computeWithTwoPointers",
     "label" : "Two pointers",
-    "code" : "public static boolean computeWithTwoPointers(String s) {\n    int left = 0;\n    int right = s.length() - 1;\n\n    while (left < right) {\n        if (s.charAt(left) != s.charAt(right)) {\n            return isPalindrome(s, left + 1, right) || isPalindrome(s, left, right - 1);\n        }\n        left++;\n        right--;\n    }\n    return true;\n}"
+    "code" : "public static boolean computeWithTwoPointers(String s) {\n    int left = 0;\n    int right = s.length() - 1;\n\n    while (left < right) {\n        if (s.charAt(left) != s.charAt(right)) {\n            return isPalindrome(s, left + 1, right) || isPalindrome(s, left, right - 1);\n        }\n        left++;\n        right--;\n    }\n    return true;\n}\n\nprivate static boolean isPalindrome(String s, int left, int right) {\n    while (left < right) {\n        if (s.charAt(left) != s.charAt(right)) {\n            return false;\n        }\n        left++;\n        right--;\n    }\n    return true;\n}"
   }, {
     "name" : "computeWithStringBuilder",
     "label" : "String builder",
-    "code" : "public static boolean computeWithStringBuilder(String s) {\n    int left = 0;\n    int right = s.length() - 1;\n\n    while (left < right) {\n        if (s.charAt(left) != s.charAt(right)) {\n            StringBuilder sb1 = new StringBuilder(s);\n            sb1.deleteCharAt(left);\n            if (isPalindromeStringBuilder(sb1)) {\n                return true;\n            }\n\n            StringBuilder sb2 = new StringBuilder(s);\n            sb2.deleteCharAt(right);\n            return isPalindromeStringBuilder(sb2);\n        }\n        left++;\n        right--;\n    }\n    return true;\n}"
+    "code" : "public static boolean computeWithStringBuilder(String s) {\n    int left = 0;\n    int right = s.length() - 1;\n\n    while (left < right) {\n        if (s.charAt(left) != s.charAt(right)) {\n            StringBuilder sb1 = new StringBuilder(s);\n            sb1.deleteCharAt(left);\n            if (isPalindromeStringBuilder(sb1)) {\n                return true;\n            }\n\n            StringBuilder sb2 = new StringBuilder(s);\n            sb2.deleteCharAt(right);\n            return isPalindromeStringBuilder(sb2);\n        }\n        left++;\n        right--;\n    }\n    return true;\n}\n\nprivate static boolean isPalindromeStringBuilder(StringBuilder sb) {\n    int left = 0;\n    int right = sb.length() - 1;\n    while (left < right) {\n        if (sb.charAt(left) != sb.charAt(right)) {\n            return false;\n        }\n        left++;\n        right--;\n    }\n    return true;\n}"
   }, {
     "name" : "computeWithRecursion",
     "label" : "Recursion",
-    "code" : "public static boolean computeWithRecursion(String s) {\n    return isValidPalindromeRecursive(s, 0, s.length() - 1, true);\n}"
+    "code" : "public static boolean computeWithRecursion(String s) {\n    return isValidPalindromeRecursive(s, 0, s.length() - 1, true);\n}\n\nprivate static boolean isValidPalindromeRecursive(String s, int left, int right, boolean canDelete) {\n    if (left >= right) {\n        return true;\n    }\n\n    if (s.charAt(left) == s.charAt(right)) {\n        return isValidPalindromeRecursive(s, left + 1, right - 1, canDelete);\n    }\n\n    if (!canDelete) {\n        return false;\n    }\n\n    return isValidPalindromeRecursive(s, left + 1, right, false)\n            || isValidPalindromeRecursive(s, left, right - 1, false);\n}"
   } ],
   "paramNames" : [ "s" ],
   "paramTypes" : [ "String" ],

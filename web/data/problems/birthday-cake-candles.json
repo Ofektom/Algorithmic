@@ -33,5 +33,33 @@
     "name" : "Single Number",
     "slug" : "single-number",
     "shortDescription" : "Find the number that appears only once"
-  } ]
+  } ],
+  "explanation" : {
+    "idea" : "You need the tallest height and how many times it appears. Both can be found in one pass: a taller candle resets the count, an equal one adds to it.",
+    "pattern" : "Running maximum with a count",
+    "analogy" : "Measuring a basketball team: when someone taller walks in, they're the new record and the count restarts at one; anyone matching the record adds to the count.",
+    "recommended" : "computeWithSinglePass",
+    "methods" : {
+      "computeWithSinglePass" : {
+        "java" : "any",
+        "summary" : "Track the tallest so far and how many share it.",
+        "steps" : [ "If a candle is taller than tallest, it becomes the new tallest and count = 1.", "If it equals tallest, count++.", "Return count." ],
+        "time" : "O(n)",
+        "space" : "O(1)",
+        "timeWhy" : "One pass.",
+        "spaceWhy" : "Two variables."
+      },
+      "computeWithSort" : {
+        "java" : "any",
+        "summary" : "Sort a copy and count equal values at the end.",
+        "steps" : [ "Clone and sort.", "Count backwards from the last element while values equal the maximum." ],
+        "time" : "O(n log n)",
+        "space" : "O(n)",
+        "timeWhy" : "The sort dominates.",
+        "spaceWhy" : "The sorted copy."
+      }
+    },
+    "pitfalls" : [ "Two passes (find max, then count) is fine but not necessary; resetting the count on a new max is the neat part." ],
+    "interview" : [ "HackerRank warm-up: show the single-pass running maximum." ]
+  }
 }

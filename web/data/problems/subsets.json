@@ -8,7 +8,7 @@
   "methods" : [ {
     "name" : "computeRecursive",
     "label" : "Recursive",
-    "code" : "public static List<List<Integer>> computeRecursive(int[] nums) {\n    List<List<Integer>> result = new ArrayList<>();\n    backtrack(result, new ArrayList<>(), nums, 0);\n    return result;\n}"
+    "code" : "public static List<List<Integer>> computeRecursive(int[] nums) {\n    List<List<Integer>> result = new ArrayList<>();\n    backtrack(result, new ArrayList<>(), nums, 0);\n    return result;\n}\n\nprivate static void backtrack(List<List<Integer>> result, List<Integer> current,\n                               int[] nums, int start) {\n    result.add(new ArrayList<>(current));\n\n    for (int i = start; i < nums.length; i++) {\n        current.add(nums[i]);\n        backtrack(result, current, nums, i + 1);\n        current.remove(current.size() - 1);\n    }\n}"
   }, {
     "name" : "computeIterative",
     "label" : "Iterative",

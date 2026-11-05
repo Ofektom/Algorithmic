@@ -16,7 +16,7 @@
   }, {
     "name" : "computeWithRecursion",
     "label" : "Recursion",
-    "code" : "public static int computeWithRecursion(int[] nums) {\n    return countEvenRecursive(nums, 0, 0);\n}"
+    "code" : "public static int computeWithRecursion(int[] nums) {\n    return countEvenRecursive(nums, 0, 0);\n}\n\nprivate static int countEvenRecursive(int[] nums, int index, int count) {\n    if (index >= nums.length) {\n        return count;\n    }\n    if (nums[index] % 2 == 0) {\n        count++;\n    }\n    return countEvenRecursive(nums, index + 1, count);\n}"
   }, {
     "name" : "computeWithWhile",
     "label" : "While",
@@ -41,5 +41,51 @@
     "name" : "Single Number",
     "slug" : "single-number",
     "shortDescription" : "Find the number that appears only once"
-  } ]
+  } ],
+  "explanation" : {
+    "idea" : "A number is even when dividing by 2 leaves no remainder. Check each number once and keep a tally.",
+    "pattern" : "Single pass with a counter",
+    "analogy" : "Counting the red cars that pass: you look at each car once and click a counter.",
+    "recommended" : "compute",
+    "methods" : {
+      "compute" : {
+        "java" : "any",
+        "summary" : "for-each loop with a counter.",
+        "steps" : [ "Start count at 0.", "For each number, if num % 2 == 0 add one.", "Return the count." ],
+        "time" : "O(n)",
+        "space" : "O(1)",
+        "timeWhy" : "Every number is checked once.",
+        "spaceWhy" : "One counter."
+      },
+      "computeWithStream" : {
+        "java" : "8",
+        "summary" : "filter the even numbers and count them.",
+        "steps" : [ "Arrays.stream(nums) turns the array into an IntStream.", "filter(num -> num % 2 == 0) keeps the even ones.", "count() returns a long, so it's cast to int." ],
+        "time" : "O(n)",
+        "space" : "O(1)",
+        "timeWhy" : "One pass inside the stream.",
+        "spaceWhy" : "Streams process one element at a time; nothing is stored."
+      },
+      "computeWithRecursion" : {
+        "java" : "any",
+        "summary" : "Check one index, then recurse on the rest with the running count.",
+        "steps" : [ "countEvenRecursive(nums, index, count) checks nums[index].", "It calls itself with index + 1.", "When index reaches the end, it returns the count." ],
+        "time" : "O(n)",
+        "space" : "O(n)",
+        "timeWhy" : "One call per element.",
+        "spaceWhy" : "n calls on the stack; a very large array can throw StackOverflowError."
+      },
+      "computeWithWhile" : {
+        "java" : "any",
+        "summary" : "The same loop written with an explicit index.",
+        "steps" : [ "i starts at 0.", "While i < length, check nums[i] and increment i." ],
+        "time" : "O(n)",
+        "space" : "O(1)",
+        "timeWhy" : "One pass.",
+        "spaceWhy" : "A counter and an index."
+      }
+    },
+    "pitfalls" : [ "Using num % 2 == 1 to test odd fails for negatives (-3 % 2 is -1 in Java). The even test == 0 is safe.", "Recursion on large inputs risks StackOverflowError; Java doesn't optimise tail calls." ],
+    "interview" : [ "This is a warm-up: show clean code, then mention the stream form and why recursion is a poor fit in Java." ]
+  }
 }

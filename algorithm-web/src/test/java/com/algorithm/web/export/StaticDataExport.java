@@ -4,10 +4,12 @@ import com.algorithm.web.controller.HomeController;
 import com.algorithm.web.model.ProblemInfo;
 import com.algorithm.web.service.AlgorithmSourceCodeService;
 import com.algorithm.web.service.ProblemRegistryService;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -57,6 +59,7 @@ public final class StaticDataExport {
 
         List<Map<String, Object>> categories = new ArrayList<>();
         int missingCode = 0;
+        int explained = 0;
         for (String category : registry.getCategories()) {
             List<ProblemInfo> problems = registry.getProblemsForCategory(category);
             List<Map<String, Object>> summaries = new ArrayList<>();
@@ -105,6 +108,11 @@ public final class StaticDataExport {
                 detail.put("paramTypes", p.getParamTypes());
                 detail.put("exampleInputs", p.getExampleInputs());
                 detail.put("related", related);
+                JsonNode explanation = explanation(json, slugs.get(p.getName()));
+                if (explanation != null) {
+                    detail.put("explanation", explanation);
+                    explained++;
+                }
                 json.writeValue(problemsDir.resolve(slugs.get(p.getName()) + ".json").toFile(), detail);
             }
             Map<String, Object> c = new LinkedHashMap<>();
@@ -117,11 +125,18 @@ public final class StaticDataExport {
         catalog.put("problemCount", slugs.size());
         catalog.put("categories", categories);
         json.writeValue(out.resolve("catalog.json").toFile(), catalog);
-        System.out.printf("Exported %d problems in %d categories to %s (%d methods without source)%n",
-                slugs.size(), categories.size(), out.toAbsolutePath(), missingCode);
+        System.out.printf("Exported %d problems in %d categories to %s (%d methods without source, %d explained)%n",
+                slugs.size(), categories.size(), out.toAbsolutePath(), missingCode, explained);
     }
 
-    static String slug(String name) {
+    // Written explanations live in algorithm-web/src/main/resources/explanations/<slug>.json
+    private static JsonNode explanation(ObjectMapper json, String slug) throws IOException {
+        try (InputStream in = StaticDataExport.class.getResourceAsStream("/explanations/" + slug + ".json")) {
+            return in == null ? null : json.readTree(in);
+        }
+    }
+
+    public static String slug(String name) {
         String s = name.toLowerCase().replaceAll("[^a-z0-9]+", "-").replaceAll("(^-|-$)", "");
         return s.isEmpty() ? "problem" : s;
     }

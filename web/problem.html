@@ -34,10 +34,12 @@
     <div class="empty" id="notFound" hidden><p class="t">Problem not found</p><p><a href="/browse" class="link-btn">Browse all problems</a></p></div>
 
     <div id="content">
-        <div class="tabs" role="tablist" aria-label="Problem sections">
+        <div class="tabs scroll" role="tablist" aria-label="Problem sections">
             <button type="button" role="tab" data-tab="problem" aria-controls="panel-problem" aria-selected="false">Problem</button>
+            <button type="button" role="tab" data-tab="explanation" aria-controls="panel-explanation" aria-selected="false" hidden>Explanation</button>
             <button type="button" role="tab" data-tab="solution" aria-controls="panel-solution" aria-selected="true">Solution<span class="desktop-only"> &amp; Run</span></button>
             <button type="button" role="tab" data-tab="run" aria-controls="panel-run" aria-selected="false" class="mobile-only">Run</button>
+            <button type="button" role="tab" data-tab="complexity" aria-controls="panel-complexity" aria-selected="false" hidden>Complexity</button>
         </div>
 
         <section class="panel" id="panel-problem" role="tabpanel">
@@ -54,15 +56,54 @@
             </section>
         </section>
 
+        <!-- Written explanation: the idea in plain words, then how each approach works -->
+        <section class="panel" id="panel-explanation" role="tabpanel">
+            <div class="card idea-card">
+                <p class="eyebrow">The idea</p>
+                <p class="prose" id="exIdea"></p>
+                <p class="analogy" id="exAnalogy" hidden></p>
+                <p class="small muted" style="margin-top:10px">Pattern: <span class="badge" id="exPattern"></span></p>
+            </div>
+            <h2 class="h2">How each approach works</h2>
+            <div class="list" id="exMethods"></div>
+            <section id="exPitfallsSection" hidden>
+                <h2 class="h2">Common mistakes</h2>
+                <ul class="bullets" id="exPitfalls"></ul>
+            </section>
+            <section id="exInterviewSection" hidden>
+                <h2 class="h2">In the interview</h2>
+                <ul class="bullets" id="exInterview"></ul>
+            </section>
+        </section>
+
+        <section class="panel" id="panel-complexity" role="tabpanel">
+            <p class="muted small" id="cxIntro"></p>
+            <div class="list" id="cxRows" style="margin-top:12px"></div>
+            <details class="card soft bigo-help">
+                <summary>How to read O(…)</summary>
+                <p class="small">Big-O says how the work grows as the input (n items) grows, ignoring constant factors.</p>
+                <ul class="bullets small">
+                    <li><b>O(1)</b>: the same work however big n is.</li>
+                    <li><b>O(log n)</b>: halving each step; a million items take about 20 steps.</li>
+                    <li><b>O(n)</b>: one look at each item.</li>
+                    <li><b>O(n log n)</b>: what good sorting costs.</li>
+                    <li><b>O(n²)</b>: every item against every other; a thousand items means about a million steps.</li>
+                </ul>
+                <p class="small muted">Space counts the extra memory used, not the input itself (or, by convention, the output).</p>
+            </details>
+        </section>
+
         <div class="split" id="split">
             <section class="panel on" id="panel-solution" role="tabpanel">
                 <nav class="seg" id="methodTabs" aria-label="Solution methods" hidden></nav>
                 <div class="code-tools">
                     <span class="badge" id="methodBadge"></span>
                     <span class="small muted mono" id="methodName"></span>
+                    <span class="badge java" id="methodJava" hidden></span>
                     <span class="grow"></span>
                     <button type="button" class="copy-btn" data-copy="methodCode" id="copyCode">⧉ Copy</button>
                 </div>
+                <p class="small method-summary" id="methodSummary" hidden></p>
                 <pre class="code" id="methodCode"><span class="muted">Loading…</span></pre>
                 <p class="card soft muted" id="noCode" hidden>The source for this method isn't available, but you can still run it.</p>
             </section>

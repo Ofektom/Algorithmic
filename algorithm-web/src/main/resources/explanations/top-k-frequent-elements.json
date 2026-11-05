@@ -1,0 +1,56 @@
+{
+  "idea": "Two steps: count how often each number appears, then pick the k biggest counts. The interesting part is picking the top k without sorting everything.",
+  "pattern": "Counting + heap / bucket sort",
+  "analogy": "Choosing the top 3 songs of the year: tally the plays first, then keep a short list of your current top 3 and replace the weakest whenever a song beats it.",
+  "recommended": "computeWithBucketSort",
+  "methods": {
+    "computeWithHeap": {
+      "java": "8",
+      "summary": "Keep a min-heap of size k; the smallest count is always on top and gets thrown out.",
+      "steps": [
+        "Count frequencies with a HashMap.",
+        "Push each (number, count) into a min-heap ordered by count.",
+        "If the heap grows past k, poll the smallest.",
+        "The k entries left are the most frequent."
+      ],
+      "time": "O(n log k)",
+      "space": "O(n + k)",
+      "timeWhy": "Counting is O(n); each of the m distinct numbers costs O(log k) in a heap of size k.",
+      "spaceWhy": "The frequency map plus a heap of k entries."
+    },
+    "computeWithBucketSort": {
+      "java": "8",
+      "summary": "A count can't exceed n, so put numbers into buckets by count and read from the highest bucket down.",
+      "steps": [
+        "Count frequencies.",
+        "buckets[f] holds every number that appears exactly f times (f ranges 1..n).",
+        "Walk the buckets from n down to 1, collecting numbers until you have k."
+      ],
+      "time": "O(n)",
+      "space": "O(n)",
+      "timeWhy": "Counting, filling buckets and reading them back are each linear.",
+      "spaceWhy": "The frequency map plus n + 1 buckets."
+    },
+    "computeWithSorting": {
+      "java": "8",
+      "summary": "Sort the distinct numbers by count and take the first k.",
+      "steps": [
+        "Count frequencies.",
+        "Sort the map entries by count, highest first.",
+        "Take the first k keys."
+      ],
+      "time": "O(n log n)",
+      "space": "O(n)",
+      "timeWhy": "Sorting m distinct entries costs O(m log m), which is O(n log n) in the worst case.",
+      "spaceWhy": "The map and the list of entries."
+    }
+  },
+  "pitfalls": [
+    "Using a max-heap of everything costs O(n log n); the min-heap of size k is the point.",
+    "Comparators written as a − b can overflow for big values; counts here are small, but Integer.compare is the safe habit."
+  ],
+  "interview": [
+    "Give the heap answer (O(n log k)) and then the bucket answer (O(n)), explaining why counts are bounded by n.",
+    "Follow-up: a stream of data → keep the size-k heap; Top K Frequent Words → break ties alphabetically."
+  ]
+}

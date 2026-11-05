@@ -48,12 +48,62 @@
     }
     Store.addHistory({ type: 'problem', title: problem.name, category: problem.category, url: problemUrl(problem.name) });
 
+    // ── Explanation and Complexity tabs (written, stored with the problem) ──
+    const ex = problem.explanation || null;
+    const exMethods = (ex && ex.methods) || {};
+    function javaLabel(v) { return !v || v === 'any' ? 'Any Java' : 'Java ' + v + '+'; }
+    if (ex) {
+        document.querySelector('[data-tab="explanation"]').hidden = false;
+        document.querySelector('[data-tab="complexity"]').hidden = false;
+        $('exIdea').textContent = ex.idea || '';
+        $('exAnalogy').textContent = ex.analogy || '';
+        $('exAnalogy').hidden = !ex.analogy;
+        $('exPattern').textContent = ex.pattern || '';
+        methods.forEach(function(m) {
+            const e = exMethods[m.name];
+            if (!e) return;
+            const head = el('div.ex-head', {}, [
+                el('span.t', { text: labels[m.name] }),
+                el('span.badge.java', { text: javaLabel(e.java) }),
+                ex.recommended === m.name ? el('span.badge.ok', { text: 'Best to present' }) : null,
+                el('span.grow'),
+                el('span.small.muted.mono', { text: e.time + ' · ' + e.space })
+            ]);
+            const steps = el('ol.steps', {}, (e.steps || []).map(function(t) { return el('li', { text: t }); }));
+            const view = el('button.link-btn', { type: 'button', text: 'See the code →',
+                on: { click: function() { showMethod(m.name); selectTab('solution', true); window.scrollTo({ top: 0 }); } } });
+            $('exMethods').appendChild(el('div.card.ex-method', {}, [head, el('p.small', { text: e.summary }), steps, view]));
+
+            const best = ex.recommended === m.name;
+            $('cxRows').appendChild(el('div.card.cx-row' + (best ? '.best' : ''), {}, [
+                el('div.ex-head', {}, [el('span.t', { text: labels[m.name] }), best ? el('span.badge.ok', { text: 'Best to present' }) : null]),
+                el('div.cx-grid', {}, [
+                    el('div', {}, [el('p.eyebrow', { text: 'Time' }), el('p.cx-o', { text: e.time }), el('p.small.muted', { text: e.timeWhy || '' })]),
+                    el('div', {}, [el('p.eyebrow', { text: 'Space' }), el('p.cx-o', { text: e.space }), el('p.small.muted', { text: e.spaceWhy || '' })])
+                ])
+            ]));
+        });
+        [['pitfalls', 'exPitfalls'], ['interview', 'exInterview']].forEach(function(pair) {
+            const items = ex[pair[0]] || [];
+            items.forEach(function(t) { $(pair[1]).appendChild(el('li', { text: t })); });
+            $(pair[1] + 'Section').hidden = items.length === 0;
+        });
+        $('cxIntro').textContent = ex.recommended && labels[ex.recommended]
+            ? 'In an interview, lead with ' + labels[ex.recommended] + ', and mention the others as trade-offs.'
+            : 'How each approach scales.';
+    }
+
     // ── Solution tab: switching method swaps the code in place ──
     function showMethod(methodName) {
         selected = methodName;
         const m = methods.find(function(x) { return x.name === methodName; }) || { name: methodName, code: '' };
         $('methodBadge').textContent = labels[m.name];
         $('methodName').textContent = m.name + '()';
+        const e = exMethods[m.name];
+        $('methodJava').textContent = e ? javaLabel(e.java) : '';
+        $('methodJava').hidden = !e;
+        $('methodSummary').textContent = e ? e.summary + ' ' + e.time + ' time, ' + e.space + ' space.' : '';
+        $('methodSummary').hidden = !e;
         const hasCode = Boolean(m.code && m.code.trim());
         $('methodCode').textContent = m.code || '';
         $('methodCode').hidden = !hasCode;

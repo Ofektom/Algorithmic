@@ -1,0 +1,55 @@
+{
+  "idea": "Everything comes in pairs except one. If you can make pairs cancel out, only the loner survives.",
+  "pattern": "XOR cancellation",
+  "analogy": "Socks out of the wash: pair them off as you go and put pairs away. The one in your hand at the end has no partner.",
+  "recommended": "computeWithXOR",
+  "methods": {
+    "computeWithXOR": {
+      "java": "any",
+      "summary": "XOR all numbers; each pair cancels to 0.",
+      "steps": [
+        "Start with result = 0.",
+        "XOR in every number.",
+        "Because a ^ a = 0, a ^ 0 = a and order doesn't matter, every pair disappears.",
+        "What remains is the single number."
+      ],
+      "time": "O(n)",
+      "space": "O(1)",
+      "timeWhy": "One pass.",
+      "spaceWhy": "One variable: this is why interviewers ask it."
+    },
+    "computeWithHashSet": {
+      "java": "7",
+      "summary": "Add a number the first time, remove it the second time.",
+      "steps": [
+        "For each number: if it's in the set, remove it (its pair is complete).",
+        "Otherwise add it.",
+        "At the end the set holds exactly one number."
+      ],
+      "time": "O(n)",
+      "space": "O(n)",
+      "timeWhy": "One pass of O(1) set operations.",
+      "spaceWhy": "Up to about n/2 numbers can be waiting for their pair at once."
+    },
+    "computeWithHashMap": {
+      "java": "8",
+      "summary": "Count every number, then return the one counted once.",
+      "steps": [
+        "Count occurrences with getOrDefault(num, 0) + 1.",
+        "Scan the counts for the entry equal to 1."
+      ],
+      "time": "O(n)",
+      "space": "O(n)",
+      "timeWhy": "One pass to count, one over the distinct values.",
+      "spaceWhy": "A count for every distinct number."
+    }
+  },
+  "pitfalls": [
+    "The XOR trick only works when every other number appears an even number of times.",
+    "The hash map version works for any repeat count but costs O(n) memory."
+  ],
+  "interview": [
+    "Interviewers want the O(1)-space answer. Explain the two XOR rules out loud rather than stating \"use XOR\".",
+    "Follow-up: every number appears three times except one → count bits modulo 3."
+  ]
+}

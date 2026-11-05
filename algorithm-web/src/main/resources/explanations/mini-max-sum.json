@@ -1,0 +1,39 @@
+{
+  "idea": "Summing four of five numbers means leaving one out. The smallest total leaves out the largest number; the largest total leaves out the smallest.",
+  "pattern": "Total minus one element",
+  "analogy": "Picking four of five weights to lift: the lightest set drops the heaviest weight, the heaviest set drops the lightest.",
+  "recommended": "computeWithSinglePass",
+  "methods": {
+    "computeWithSinglePass": {
+      "java": "any",
+      "summary": "One pass for the total, minimum and maximum.",
+      "steps": [
+        "Add every number into total (a long).",
+        "Track the minimum and maximum.",
+        "The answer is total − max and total − min."
+      ],
+      "time": "O(n)",
+      "space": "O(1)",
+      "timeWhy": "One pass.",
+      "spaceWhy": "Three variables."
+    },
+    "computeWithSort": {
+      "java": "any",
+      "summary": "Sort a copy; the first four make the min sum, the last four the max.",
+      "steps": [
+        "Clone and sort.",
+        "minSum adds sorted[0..n − 2], maxSum adds sorted[1..n − 1]."
+      ],
+      "time": "O(n log n)",
+      "space": "O(n)",
+      "timeWhy": "The sort dominates (tiny for n = 5).",
+      "spaceWhy": "The sorted copy."
+    }
+  },
+  "pitfalls": [
+    "Five values up to 10⁹ overflow an int sum; use long. This is the trap HackerRank sets."
+  ],
+  "interview": [
+    "Say the leave-one-out insight and the overflow risk; those two points are what's being checked."
+  ]
+}

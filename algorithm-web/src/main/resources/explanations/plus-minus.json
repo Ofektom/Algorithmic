@@ -1,0 +1,41 @@
+{
+  "idea": "Count positives, negatives and zeros in one pass, then divide each count by the total.",
+  "pattern": "Counting and ratios",
+  "analogy": "A class survey of yes, no and undecided: tally the answers, then turn each tally into a share of the class.",
+  "recommended": "computeWithCounting",
+  "methods": {
+    "computeWithCounting": {
+      "java": "any",
+      "summary": "One loop with three counters, then format the three ratios.",
+      "steps": [
+        "Count values > 0, < 0 and == 0.",
+        "Divide each count by the length as a double (casting first avoids integer division).",
+        "format prints each ratio with 6 decimal places."
+      ],
+      "time": "O(n)",
+      "space": "O(1)",
+      "timeWhy": "One pass.",
+      "spaceWhy": "Three counters."
+    },
+    "computeWithStreams": {
+      "java": "8",
+      "summary": "Two filtered counts; zeros are whatever is left.",
+      "steps": [
+        "count values > 0 with a stream filter.",
+        "count values < 0 with another stream.",
+        "zeros = length − positives − negatives."
+      ],
+      "time": "O(n)",
+      "space": "O(1)",
+      "timeWhy": "Two passes over the array.",
+      "spaceWhy": "Streams don't store the elements."
+    }
+  },
+  "pitfalls": [
+    "Integer division: 3 / 6 is 0 in Java; cast to double first.",
+    "String.format uses your computer's locale, so some systems print 0,500000 with a comma. Pass Locale.US when the output format matters."
+  ],
+  "interview": [
+    "HackerRank warm-up: the points being tested are integer division and output formatting."
+  ]
+}

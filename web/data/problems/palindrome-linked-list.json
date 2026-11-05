@@ -8,7 +8,7 @@
   "methods" : [ {
     "name" : "computeWithReversal",
     "label" : "Reversal",
-    "code" : "public static boolean computeWithReversal(ListNode head) {\n    if (head == null || head.next == null) return true;\n\n    ListNode slow = head, fast = head;\n    while (fast.next != null && fast.next.next != null) {\n        slow = slow.next;\n        fast = fast.next.next;\n    }\n\n    ListNode secondHalf = reverse(slow.next);\n    ListNode firstHalf = head;\n\n    while (secondHalf != null) {\n        if (firstHalf.val != secondHalf.val) {\n            return false;\n        }\n        firstHalf = firstHalf.next;\n        secondHalf = secondHalf.next;\n    }\n\n    return true;\n}"
+    "code" : "public static boolean computeWithReversal(ListNode head) {\n    if (head == null || head.next == null) return true;\n\n    ListNode slow = head, fast = head;\n    while (fast.next != null && fast.next.next != null) {\n        slow = slow.next;\n        fast = fast.next.next;\n    }\n\n    ListNode secondHalf = reverse(slow.next);\n    ListNode firstHalf = head;\n\n    while (secondHalf != null) {\n        if (firstHalf.val != secondHalf.val) {\n            return false;\n        }\n        firstHalf = firstHalf.next;\n        secondHalf = secondHalf.next;\n    }\n\n    return true;\n}\n\nprivate static ListNode reverse(ListNode head) {\n    ListNode prev = null;\n    ListNode current = head;\n\n    while (current != null) {\n        ListNode next = current.next;\n        current.next = prev;\n        prev = current;\n        current = next;\n    }\n\n    return prev;\n}"
   }, {
     "name" : "computeWithStack",
     "label" : "Stack",
@@ -16,7 +16,7 @@
   }, {
     "name" : "computeRecursive",
     "label" : "Recursive",
-    "code" : "public static boolean computeRecursive(ListNode head) {\n    front = head;\n    return checkRecursive(head);\n}"
+    "code" : "public static boolean computeRecursive(ListNode head) {\n    front = head;\n    return checkRecursive(head);\n}\n\nprivate static boolean checkRecursive(ListNode current) {\n    if (current != null) {\n        if (!checkRecursive(current.next)) {\n            return false;\n        }\n        if (current.val != front.val) {\n            return false;\n        }\n        front = front.next;\n    }\n    return true;\n}"
   } ],
   "paramNames" : [ "head" ],
   "paramTypes" : [ "ListNode" ],

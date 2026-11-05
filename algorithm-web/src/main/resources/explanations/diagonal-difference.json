@@ -1,0 +1,40 @@
+{
+  "idea": "The primary diagonal is where row equals column (i, i). The secondary diagonal is where row + column = n − 1 (i, n − 1 − i). One loop over i reaches both.",
+  "pattern": "Matrix index arithmetic",
+  "analogy": "Two strings stretched across a square board corner to corner: you only need to step along each string, not look at every square.",
+  "recommended": "computeWithSinglePass",
+  "methods": {
+    "computeWithSinglePass": {
+      "java": "any",
+      "summary": "Add matrix[i][i] and matrix[i][n − 1 − i] for each row.",
+      "steps": [
+        "For each row i, add matrix[i][i] to primary.",
+        "Add matrix[i][n − 1 − i] to secondary.",
+        "Return |primary − secondary|."
+      ],
+      "time": "O(n)",
+      "space": "O(1)",
+      "timeWhy": "n steps for an n × n matrix.",
+      "spaceWhy": "Two sums."
+    },
+    "computeWithFullScan": {
+      "java": "any",
+      "summary": "Visit every cell and test whether it's on either diagonal.",
+      "steps": [
+        "For every (i, j): if i == j add it; if i + j == n − 1 subtract it.",
+        "A centre cell on both diagonals is added and subtracted, which is correct."
+      ],
+      "time": "O(n²)",
+      "space": "O(1)",
+      "timeWhy": "All n² cells are visited.",
+      "spaceWhy": "One running difference."
+    }
+  },
+  "pitfalls": [
+    "Forgetting the absolute value.",
+    "Off by one on the secondary diagonal: it's n − 1 − i, not n − i."
+  ],
+  "interview": [
+    "A HackerRank-style warm-up: point out that the single pass touches only 2n cells instead of n²."
+  ]
+}

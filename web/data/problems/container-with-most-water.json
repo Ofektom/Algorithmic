@@ -16,7 +16,7 @@
   }, {
     "name" : "computeWithRecursion",
     "label" : "Recursion",
-    "code" : "public static int computeWithRecursion(int[] height) {\n    return maxAreaRecursive(height, 0, height.length - 1, 0);\n}"
+    "code" : "public static int computeWithRecursion(int[] height) {\n    return maxAreaRecursive(height, 0, height.length - 1, 0);\n}\n\nprivate static int maxAreaRecursive(int[] height, int left, int right, int maxArea) {\n    if (left >= right)\n        return maxArea;\n\n    int width = right - left;\n    int minHeight = Math.min(height[left], height[right]);\n    int currentArea = width * minHeight;\n    maxArea = Math.max(maxArea, currentArea);\n\n    if (height[left] < height[right]) {\n        return maxAreaRecursive(height, left + 1, right, maxArea);\n    } else {\n        return maxAreaRecursive(height, left, right - 1, maxArea);\n    }\n}"
   } ],
   "paramNames" : [ "height" ],
   "paramTypes" : [ "int[]" ],

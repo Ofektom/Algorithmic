@@ -33,5 +33,33 @@
     "name" : "Single Number",
     "slug" : "single-number",
     "shortDescription" : "Find the number that appears only once"
-  } ]
+  } ],
+  "explanation" : {
+    "idea" : "A pair forms the moment a sock's colour is already waiting unmatched. Keep the unmatched colours, and every time one gets matched, count a pair and clear it.",
+    "pattern" : "Hash set pairing",
+    "analogy" : "A sock drawer with one slot per colour: put a sock in an empty slot; if the slot already has one, take both out as a pair.",
+    "recommended" : "computeWithHashSet",
+    "methods" : {
+      "computeWithHashSet" : {
+        "java" : "7",
+        "summary" : "add() returns false if the colour is already waiting; that's a pair.",
+        "steps" : [ "For each colour, try unmatched.add(color).", "If add returns false, the colour was waiting: remove it and count one pair.", "Otherwise it now waits for a partner." ],
+        "time" : "O(n)",
+        "space" : "O(n)",
+        "timeWhy" : "One pass with O(1) set operations.",
+        "spaceWhy" : "Up to one waiting sock per colour."
+      },
+      "computeWithSort" : {
+        "java" : "any",
+        "summary" : "Sort a copy so equal colours sit together, then count adjacent pairs.",
+        "steps" : [ "Clone and sort.", "If sorted[i] equals sorted[i + 1], count a pair and skip both (i++ inside the loop).", "Otherwise move on." ],
+        "time" : "O(n log n)",
+        "space" : "O(n)",
+        "timeWhy" : "The sort dominates.",
+        "spaceWhy" : "The sorted copy."
+      }
+    },
+    "pitfalls" : [ "Counting colour frequencies and summing count / 2 also works; just don't count a sock in two pairs." ],
+    "interview" : [ "Using the boolean that Set.add returns is a small Java detail interviewers like." ]
+  }
 }

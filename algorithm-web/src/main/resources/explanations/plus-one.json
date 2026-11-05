@@ -1,0 +1,57 @@
+{
+  "idea": "Adding one is just schoolbook addition: start from the last digit, and carry only when a 9 rolls over to 0.",
+  "pattern": "Digit-by-digit carry",
+  "analogy": "A car's odometer: 1299 → 1300. Only the trailing 9s roll over; once a digit doesn't overflow, nothing to its left changes.",
+  "recommended": "computeIterative",
+  "methods": {
+    "computeIterative": {
+      "java": "any",
+      "summary": "Walk from the right; the first digit below 9 just goes up and you stop.",
+      "steps": [
+        "Start at the last digit.",
+        "If it's less than 9, add one and return: no carry is needed.",
+        "If it's 9, it becomes 0 and the carry moves left.",
+        "If every digit was 9 (999), return a new array 1000: length n + 1 with a leading 1."
+      ],
+      "time": "O(n)",
+      "space": "O(1)",
+      "timeWhy": "At most one pass, and usually it stops at the first digit.",
+      "spaceWhy": "Works in place, except the all-9s case which needs a new array of n + 1."
+    },
+    "computeWithArrayList": {
+      "java": "7",
+      "summary": "General addition with a carry, building the result at the front of a list.",
+      "steps": [
+        "Start with carry = 1 (the one being added).",
+        "From the right: sum = digit + carry, keep sum % 10, carry = sum / 10.",
+        "Insert each digit at the front of the list.",
+        "If a carry is left over, insert it at the front too, then copy to an array."
+      ],
+      "time": "O(n²)",
+      "space": "O(n)",
+      "timeWhy": "list.add(0, x) shifts every element, so each insert is O(n). Appending and reversing would make it O(n).",
+      "spaceWhy": "The list and the result array."
+    },
+    "computeWithRecursion": {
+      "java": "any",
+      "summary": "The same carry, with recursion moving from the last index to the first.",
+      "steps": [
+        "addOneRecursive(digits, index, carry) handles one digit and calls itself on index − 1.",
+        "At each digit: sum = digit + carry, store sum % 10, pass sum / 10 on.",
+        "When the index goes below 0, a remaining carry means a new leading 1."
+      ],
+      "time": "O(n)",
+      "space": "O(n)",
+      "timeWhy": "One call per digit.",
+      "spaceWhy": "Each call stays on the call stack until the first digit is done."
+    }
+  },
+  "pitfalls": [
+    "Converting the digits to an int or long overflows for long inputs (the input can have 100 digits).",
+    "Forgetting the all-9s case, which grows the array."
+  ],
+  "interview": [
+    "Say the early-exit insight: once a digit isn't 9 you can return immediately.",
+    "Follow-up: add two digit arrays → same carry loop with two indices (see Add Binary, Add Two Numbers)."
+  ]
+}

@@ -12,11 +12,11 @@
   }, {
     "name" : "computeWithDFS",
     "label" : "DFS",
-    "code" : "public static List<Integer> computeWithDFS(TreeNode root) {\n    List<Integer> result = new ArrayList<>();\n    rightSideView(root, result, 0);\n    return result;\n}"
+    "code" : "public static List<Integer> computeWithDFS(TreeNode root) {\n    List<Integer> result = new ArrayList<>();\n    rightSideView(root, result, 0);\n    return result;\n}\n\nprivate static void rightSideView(TreeNode node, List<Integer> result, int depth) {\n    if (node == null) return;\n    if (depth == result.size()) {\n        result.add(node.val);\n    }\n    rightSideView(node.right, result, depth + 1);\n    rightSideView(node.left, result, depth + 1);\n}"
   }, {
     "name" : "computeRecursive",
     "label" : "Recursive",
-    "code" : "public static List<Integer> computeRecursive(TreeNode root) {\n    List<Integer> result = new ArrayList<>();\n    if (root == null) return result;\n    traverse(root, result, 0);\n    return result;\n}"
+    "code" : "public static List<Integer> computeRecursive(TreeNode root) {\n    List<Integer> result = new ArrayList<>();\n    if (root == null) return result;\n    traverse(root, result, 0);\n    return result;\n}\n\nprivate static void traverse(TreeNode node, List<Integer> result, int level) {\n    if (node == null) return;\n    if (level >= result.size()) {\n        result.add(node.val);\n    }\n    traverse(node.right, result, level + 1);\n    traverse(node.left, result, level + 1);\n}"
   } ],
   "paramNames" : [ "root" ],
   "paramTypes" : [ "TreeNode" ],

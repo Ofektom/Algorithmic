@@ -8,7 +8,7 @@
   "methods" : [ {
     "name" : "compute",
     "label" : "Compute",
-    "code" : "public static void compute(ListNode head) {\n    if (head == null || head.next == null) return;\n\n    ListNode middle = findMiddle(head);\n    ListNode secondHalf = reverse(middle.next);\n    middle.next = null;\n\n    merge(head, secondHalf);\n}"
+    "code" : "public static void compute(ListNode head) {\n    if (head == null || head.next == null) return;\n\n    ListNode middle = findMiddle(head);\n    ListNode secondHalf = reverse(middle.next);\n    middle.next = null;\n\n    merge(head, secondHalf);\n}\n\nprivate static ListNode findMiddle(ListNode head) {\n    ListNode slow = head;\n    ListNode fast = head;\n    while (fast.next != null && fast.next.next != null) {\n        slow = slow.next;\n        fast = fast.next.next;\n    }\n    return slow;\n}\n\nprivate static ListNode reverse(ListNode head) {\n    ListNode prev = null;\n    ListNode current = head;\n    while (current != null) {\n        ListNode next = current.next;\n        current.next = prev;\n        prev = current;\n        current = next;\n    }\n    return prev;\n}\n\nprivate static void merge(ListNode first, ListNode second) {\n    while (second != null) {\n        ListNode firstNext = first.next;\n        ListNode secondNext = second.next;\n\n        first.next = second;\n        second.next = firstNext;\n\n        first = firstNext;\n        second = secondNext;\n    }\n}"
   }, {
     "name" : "computeWithStack",
     "label" : "Stack",

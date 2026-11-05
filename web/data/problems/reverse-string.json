@@ -16,7 +16,7 @@
   }, {
     "name" : "computeWithRecursion",
     "label" : "Recursion",
-    "code" : "public static void computeWithRecursion(char[] s) {\n    reverseRecursive(s, 0, s.length - 1);\n}"
+    "code" : "public static void computeWithRecursion(char[] s) {\n    reverseRecursive(s, 0, s.length - 1);\n}\n\nprivate static void reverseRecursive(char[] s, int left, int right) {\n    if (left >= right) {\n        return;\n    }\n    char temp = s[left];\n    s[left] = s[right];\n    s[right] = temp;\n    reverseRecursive(s, left + 1, right - 1);\n}"
   } ],
   "paramNames" : [ "s" ],
   "paramTypes" : [ "char[]" ],

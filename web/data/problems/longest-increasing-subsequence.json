@@ -16,7 +16,7 @@
   }, {
     "name" : "computeRecursive",
     "label" : "Recursive",
-    "code" : "public static int computeRecursive(int[] nums) {\n    int[][] memo = new int[nums.length][nums.length + 1];\n    for (int[] row : memo) {\n        Arrays.fill(row, -1);\n    }\n    return lisRecursive(nums, 0, -1, memo);\n}"
+    "code" : "public static int computeRecursive(int[] nums) {\n    int[][] memo = new int[nums.length][nums.length + 1];\n    for (int[] row : memo) {\n        Arrays.fill(row, -1);\n    }\n    return lisRecursive(nums, 0, -1, memo);\n}\n\nprivate static int lisRecursive(int[] nums, int index, int prevIndex, int[][] memo) {\n    if (index == nums.length) {\n        return 0;\n    }\n\n    if (memo[index][prevIndex + 1] != -1) {\n        return memo[index][prevIndex + 1];\n    }\n\n    int take = 0;\n    if (prevIndex == -1 || nums[index] > nums[prevIndex]) {\n        take = 1 + lisRecursive(nums, index + 1, index, memo);\n    }\n\n    int notTake = lisRecursive(nums, index + 1, prevIndex, memo);\n\n    memo[index][prevIndex + 1] = Math.max(take, notTake);\n    return memo[index][prevIndex + 1];\n}"
   } ],
   "paramNames" : [ "nums" ],
   "paramTypes" : [ "int[]" ],

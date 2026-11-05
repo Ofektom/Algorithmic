@@ -16,7 +16,7 @@
   }, {
     "name" : "computeWithDivideConquer",
     "label" : "Divide conquer",
-    "code" : "public static int computeWithDivideConquer(int[] nums) {\n    return maxSubarrayRecursive(nums, 0, nums.length - 1);\n}"
+    "code" : "public static int computeWithDivideConquer(int[] nums) {\n    return maxSubarrayRecursive(nums, 0, nums.length - 1);\n}\n\nprivate static int maxSubarrayRecursive(int[] nums, int left, int right) {\n    if (left == right) return nums[left];\n    \n    int mid = left + (right - left) / 2;\n    \n    int leftMax = maxSubarrayRecursive(nums, left, mid);\n    int rightMax = maxSubarrayRecursive(nums, mid + 1, right);\n    int crossMax = maxCrossingSubarray(nums, left, mid, right);\n    \n    return Math.max(Math.max(leftMax, rightMax), crossMax);\n}\n\nprivate static int maxCrossingSubarray(int[] nums, int left, int mid, int right) {\n    int leftSum = Integer.MIN_VALUE;\n    int sum = 0;\n    for (int i = mid; i >= left; i--) {\n        sum += nums[i];\n        leftSum = Math.max(leftSum, sum);\n    }\n    \n    int rightSum = Integer.MIN_VALUE;\n    sum = 0;\n    for (int i = mid + 1; i <= right; i++) {\n        sum += nums[i];\n        rightSum = Math.max(rightSum, sum);\n    }\n    \n    return leftSum + rightSum;\n}"
   }, {
     "name" : "computeWithBruteForce",
     "label" : "Brute force",
@@ -41,5 +41,51 @@
     "name" : "Single Number",
     "slug" : "single-number",
     "shortDescription" : "Find the number that appears only once"
-  } ]
+  } ],
+  "explanation" : {
+    "idea" : "At each position you decide one thing: is the best sum ending here my running sum plus this number, or is it better to start fresh from this number? A negative running sum is never worth keeping.",
+    "pattern" : "Kadane's algorithm (1-D dynamic programming)",
+    "analogy" : "Walking a road that goes up and down, tracking your best climb: if your total since the last restart has gone below zero, you'd do better to start counting again from here.",
+    "recommended" : "computeWithKadane",
+    "methods" : {
+      "computeWithKadane" : {
+        "java" : "any",
+        "summary" : "Keep the best sum ending at the current index and the best seen overall.",
+        "steps" : [ "Start both currentSum and maxSum at nums[0] (handles all-negative arrays).", "For each next number: currentSum = max(num, currentSum + num). Start fresh or extend.", "maxSum = max(maxSum, currentSum)." ],
+        "time" : "O(n)",
+        "space" : "O(1)",
+        "timeWhy" : "One pass.",
+        "spaceWhy" : "Two variables."
+      },
+      "computeWithDP" : {
+        "java" : "any",
+        "summary" : "dp[i] = best sum of a subarray that ends exactly at i.",
+        "steps" : [ "dp[0] = nums[0].", "dp[i] = max(nums[i], dp[i − 1] + nums[i]).", "The answer is the largest dp[i]. This is Kadane before squeezing dp into one variable." ],
+        "time" : "O(n)",
+        "space" : "O(n)",
+        "timeWhy" : "One pass.",
+        "spaceWhy" : "The dp array of n values."
+      },
+      "computeWithDivideConquer" : {
+        "java" : "any",
+        "summary" : "The best subarray is in the left half, in the right half, or crosses the middle.",
+        "steps" : [ "Split at mid and solve each half recursively.", "maxCrossingSubarray finds the best sum that must include mid and mid + 1: extend left from mid, extend right from mid + 1, add them.", "Return the largest of the three." ],
+        "time" : "O(n log n)",
+        "space" : "O(log n)",
+        "timeWhy" : "log n levels of splitting, each doing O(n) crossing work.",
+        "spaceWhy" : "The recursion depth is log n."
+      },
+      "computeWithBruteForce" : {
+        "java" : "any",
+        "summary" : "Try every start i and extend the end j, keeping a running sum.",
+        "steps" : [ "For each start, add elements one by one.", "Track the largest sum seen." ],
+        "time" : "O(n²)",
+        "space" : "O(1)",
+        "timeWhy" : "n starts × up to n ends.",
+        "spaceWhy" : "A few variables."
+      }
+    },
+    "pitfalls" : [ "Starting maxSum at 0 returns 0 for an all-negative array; the answer must be the largest single number.", "Mixing up \"best ending here\" and \"best overall\"; you need both." ],
+    "interview" : [ "Explain the start-fresh-or-extend decision; that's Kadane in one sentence.", "Follow-up: return the start and end indices → remember where currentSum last restarted.", "The divide-and-conquer version is a common follow-up to test recursion." ]
+  }
 }

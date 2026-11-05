@@ -16,11 +16,11 @@
   }, {
     "name" : "computeWithRecursion",
     "label" : "Recursion",
-    "code" : "public static int computeWithRecursion(int[] nums) {\n    Map<Integer, Integer> memo = new HashMap<>();\n    return robRecursive(nums, 0, memo);\n}"
+    "code" : "public static int computeWithRecursion(int[] nums) {\n    Map<Integer, Integer> memo = new HashMap<>();\n    return robRecursive(nums, 0, memo);\n}\n\nprivate static int robRecursive(int[] nums, int index, Map<Integer, Integer> memo) {\n    if (index >= nums.length) return 0;\n    if (memo.containsKey(index)) return memo.get(index);\n    \n    int rob = nums[index] + robRecursive(nums, index + 2, memo);\n    int notRob = robRecursive(nums, index + 1, memo);\n    int result = Math.max(rob, notRob);\n    memo.put(index, result);\n    return result;\n}"
   }, {
     "name" : "computeWithPureRecursion",
     "label" : "Pure recursion",
-    "code" : "public static int computeWithPureRecursion(int[] nums) {\n    return robPureRecursive(nums, 0);\n}"
+    "code" : "public static int computeWithPureRecursion(int[] nums) {\n    return robPureRecursive(nums, 0);\n}\n\nprivate static int robPureRecursive(int[] nums, int index) {\n    if (index >= nums.length) return 0;\n    int rob = nums[index] + robPureRecursive(nums, index + 2);\n    int notRob = robPureRecursive(nums, index + 1);\n    return Math.max(rob, notRob);\n}"
   } ],
   "paramNames" : [ "nums" ],
   "paramTypes" : [ "int[]" ],

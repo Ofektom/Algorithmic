@@ -41,5 +41,51 @@
     "name" : "Plus One",
     "slug" : "plus-one",
     "shortDescription" : "Increment a number represented as array by one"
-  } ]
+  } ],
+  "explanation" : {
+    "idea" : "You know exactly which numbers should be there: 0 to n. Compare what should be there with what is, and the difference is the missing number.",
+    "pattern" : "Math / XOR cancellation",
+    "analogy" : "A class register of 0 to n seats: add up the seat numbers you expect, subtract the seat numbers of the students present, and the leftover is the empty seat.",
+    "recommended" : "computeWithXOR",
+    "methods" : {
+      "computeWithHashSet" : {
+        "java" : "7",
+        "summary" : "Put every number in a set, then check 0..n for the one that's absent.",
+        "steps" : [ "Add all numbers to a set.", "Loop i from 0 to n.", "The first i not in the set is the answer." ],
+        "time" : "O(n)",
+        "space" : "O(n)",
+        "timeWhy" : "Two passes with O(1) set lookups.",
+        "spaceWhy" : "The set holds n numbers."
+      },
+      "computeWithMath" : {
+        "java" : "any",
+        "summary" : "Expected sum 0+1+…+n minus the actual sum.",
+        "steps" : [ "n is nums.length (the range is 0..n, so one value is missing).", "Expected sum = n(n+1)/2 (Gauss's formula).", "Subtract the real sum of the array; what's left is the missing number." ],
+        "time" : "O(n)",
+        "space" : "O(1)",
+        "timeWhy" : "One pass to add up the array.",
+        "spaceWhy" : "Two integer variables."
+      },
+      "computeWithXOR" : {
+        "java" : "any",
+        "summary" : "XOR every index and every value; matching pairs cancel, leaving the missing one.",
+        "steps" : [ "XOR has two useful rules: a ^ a = 0 and a ^ 0 = a, and order doesn't matter.", "XOR together all numbers 1..n (via i + 1) and all array values.", "Every number that is present appears twice and cancels out; 0 contributes nothing.", "The only value left is the one that appears once: the missing number." ],
+        "time" : "O(n)",
+        "space" : "O(1)",
+        "timeWhy" : "One pass.",
+        "spaceWhy" : "One variable. Unlike the sum, XOR can't overflow."
+      },
+      "computeWithSorting" : {
+        "java" : "any",
+        "summary" : "After sorting, index i should hold value i; the first mismatch is the gap.",
+        "steps" : [ "Sort the array.", "Walk the indices: the first i where nums[i] != i is missing.", "If every index matches, n itself is missing." ],
+        "time" : "O(n log n)",
+        "space" : "O(log n)",
+        "timeWhy" : "The sort dominates.",
+        "spaceWhy" : "Sort stack space; it also changes the input."
+      }
+    },
+    "pitfalls" : [ "n(n+1)/2 overflows int for large n (about 65,000+). Use long, or use XOR.", "Forgetting that the answer can be n itself (the sorting version handles it with the final return)." ],
+    "interview" : [ "Mention the sum idea first (easy to explain), then XOR as the overflow-safe version.", "Follow-up: two numbers missing → sum and sum of squares, or XOR and split by a set bit." ]
+  }
 }

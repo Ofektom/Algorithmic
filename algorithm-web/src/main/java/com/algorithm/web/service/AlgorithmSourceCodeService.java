@@ -9,11 +9,21 @@ import java.io.InputStreamReader;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Deque;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Service
 public class AlgorithmSourceCodeService {
+
+    // "private static int[] addOneRecursive(" -> addOneRecursive
+    private static final Pattern PRIVATE_METHOD = Pattern.compile(
+            "^\\s*private\\s+static\\s+[\\w<>\\[\\],.? ]+?\\s+(\\w+)\\s*\\(");
 
     public String getMethodSourceCode(String className, String methodName) {
         try {
@@ -55,7 +65,7 @@ public class AlgorithmSourceCodeService {
     private String extractMethodFromFile(Path filePath, String methodName) {
         try {
             List<String> lines = Files.readAllLines(filePath);
-            return extractMethod(lines, methodName);
+            return extractWithHelpers(lines, methodName);
         } catch (Exception e) {
             e.printStackTrace();
             return null;
@@ -72,11 +82,48 @@ public class AlgorithmSourceCodeService {
                     lines.add(line);
                 }
             }
-            return extractMethod(lines, methodName);
+            return extractWithHelpers(lines, methodName);
         } catch (Exception e) {
             e.printStackTrace();
             return null;
         }
+    }
+
+    /**
+     * The method plus every private static helper it calls (and theirs), so a recursive or
+     * divide-and-conquer solution shows its whole logic instead of a one-line call.
+     */
+    String extractWithHelpers(List<String> lines, String methodName) {
+        String main = extractMethod(lines, methodName);
+        if (main == null) {
+            return null;
+        }
+        Set<String> helpers = new LinkedHashSet<>();
+        for (String line : lines) {
+            Matcher m = PRIVATE_METHOD.matcher(line);
+            if (m.find() && !m.group(1).equals(methodName)) {
+                helpers.add(m.group(1));
+            }
+        }
+        StringBuilder out = new StringBuilder(trimCommonIndent(main));
+        Set<String> added = new LinkedHashSet<>();
+        Deque<String> toScan = new ArrayDeque<>();
+        toScan.add(main);
+        while (!toScan.isEmpty()) {
+            String body = toScan.poll();
+            // A bare call, not set.contains(...) on some object
+            for (String helper : helpers) {
+                if (!added.contains(helper) && Pattern.compile("(?<![.\\w])" + helper + "\\s*\\(").matcher(body).find()) {
+                    String code = extractMethod(lines, helper);
+                    if (code != null) {
+                        added.add(helper);
+                        out.append("\n\n").append(trimCommonIndent(code));
+                        toScan.add(code);
+                    }
+                }
+            }
+        }
+        return out.toString();
     }
 
     private String extractMethod(List<String> lines, String methodName) {
@@ -89,7 +136,8 @@ public class AlgorithmSourceCodeService {
             String line = lines.get(i);
             String trimmed = line.trim();
 
-            if (!inMethod && trimmed.contains(methodName + "(")) {
+            // Whole word: "reverse(" must not match "computeWithReverse(" or "reverseList("
+            if (!inMethod && Pattern.compile("\\b" + Pattern.quote(methodName) + "\\s*\\(").matcher(trimmed).find()) {
                 if (trimmed.contains("public") || trimmed.contains("private") ||
                         trimmed.contains("protected") || trimmed.contains("static")) {
                     inMethod = true;

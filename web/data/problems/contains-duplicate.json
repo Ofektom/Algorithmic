@@ -41,5 +41,51 @@
     "name" : "Plus One",
     "slug" : "plus-one",
     "shortDescription" : "Increment a number represented as array by one"
-  } ]
+  } ],
+  "explanation" : {
+    "idea" : "A duplicate means some value has been seen before. Keep a record of what you've seen, and the first time a value is already in the record, you're done.",
+    "pattern" : "Hash set membership",
+    "analogy" : "A guest list at the door: before letting someone in you check the list. Their name already being on it means they came twice.",
+    "recommended" : "computeWithHashSet",
+    "methods" : {
+      "computeWithHashSet" : {
+        "java" : "7",
+        "summary" : "Add each number to a set; if it's already there, it's a duplicate.",
+        "steps" : [ "Create an empty set of seen numbers.", "For each number, check whether it's in the set.", "If yes, return true straight away.", "If no, add it. If the loop finishes, every value was distinct." ],
+        "time" : "O(n)",
+        "space" : "O(n)",
+        "timeWhy" : "One pass with O(1) average set operations, and it stops early on the first duplicate.",
+        "spaceWhy" : "In the worst case (all distinct) every number is stored."
+      },
+      "computeWithStream" : {
+        "java" : "8",
+        "summary" : "Count the distinct values; fewer than n means something repeated.",
+        "steps" : [ "Arrays.stream(nums).distinct() keeps the first copy of each value.", "count() gives how many distinct values there are.", "If that's less than nums.length, a value appeared more than once." ],
+        "time" : "O(n)",
+        "space" : "O(n)",
+        "timeWhy" : "distinct() uses a hash set internally, but it always reads the whole array (no early exit).",
+        "spaceWhy" : "distinct() keeps a set of every value seen."
+      },
+      "computeWithSorting" : {
+        "java" : "any",
+        "summary" : "Sort, then equal values sit next to each other.",
+        "steps" : [ "Sort the array.", "Compare each element with the one before it.", "Two equal neighbours mean a duplicate." ],
+        "time" : "O(n log n)",
+        "space" : "O(log n)",
+        "timeWhy" : "Sorting dominates; the scan after it is O(n).",
+        "spaceWhy" : "Java's sort for int[] (dual-pivot quicksort) uses O(log n) stack. Note it changes the caller's array."
+      },
+      "computeWithBruteForce" : {
+        "java" : "any",
+        "summary" : "Compare every pair.",
+        "steps" : [ "For each i, compare nums[i] with every later nums[j].", "Any match means a duplicate." ],
+        "time" : "O(n²)",
+        "space" : "O(1)",
+        "timeWhy" : "About n²/2 comparisons.",
+        "spaceWhy" : "No extra storage."
+      }
+    },
+    "pitfalls" : [ "Sorting modifies the input array. Say so in an interview, or sort a copy.", "The stream version can't stop early, so it does more work than the set when the duplicate is near the start." ],
+    "interview" : [ "The trade-off is the point: O(n) time with O(n) memory (set) versus O(n log n) time with almost no memory (sort).", "Follow-up: duplicates within k positions → Contains Duplicate II (sliding window set)." ]
+  }
 }

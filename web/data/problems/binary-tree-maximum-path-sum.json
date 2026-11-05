@@ -8,11 +8,11 @@
   "methods" : [ {
     "name" : "computeRecursive",
     "label" : "Recursive",
-    "code" : "public static int computeRecursive(TreeNode root) {\n    maxSum = Integer.MIN_VALUE;\n    maxPathSumHelper(root);\n    return maxSum;\n}"
+    "code" : "public static int computeRecursive(TreeNode root) {\n    maxSum = Integer.MIN_VALUE;\n    maxPathSumHelper(root);\n    return maxSum;\n}\n\nprivate static int maxPathSumHelper(TreeNode node) {\n    if (node == null) return 0;\n    \n    int leftSum = Math.max(0, maxPathSumHelper(node.left));\n    int rightSum = Math.max(0, maxPathSumHelper(node.right));\n    \n    int currentPathSum = node.val + leftSum + rightSum;\n    maxSum = Math.max(maxSum, currentPathSum);\n    \n    return node.val + Math.max(leftSum, rightSum);\n}"
   }, {
     "name" : "computeWithArray",
     "label" : "Array",
-    "code" : "public static int computeWithArray(TreeNode root) {\n    int[] result = new int[]{Integer.MIN_VALUE};\n    maxPathSumHelper(root, result);\n    return result[0];\n}"
+    "code" : "public static int computeWithArray(TreeNode root) {\n    int[] result = new int[]{Integer.MIN_VALUE};\n    maxPathSumHelper(root, result);\n    return result[0];\n}\n\nprivate static int maxPathSumHelper(TreeNode node) {\n    if (node == null) return 0;\n    \n    int leftSum = Math.max(0, maxPathSumHelper(node.left));\n    int rightSum = Math.max(0, maxPathSumHelper(node.right));\n    \n    int currentPathSum = node.val + leftSum + rightSum;\n    maxSum = Math.max(maxSum, currentPathSum);\n    \n    return node.val + Math.max(leftSum, rightSum);\n}"
   } ],
   "paramNames" : [ "root" ],
   "paramTypes" : [ "TreeNode" ],

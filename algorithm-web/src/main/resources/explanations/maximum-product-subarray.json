@@ -1,0 +1,69 @@
+{
+  "idea": "Like maximum sum, but a negative number flips the biggest product into the smallest and vice versa. So track both the largest and the smallest product ending here.",
+  "pattern": "Kadane variant tracking max and min",
+  "analogy": "A seesaw: multiplying by a negative tips the heaviest side up to the top. The most negative product so far can become the biggest after one more negative.",
+  "recommended": "computeWithDP",
+  "methods": {
+    "computeWithDP": {
+      "java": "any",
+      "summary": "Keep maxSoFar and minSoFar for subarrays ending at each index.",
+      "steps": [
+        "Start max, min and result at nums[0].",
+        "For each num, the new max is the largest of num, max × num and min × num; the new min is the smallest of the same three.",
+        "Compute both from the old values (tempMax) before overwriting.",
+        "result = max(result, max)."
+      ],
+      "time": "O(n)",
+      "space": "O(1)",
+      "timeWhy": "One pass.",
+      "spaceWhy": "Three variables."
+    },
+    "computeWithTwoPasses": {
+      "java": "any",
+      "summary": "Scan left to right and right to left, multiplying a running product and resetting after zeros.",
+      "steps": [
+        "Left to right: multiply into product, record the max, reset product to 1 after a zero.",
+        "Do the same right to left.",
+        "With an odd number of negatives, the best product drops either the first or the last negative; one of the two scans finds it."
+      ],
+      "time": "O(n)",
+      "space": "O(1)",
+      "timeWhy": "Two passes.",
+      "spaceWhy": "A couple of variables."
+    },
+    "computeWithBruteForce": {
+      "java": "any",
+      "summary": "Every start, extend the end, keep the running product.",
+      "steps": [
+        "For each i, multiply elements j ≥ i one at a time.",
+        "Track the maximum."
+      ],
+      "time": "O(n²)",
+      "space": "O(1)",
+      "timeWhy": "n starts × up to n ends.",
+      "spaceWhy": "A few variables."
+    },
+    "computeWithRecursion": {
+      "java": "any",
+      "summary": "The max/min idea, passing the running values through recursive calls.",
+      "steps": [
+        "maxProductRecursive carries currentMax, currentMin and globalMax to the next index.",
+        "Each call computes the new max/min with the next number, the same way as the DP version.",
+        "It stops at the last index and returns globalMax."
+      ],
+      "time": "O(n)",
+      "space": "O(n)",
+      "timeWhy": "One call per element.",
+      "spaceWhy": "n calls on the stack."
+    }
+  },
+  "pitfalls": [
+    "Tracking only the max misses [-2, 3, -4] → 24.",
+    "Overwriting max before computing min with the old max.",
+    "Zeros: both methods restart naturally (num alone beats 0 × anything)."
+  ],
+  "interview": [
+    "Start from Maximum Subarray and say what changes: negatives flip order, so keep the min as well.",
+    "The two-pass trick is a nice alternative to mention if you've explained the main one."
+  ]
+}

@@ -8,7 +8,7 @@
   "methods" : [ {
     "name" : "computeWithThreePointers",
     "label" : "Three pointers",
-    "code" : "public static void computeWithThreePointers(int[] nums) {\n    int left = 0;\n    int right = nums.length - 1;\n    int current = 0;\n\n    while (current <= right) {\n        if (nums[current] == 0) {\n            swap(nums, left, current);\n            left++;\n            current++;\n        } else if (nums[current] == 2) {\n            swap(nums, current, right);\n            right--;\n        } else {\n            current++;\n        }\n    }\n}"
+    "code" : "public static void computeWithThreePointers(int[] nums) {\n    int left = 0;\n    int right = nums.length - 1;\n    int current = 0;\n\n    while (current <= right) {\n        if (nums[current] == 0) {\n            swap(nums, left, current);\n            left++;\n            current++;\n        } else if (nums[current] == 2) {\n            swap(nums, current, right);\n            right--;\n        } else {\n            current++;\n        }\n    }\n}\n\nprivate static void swap(int[] nums, int i, int j) {\n    int temp = nums[i];\n    nums[i] = nums[j];\n    nums[j] = temp;\n}"
   }, {
     "name" : "computeWithCounting",
     "label" : "Counting",

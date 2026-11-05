@@ -20,7 +20,7 @@
   }, {
     "name" : "computeRecursive",
     "label" : "Recursive",
-    "code" : "public static String computeRecursive(String a, String b) {\n    return addBinaryRecursive(a, b, 0, new StringBuilder()).reverse().toString();\n}"
+    "code" : "public static String computeRecursive(String a, String b) {\n    return addBinaryRecursive(a, b, 0, new StringBuilder()).reverse().toString();\n}\n\nprivate static StringBuilder addBinaryRecursive(String a, String b, int carry, StringBuilder sb) {\n    if (a.isEmpty() && b.isEmpty() && carry == 0) {\n        return sb;\n    }\n\n    int sum = carry;\n    if (!a.isEmpty()) {\n        sum += a.charAt(a.length() - 1) - '0';\n        a = a.substring(0, a.length() - 1);\n    }\n    if (!b.isEmpty()) {\n        sum += b.charAt(b.length() - 1) - '0';\n        b = b.substring(0, b.length() - 1);\n    }\n\n    sb.append(sum % 2);\n    return addBinaryRecursive(a, b, sum / 2, sb);\n}"
   } ],
   "paramNames" : [ "a", "b" ],
   "paramTypes" : [ "String", "String" ],

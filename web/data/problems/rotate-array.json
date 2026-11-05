@@ -12,7 +12,7 @@
   }, {
     "name" : "computeWithReverse",
     "label" : "Reverse",
-    "code" : "public static void computeWithReverse(int[] nums, int k) {\n    int n = nums.length;\n    k = k % n;\n\n    reverse(nums, 0, n - 1);\n    reverse(nums, 0, k - 1);\n    reverse(nums, k, n - 1);\n}"
+    "code" : "public static void computeWithReverse(int[] nums, int k) {\n    int n = nums.length;\n    k = k % n;\n\n    reverse(nums, 0, n - 1);\n    reverse(nums, 0, k - 1);\n    reverse(nums, k, n - 1);\n}\n\nprivate static void reverse(int[] nums, int start, int end) {\n    while (start < end) {\n        int temp = nums[start];\n        nums[start] = nums[end];\n        nums[end] = temp;\n        start++;\n        end--;\n    }\n}"
   }, {
     "name" : "computeWithArrayList",
     "label" : "Array list",
@@ -41,5 +41,51 @@
     "name" : "Single Number",
     "slug" : "single-number",
     "shortDescription" : "Find the number that appears only once"
-  } ]
+  } ],
+  "explanation" : {
+    "idea" : "Rotating right by k moves the last k elements to the front. The trick for doing it in place: reversing the whole array, then each part, puts every element in its rotated spot.",
+    "pattern" : "Reversal trick / cyclic replacement",
+    "analogy" : "Shuffling a deck by cutting it: take the bottom k cards and put them on top. Reversing the deck and then each pile does the same cut without a second table.",
+    "recommended" : "computeWithReverse",
+    "methods" : {
+      "computeWithExtraArray" : {
+        "java" : "any",
+        "summary" : "Copy each element straight to its new index (i + k) % n.",
+        "steps" : [ "k = k % n, so rotating by n or more doesn't repeat work.", "Write nums[i] into result[(i + k) % n].", "Copy the result back into nums." ],
+        "time" : "O(n)",
+        "space" : "O(n)",
+        "timeWhy" : "One pass plus the copy back.",
+        "spaceWhy" : "A second array of n."
+      },
+      "computeWithReverse" : {
+        "java" : "any",
+        "summary" : "Reverse all, then reverse the first k, then the rest.",
+        "steps" : [ "Example [1,2,3,4,5,6,7], k = 3.", "Reverse all: [7,6,5,4,3,2,1].", "Reverse the first k = 3: [5,6,7,4,3,2,1].", "Reverse the rest: [5,6,7,1,2,3,4]. Done." ],
+        "time" : "O(n)",
+        "space" : "O(1)",
+        "timeWhy" : "Each element is swapped about twice.",
+        "spaceWhy" : "Swaps in place."
+      },
+      "computeWithArrayList" : {
+        "java" : "7",
+        "summary" : "Move the last element to the front, k times.",
+        "steps" : [ "Copy into a list.", "k times: remove the last element and insert it at index 0.", "Copy back." ],
+        "time" : "O(n·k)",
+        "space" : "O(n)",
+        "timeWhy" : "Inserting at the front shifts every element, k times.",
+        "spaceWhy" : "The list copy."
+      },
+      "computeWithCyclic" : {
+        "java" : "any",
+        "summary" : "Each element jumps straight to its final place, displacing the next one along the cycle.",
+        "steps" : [ "From start, carry the value to (current + k) % n, pick up what was there, and keep going.", "When you return to start, the cycle is done; move start forward.", "count stops the loop once all n elements have moved (needed when n and k share a factor)." ],
+        "time" : "O(n)",
+        "space" : "O(1)",
+        "timeWhy" : "Every element moves exactly once.",
+        "spaceWhy" : "A few variables."
+      }
+    },
+    "pitfalls" : [ "Forgetting k = k % n (k can be larger than n).", "An empty array makes k % n throw ArithmeticException (division by zero).", "Rotate right versus left changes which part you reverse." ],
+    "interview" : [ "Show the reversal trick on the 7-element example; it's easier to justify than cyclic replacement.", "Say the in-place requirement out loud: it's why the extra array isn't the final answer." ]
+  }
 }

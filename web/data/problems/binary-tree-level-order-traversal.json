@@ -10,13 +10,13 @@
     "label" : "BFS",
     "code" : "public static List<List<Integer>> computeWithBFS(TreeNode root) {\n    List<List<Integer>> result = new ArrayList<>();\n    if (root == null) return result;\n\n    Queue<TreeNode> queue = new LinkedList<>();\n    queue.offer(root);\n\n    while (!queue.isEmpty()) {\n        int levelSize = queue.size();\n        List<Integer> level = new ArrayList<>();\n\n        for (int i = 0; i < levelSize; i++) {\n            TreeNode node = queue.poll();\n            level.add(node.val);\n\n            if (node.left != null) queue.offer(node.left);\n            if (node.right != null) queue.offer(node.right);\n        }\n\n        result.add(level);\n    }\n\n    return result;\n}"
   }, {
-    "name" : "computeWithDFS",
-    "label" : "DFS",
-    "code" : ""
+    "name" : "computeWithRecursion",
+    "label" : "Recursion",
+    "code" : "public static List<List<Integer>> computeWithRecursion(TreeNode root) {\n    List<List<Integer>> result = new ArrayList<>();\n    if (root == null) return result;\n    levelOrderRecursive(root, 0, result);\n    return result;\n}\n\nprivate static void levelOrderRecursive(TreeNode node, int level, List<List<Integer>> result) {\n    if (node == null) return;\n\n    if (result.size() <= level) {\n        result.add(new ArrayList<>());\n    }\n\n    result.get(level).add(node.val);\n    levelOrderRecursive(node.left, level + 1, result);\n    levelOrderRecursive(node.right, level + 1, result);\n}"
   }, {
-    "name" : "computeRecursive",
-    "label" : "Recursive",
-    "code" : ""
+    "name" : "computeWithStack",
+    "label" : "Stack",
+    "code" : "public static List<List<Integer>> computeWithStack(TreeNode root) {\n    List<List<Integer>> result = new ArrayList<>();\n    if (root == null) return result;\n\n    Stack<TreeNode> stack = new Stack<>();\n    Stack<Integer> levelStack = new Stack<>();\n    stack.push(root);\n    levelStack.push(0);\n\n    while (!stack.isEmpty()) {\n        TreeNode node = stack.pop();\n        int level = levelStack.pop();\n\n        if (result.size() <= level) {\n            result.add(new ArrayList<>());\n        }\n\n        result.get(level).add(node.val);\n\n        if (node.right != null) {\n            stack.push(node.right);\n            levelStack.push(level + 1);\n        }\n        if (node.left != null) {\n            stack.push(node.left);\n            levelStack.push(level + 1);\n        }\n    }\n\n    return result;\n}"
   } ],
   "paramNames" : [ "root" ],
   "paramTypes" : [ "TreeNode" ],

@@ -16,7 +16,7 @@
   }, {
     "name" : "computeRecursive",
     "label" : "Recursive",
-    "code" : "public static int[][] computeRecursive(int[][] intervals) {\n    if (intervals.length <= 1) return intervals;\n\n    Arrays.sort(intervals, Comparator.comparingInt(a -> a[0]));\n\n    List<int[]> merged = new ArrayList<>();\n    mergeIntervals(intervals, 0, merged);\n\n    return merged.toArray(new int[merged.size()][]);\n}"
+    "code" : "public static int[][] computeRecursive(int[][] intervals) {\n    if (intervals.length <= 1) return intervals;\n\n    Arrays.sort(intervals, Comparator.comparingInt(a -> a[0]));\n\n    List<int[]> merged = new ArrayList<>();\n    mergeIntervals(intervals, 0, merged);\n\n    return merged.toArray(new int[merged.size()][]);\n}\n\nprivate static void mergeIntervals(int[][] intervals, int index, List<int[]> merged) {\n    if (index >= intervals.length) return;\n\n    int[] current = intervals[index];\n\n    if (merged.isEmpty() || merged.get(merged.size() - 1)[1] < current[0]) {\n        merged.add(current);\n    } else {\n        int[] last = merged.get(merged.size() - 1);\n        last[1] = Math.max(last[1], current[1]);\n    }\n\n    mergeIntervals(intervals, index + 1, merged);\n}"
   } ],
   "paramNames" : [ "intervals" ],
   "paramTypes" : [ "int[][]" ],

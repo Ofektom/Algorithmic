@@ -12,7 +12,7 @@
   }, {
     "name" : "computeRecursive",
     "label" : "Recursive",
-    "code" : "public static int computeRecursive(int n) {\n    return findFirstBadVersion(1, n);\n}"
+    "code" : "public static int computeRecursive(int n) {\n    return findFirstBadVersion(1, n);\n}\n\nprivate static int findFirstBadVersion(int left, int right) {\n    if (left == right) {\n        return left;\n    }\n\n    int mid = left + (right - left) / 2;\n    if (isBadVersion(mid)) {\n        return findFirstBadVersion(left, mid);\n    } else {\n        return findFirstBadVersion(mid + 1, right);\n    }\n}"
   }, {
     "name" : "computeWithLinearSearch",
     "label" : "Linear search",

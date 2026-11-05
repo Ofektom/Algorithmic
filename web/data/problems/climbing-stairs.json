@@ -16,7 +16,7 @@
   }, {
     "name" : "computeWithRecursion",
     "label" : "Recursion",
-    "code" : "public static int computeWithRecursion(int n) {\n    Map<Integer, Integer> memo = new HashMap<>();\n    return climbStairsRecursive(n, memo);\n}"
+    "code" : "public static int computeWithRecursion(int n) {\n    Map<Integer, Integer> memo = new HashMap<>();\n    return climbStairsRecursive(n, memo);\n}\n\nprivate static int climbStairsRecursive(int n, Map<Integer, Integer> memo) {\n    if (n <= 2) return n;\n    if (memo.containsKey(n)) return memo.get(n);\n    int result = climbStairsRecursive(n - 1, memo) + climbStairsRecursive(n - 2, memo);\n    memo.put(n, result);\n    return result;\n}"
   }, {
     "name" : "computeWithPureRecursion",
     "label" : "Pure recursion",

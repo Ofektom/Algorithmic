@@ -455,3 +455,24 @@ table.compare tr.mismatch td { color: var(--err); }
 @media (max-height: 500px) and (max-width: 1023px) {
     .composer { position: static; }
 }
+
+/* ── Explanation and Complexity tabs ──────────────────────── */
+.eyebrow { font-size: 11.5px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); margin-bottom: 4px; }
+.idea-card { border-left: 4px solid var(--brand); }
+.idea-card .prose { font-size: 16px; }
+.analogy { margin-top: 10px; padding: 10px 12px; border-radius: 10px; background: var(--surface-2); color: var(--text-2); font-size: 14.5px; }
+.analogy::before { content: "Think of it like this: "; font-weight: 700; color: var(--text); }
+.ex-head { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.ex-head .t { font-weight: 700; font-size: 15.5px; }
+.ex-method p.small { margin-top: 6px; }
+.steps { margin: 10px 0 8px; padding-left: 22px; display: grid; gap: 6px; font-size: 14.5px; line-height: 1.5; }
+.bullets { margin: 0; padding-left: 20px; display: grid; gap: 6px; font-size: 14.5px; line-height: 1.5; }
+.badge.java { background: var(--surface-2); color: var(--text-2); }
+.method-summary { margin: 0 0 8px; color: var(--text-2); }
+.cx-row.best { border-color: var(--brand); }
+.cx-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 10px; }
+.cx-o { font-family: "JetBrains Mono", "SF Mono", Menlo, Consolas, monospace; font-size: 17px; font-weight: 700; margin-bottom: 2px; }
+.bigo-help { margin-top: 18px; }
+.bigo-help summary { cursor: pointer; font-weight: 700; }
+.bigo-help[open] summary { margin-bottom: 8px; }
+@media (max-width: 380px) { .cx-grid { grid-template-columns: 1fr; } }

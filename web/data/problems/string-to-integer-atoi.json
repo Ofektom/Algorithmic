@@ -16,7 +16,7 @@
   }, {
     "name" : "computeWithRecursion",
     "label" : "Recursion",
-    "code" : "public static int computeWithRecursion(String s) {\n    s = s.trim();\n    if (s.length() == 0) {\n        return 0;\n    }\n\n    int[] index = { 0 };\n    int sign = parseSign(s, index);\n    return sign * parseDigits(s, index, 0);\n}"
+    "code" : "public static int computeWithRecursion(String s) {\n    s = s.trim();\n    if (s.length() == 0) {\n        return 0;\n    }\n\n    int[] index = { 0 };\n    int sign = parseSign(s, index);\n    return sign * parseDigits(s, index, 0);\n}\n\nprivate static int parseSign(String s, int[] index) {\n    if (index[0] < s.length() && (s.charAt(index[0]) == '+' || s.charAt(index[0]) == '-')) {\n        int sign = s.charAt(index[0]) == '-' ? -1 : 1;\n        index[0]++;\n        return sign;\n    }\n    return 1;\n}\n\nprivate static int parseDigits(String s, int[] index, long result) {\n    if (index[0] >= s.length() || !Character.isDigit(s.charAt(index[0]))) {\n        if (result > Integer.MAX_VALUE) {\n            return Integer.MAX_VALUE;\n        }\n        return (int) result;\n    }\n\n    int digit = s.charAt(index[0]) - '0';\n    index[0]++;\n\n    long newResult = result * 10 + digit;\n    if (newResult > Integer.MAX_VALUE) {\n        return Integer.MAX_VALUE;\n    }\n\n    return parseDigits(s, index, newResult);\n}"
   } ],
   "paramNames" : [ "s" ],
   "paramTypes" : [ "String" ],

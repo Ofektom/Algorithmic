@@ -16,7 +16,7 @@
   }, {
     "name" : "computeWithBruteForce",
     "label" : "Brute force",
-    "code" : "public static boolean computeWithBruteForce(String s1, String s2) {\n    if (s1.length() > s2.length()) return false;\n\n    for (int i = 0; i <= s2.length() - s1.length(); i++) {\n        String substring = s2.substring(i, i + s1.length());\n        if (isPermutation(s1, substring)) {\n            return true;\n        }\n    }\n    return false;\n}"
+    "code" : "public static boolean computeWithBruteForce(String s1, String s2) {\n    if (s1.length() > s2.length()) return false;\n\n    for (int i = 0; i <= s2.length() - s1.length(); i++) {\n        String substring = s2.substring(i, i + s1.length());\n        if (isPermutation(s1, substring)) {\n            return true;\n        }\n    }\n    return false;\n}\n\nprivate static boolean isPermutation(String s1, String s2) {\n    if (s1.length() != s2.length()) return false;\n    char[] arr1 = s1.toCharArray();\n    char[] arr2 = s2.toCharArray();\n    Arrays.sort(arr1);\n    Arrays.sort(arr2);\n    return Arrays.equals(arr1, arr2);\n}"
   } ],
   "paramNames" : [ "s1", "s2" ],
   "paramTypes" : [ "String", "String" ],

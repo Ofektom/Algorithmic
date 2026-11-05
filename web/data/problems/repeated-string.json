@@ -8,7 +8,7 @@
   "methods" : [ {
     "name" : "computeWithMath",
     "label" : "Math",
-    "code" : "public static long computeWithMath(String s, long n) {\n    long perString = countA(s, s.length());\n    long fullRepeats = n / s.length();\n    int remainder = (int) (n % s.length());\n    return fullRepeats * perString + countA(s, remainder);\n}"
+    "code" : "public static long computeWithMath(String s, long n) {\n    long perString = countA(s, s.length());\n    long fullRepeats = n / s.length();\n    int remainder = (int) (n % s.length());\n    return fullRepeats * perString + countA(s, remainder);\n}\n\nprivate static long countA(String s, int length) {\n    long count = 0;\n    for (int i = 0; i < length; i++) {\n        if (s.charAt(i) == 'a') count++;\n    }\n    return count;\n}"
   }, {
     "name" : "computeWithBruteForce",
     "label" : "Brute force",

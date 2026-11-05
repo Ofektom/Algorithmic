@@ -37,5 +37,42 @@
     "name" : "Single Number",
     "slug" : "single-number",
     "shortDescription" : "Find the number that appears only once"
-  } ]
+  } ],
+  "explanation" : {
+    "idea" : "You only care about repeats that are close: within k positions. Remember where each value was last seen, or keep just the last k values in view.",
+    "pattern" : "Sliding window set / last-seen map",
+    "analogy" : "A bouncer who only remembers the last k faces: if someone in that recent memory walks in again, they came back too soon.",
+    "recommended" : "computeWithHashSet",
+    "methods" : {
+      "computeWithHashMap" : {
+        "java" : "7",
+        "summary" : "Store each value's latest index; a repeat within k is a hit.",
+        "steps" : [ "For each index i, look up the last index of nums[i].", "If it exists and i − last ≤ k, return true.", "Update the map to the newest index i." ],
+        "time" : "O(n)",
+        "space" : "O(n)",
+        "timeWhy" : "One pass.",
+        "spaceWhy" : "One entry per distinct value."
+      },
+      "computeWithHashSet" : {
+        "java" : "7",
+        "summary" : "Keep a set of the last k values; slide it forward.",
+        "steps" : [ "If nums[i] is already in the window set, return true.", "Add nums[i].", "When the set has more than k values, remove nums[i − k], the one that just fell out of range." ],
+        "time" : "O(n)",
+        "space" : "O(min(n, k))",
+        "timeWhy" : "One pass with O(1) set operations.",
+        "spaceWhy" : "The window never holds more than k + 1 values."
+      },
+      "computeWithBruteForce" : {
+        "java" : "any",
+        "summary" : "For each i, compare with the next k elements.",
+        "steps" : [ "For each i, check j from i + 1 to i + k.", "Any equal pair is a hit." ],
+        "time" : "O(n·k)",
+        "space" : "O(1)",
+        "timeWhy" : "Up to k comparisons per element.",
+        "spaceWhy" : "No extra storage."
+      }
+    },
+    "pitfalls" : [ "Keeping the first index instead of the latest in the map misses closer repeats.", "Off-by-one: the distance allowed is ≤ k, so the window holds k elements behind the current one." ],
+    "interview" : [ "This is the classic introduction to a fixed-size sliding window: say \"I only need the last k values\".", "Follow-up (Contains Duplicate III): values within t of each other → a TreeSet window with floor/ceiling, or buckets." ]
+  }
 }

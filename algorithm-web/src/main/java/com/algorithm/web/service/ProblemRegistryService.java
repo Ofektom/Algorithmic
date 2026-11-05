@@ -1256,7 +1256,7 @@ public class ProblemRegistryService {
                         Arrays.asList("tree", "binary tree", "right side", "view", "bfs", "level order"),
                         "Trees",
                         "trees.BinaryTreeRightSideView",
-                        Arrays.asList("computeWithBFS", "computeWithRecursion", "computeWithStack"),
+                        Arrays.asList("computeWithBFS", "computeWithDFS", "computeRecursive"),
                         Arrays.asList("root"),
                         Arrays.asList("TreeNode"),
                         null),
